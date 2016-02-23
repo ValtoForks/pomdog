@@ -1,0 +1,955 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Pomdog.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Application\Duration.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Application\Game.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Application\GameClock.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Application\GameHost.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Application\GameWindow.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Application\MouseCursor.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Application\Timer.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Application\TimePoint.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Audio\AudioClip.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Audio\AudioChannels.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Audio\AudioEmitter.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Audio\AudioEngine.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Audio\AudioListener.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Audio\SoundEffect.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Audio\SoundState.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Audio\detail\ForwardDeclarations.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Basic\Export.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Basic\Platform.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Basic\Version.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\AssetManager.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\AssetBuilders\Builder.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\AssetBuilders\PipelineStateBuilder.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\AssetBuilders\ShaderBuilder.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\Utility\BinaryFileStream.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\Utility\BinaryReader.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\Utility\MakeFourCC.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\detail\AssetDictionary.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\detail\AssetLoaderContext.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\detail\AssetLoader.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\detail\AssetLoaders\AudioClipLoader.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Content\detail\AssetLoaders\Texture2DLoader.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\Blend.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\BlendDescription.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\BlendOperation.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\BufferUsage.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\ClearOptions.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\ComparisonFunction.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\ConstantBuffer.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\CullMode.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\DepthFormat.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\DepthStencilDescription.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\DepthStencilOperation.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\EffectAnnotation.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\EffectConstantDescription.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\EffectReflection.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\EffectVariableClass.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\EffectVariableType.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\EffectVariable.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\FillMode.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\GraphicsCommandList.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\GraphicsCommandQueue.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\GraphicsDevice.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\IndexBuffer.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\IndexElementSize.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\InputClassification.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\InputElement.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\InputElementFormat.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\InputLayoutDescription.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\InputLayoutHelper.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\PipelineState.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\PipelineStateDescription.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\PresentationParameters.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\PrimitiveTopology.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\RasterizerDescription.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\RenderTarget2D.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\RenderTargetBlendDescription.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\SamplerDescription.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\SamplerState.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\Shader.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\ShaderLanguage.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\ShaderPipelineStage.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\SurfaceFormat.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\StencilOperation.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\Texture.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\Texture2D.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\TextureAddressMode.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\TextureFilter.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\VertexBuffer.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\VertexBufferBinding.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\Viewport.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\detail\ForwardDeclarations.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\detail\EffectBinaryParameter.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\ShaderCompilers\GLSLCompiler.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Graphics\ShaderCompilers\HLSLCompiler.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\ButtonState.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\Gamepad.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\GamepadButtons.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\GamepadCapabilities.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\GamepadDPad.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\GamepadState.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\GamepadThumbSticks.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\GamepadType.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\Keyboard.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\KeyboardState.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\KeyState.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\Keys.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\Mouse.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\MouseState.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\PlayerIndex.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\TouchLocation.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Input\TouchLocationState.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Logging\Log.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Logging\LogChannel.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Logging\LogEntry.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Logging\LogLevel.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\BoundingBox.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\BoundingBox2D.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\BoundingCircle.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\BoundingSphere.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Color.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\ContainmentType.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Degree.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\MathHelper.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Matrix2x2.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Matrix3x2.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Matrix3x3.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Matrix4x4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Point2D.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Point3D.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Quaternion.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Radian.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Ray.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Rectangle.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Vector2.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Vector3.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\Vector4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\Coordinate2D.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\Coordinate3D.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointMatrix2x2.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointMatrix3x2.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointMatrix3x3.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointMatrix4x4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointQuaternion.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointVector2.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointVector3.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointVector4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\ForwardDeclarations.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Math\detail\TaggedArithmetic.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Signals\Connection.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Signals\ConnectionList.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Signals\Event.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Signals\EventQueue.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Signals\Helpers.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Signals\ScopedConnection.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Signals\Signal.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Signals\detail\EventBody.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Signals\detail\ForwardDeclarations.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Signals\detail\SignalBody.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Utility\Any.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Utility\Assert.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Utility\Exception.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Utility\FileSystem.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Utility\Optional.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Utility\PathHelper.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Utility\StringHelper.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Utility\detail\CRC32.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Utility\detail\Tagged.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Platform\Win32\Bootstrap.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Platform\Win32\BootstrapSettingsWin32.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Platform\Win32\PrerequisitesWin32.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Application\GameClock.cpp" />
+    <ClCompile Include="..\..\src\Application\Timer.cpp" />
+    <ClCompile Include="..\..\src\Audio\AudioClip.cpp" />
+    <ClCompile Include="..\..\src\Audio\AudioEngine.cpp" />
+    <ClCompile Include="..\..\src\Audio\SoundEffect.cpp" />
+    <ClCompile Include="..\..\src\Content\AssetBuilders\PipelineStateBuilder.cpp" />
+    <ClCompile Include="..\..\src\Content\AssetBuilders\ShaderBuilder.cpp" />
+    <ClCompile Include="..\..\src\Content\AssetDictionary.cpp" />
+    <ClCompile Include="..\..\src\Content\AssetLoaderContext.cpp" />
+    <ClCompile Include="..\..\src\Content\AssetLoaders\AudioClipLoader.cpp" />
+    <ClCompile Include="..\..\src\Content\AssetLoaders\Texture2DLoader.cpp" />
+    <ClCompile Include="..\..\src\Content\AssetManager.cpp" />
+    <ClCompile Include="..\..\src\Content\Utility\DDSTextureReader.cpp" />
+    <ClCompile Include="..\..\src\Content\Utility\MSWaveAudioLoader.cpp" />
+    <ClCompile Include="..\..\src\Content\Utility\PNGTextureReader.cpp" />
+    <ClCompile Include="..\..\src\Graphics\ClearOptions.cpp" />
+    <ClCompile Include="..\..\src\Graphics\ConstantBuffer.cpp" />
+    <ClCompile Include="..\..\src\Graphics\EffectBinaryParameter.cpp" />
+    <ClCompile Include="..\..\src\Graphics\EffectReflection.cpp" />
+    <ClCompile Include="..\..\src\Graphics\GraphicsCommandList.cpp" />
+    <ClCompile Include="..\..\src\Graphics\GraphicsCommandQueue.cpp" />
+    <ClCompile Include="..\..\src\Graphics\GraphicsDevice.cpp" />
+    <ClCompile Include="..\..\src\Graphics\IndexBuffer.cpp" />
+    <ClCompile Include="..\..\src\Graphics\InputLayoutHelper.cpp" />
+    <ClCompile Include="..\..\src\Graphics\PipelineState.cpp" />
+    <ClCompile Include="..\..\src\Graphics\RenderTarget2D.cpp" />
+    <ClCompile Include="..\..\src\Graphics\SamplerState.cpp" />
+    <ClCompile Include="..\..\src\Graphics\ShaderCompilers\GLSLCompiler.cpp" />
+    <ClCompile Include="..\..\src\Graphics\ShaderCompilers\HLSLCompiler.cpp" />
+    <ClCompile Include="..\..\src\Graphics\Texture2D.cpp" />
+    <ClCompile Include="..\..\src\Graphics\VertexBuffer.cpp" />
+    <ClCompile Include="..\..\src\Graphics\Viewport.cpp" />
+    <ClCompile Include="..\..\src\InputSystem.DirectInput\DeviceContextDirectInput.cpp" />
+    <ClCompile Include="..\..\src\InputSystem\InputDeviceFactory.cpp" />
+    <ClCompile Include="..\..\src\Input\KeyboardState.cpp" />
+    <ClCompile Include="..\..\src\Logging\Log.cpp" />
+    <ClCompile Include="..\..\src\Logging\LogChannel.cpp" />
+    <ClCompile Include="..\..\src\Math\BoundingBox.cpp" />
+    <ClCompile Include="..\..\src\Math\BoundingBox2D.cpp" />
+    <ClCompile Include="..\..\src\Math\BoundingCircle.cpp" />
+    <ClCompile Include="..\..\src\Math\BoundingSphere.cpp" />
+    <ClCompile Include="..\..\src\Math\Color.cpp" />
+    <ClCompile Include="..\..\src\Math\detail\Coordinate2D.cpp" />
+    <ClCompile Include="..\..\src\Math\detail\Coordinate3D.cpp" />
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointMatrix2x2.cpp" />
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointMatrix3x2.cpp" />
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointMatrix3x3.cpp" />
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointMatrix4x4.cpp" />
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointQuaternion.cpp" />
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointVector2.cpp" />
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointVector3.cpp" />
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointVector4.cpp" />
+    <ClCompile Include="..\..\src\Math\MathHelper.cpp" />
+    <ClCompile Include="..\..\src\Math\Ray.cpp" />
+    <ClCompile Include="..\..\src\Math\Rectangle.cpp" />
+    <ClCompile Include="..\..\src\Platform.Win32\Bootstrap.cpp" />
+    <ClCompile Include="..\..\src\Platform.Win32\FileSystemWin32.cpp" />
+    <ClCompile Include="..\..\src\Platform.Win32\GameHostWin32.cpp" />
+    <ClCompile Include="..\..\src\Platform.Win32\GameWindowWin32.cpp" />
+    <ClCompile Include="..\..\src\Platform.Win32\KeyboardWin32.cpp" />
+    <ClCompile Include="..\..\src\Platform.Win32\MouseWin32.cpp" />
+    <ClCompile Include="..\..\src\Platform.Win32\OpenGLContextWin32.cpp" />
+    <ClCompile Include="..\..\src\Platform.Win32\TimeSourceWin32.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\BufferDirect3D11.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\EffectReflectionDirect3D11.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\GraphicsContextDirect3D11.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\GraphicsDeviceDirect3D11.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\PipelineStateDirect3D11.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\RenderTarget2DDirect3D11.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\SamplerStateDirect3D11.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\ShaderDirect3D11.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\Texture2DDirect3D11.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D\HLSLCompiling.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D\HLSLReflectionHelper.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.DXGI\DXGIFormatHelper.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\BlendStateGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\BufferGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\DepthStencilStateGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\EffectReflectionGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\ErrorChecker.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\GraphicsContextGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\GraphicsDeviceGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\InputLayoutGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\PipelineStateGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\RasterizerStateGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\RenderTarget2DGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\SamplerStateGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\ShaderGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem.GL4\Texture2DGL4.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem\GraphicsCommandListImmediate.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem\GraphicsCommandQueueImmediate.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem\GraphicsContext.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem\SurfaceFormatHelper.cpp" />
+    <ClCompile Include="..\..\src\RenderSystem\TextureHelper.cpp" />
+    <ClCompile Include="..\..\src\Signals\Connection.cpp" />
+    <ClCompile Include="..\..\src\Signals\ConnectionList.cpp" />
+    <ClCompile Include="..\..\src\Signals\EventQueue.cpp" />
+    <ClCompile Include="..\..\src\Signals\ScopedConnection.cpp" />
+    <ClCompile Include="..\..\src\SoundSystem.XAudio2\AudioClipXAudio2.cpp" />
+    <ClCompile Include="..\..\src\SoundSystem.XAudio2\AudioEngineXAudio2.cpp" />
+    <ClCompile Include="..\..\src\SoundSystem.XAudio2\SoundEffectXAudio2.cpp" />
+    <ClCompile Include="..\..\src\Utility\CRC32.cpp" />
+    <ClCompile Include="..\..\src\Utility\PathHelper.cpp" />
+    <ClCompile Include="..\..\src\Utility\StringHelper.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Application\SubsystemScheduler.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Application\SystemEvents.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Application\TimeSource.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Basic\ConditionalCompilation.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Content\Utility\DDSTextureReader.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Content\Utility\MSWaveAudioLoader.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Content\Utility\PNGTextureReader.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\InputSystem\InputDeviceCreator.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\InputSystem\InputDeviceFactory.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\GraphicsCapabilities.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\GraphicsCommandListImmediate.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\GraphicsCommandQueueImmediate.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\GraphicsContext.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\NativeBuffer.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\NativeEffectReflection.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\NativeGraphicsCommandList.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\NativeGraphicsCommandQueue.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\NativeGraphicsContext.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\NativeGraphicsDevice.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\NativePipelineState.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\NativeRenderTarget2D.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\NativeSamplerState.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\NativeTexture2D.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\ShaderBytecode.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\ShaderCompileOptions.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\SurfaceFormatHelper.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem\TextureHelper.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Utility\Noncopyable.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Utility\ScopeGuard.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.DXGI\DXGIFormatHelper.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D\HLSLCompiling.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D\HLSLReflectionHelper.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D\PrerequisitesDirect3D.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D11\BufferDirect3D11.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D11\EffectReflectionDirect3D11.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D11\GraphicsContextDirect3D11.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D11\GraphicsDeviceDirect3D11.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D11\PipelineStateDirect3D11.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D11\PrerequisitesDirect3D11.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D11\RenderTarget2DDirect3D11.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D11\SamplerStateDirect3D11.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D11\ShaderDirect3D11.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.Direct3D11\Texture2DDirect3D11.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\BlendStateGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\BufferGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\DepthStencilStateGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\EffectReflectionGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\ErrorChecker.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\GraphicsContextGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\GraphicsDeviceGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\InputLayoutGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\OpenGLContext.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\OpenGLPrerequisites.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\PipelineStateGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\RasterizerStateGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\RenderTarget2DGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\SamplerStateGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\ShaderGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\Texture2DGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\TypesafeGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\RenderSystem.GL4\TypesafeHelperGL4.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Platform.Win32\OpenGLContextWin32.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Platform.Win32\GameHostWin32.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Platform.Win32\GameWindowWin32.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Platform.Win32\KeyboardWin32.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Platform.Win32\MouseWin32.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\Platform.Win32\TimeSourceWin32.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\SoundSystem.XAudio2\AudioClipXAudio2.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\SoundSystem.XAudio2\AudioEngineXAudio2.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\SoundSystem.XAudio2\PrerequisitesXAudio2.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\SoundSystem.XAudio2\SoundEffectXAudio2.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\InputSystem.DirectInput\DeviceContextDirectInput.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\InputSystem.DirectInput\PrerequisitesDirectInput.hpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A8C383D0-60A9-4F6A-9615-46CF517B64C4}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>pomdogstatic</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>pomdog-static</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Pomdog.Win32.props" />
+    <Import Project="..\Pomdog.Cpp.props" />
+    <Import Project="..\Pomdog.Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Pomdog.Win32.props" />
+    <Import Project="..\Pomdog.Cpp.props" />
+    <Import Project="..\Pomdog.Release.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Pomdog.Win32.props" />
+    <Import Project="..\Pomdog.Cpp.props" />
+    <Import Project="..\Pomdog.Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Pomdog.Win32.props" />
+    <Import Project="..\Pomdog.Cpp.props" />
+    <Import Project="..\Pomdog.Release.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

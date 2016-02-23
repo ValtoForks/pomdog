@@ -1,0 +1,1171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{bb440c21-cf0e-4895-afb4-fdee24dbe530}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{cd2127f5-3ba2-462f-87f7-f58cc7e6ef34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Audio">
+      <UniqueIdentifier>{7c43df82-dd2c-4f11-9866-ceaba27c228b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Basic">
+      <UniqueIdentifier>{be03d0a5-a30d-43a8-b8d5-22482e04ff8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content">
+      <UniqueIdentifier>{11d58505-8739-4de6-ae0e-4accd499a76b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content\AssetBuilders">
+      <UniqueIdentifier>{302463cb-a625-49bd-9563-3c13ce942dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content\AssetLoaders">
+      <UniqueIdentifier>{9f27a5e0-3caf-4f1f-a143-b26779458f99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content\Utility">
+      <UniqueIdentifier>{afce3420-b7e9-4e04-a2cb-5e8073ecee1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{7ca50a4d-d99f-44bd-a30a-34ebaa1c0a87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\ShaderCompilers">
+      <UniqueIdentifier>{a5e53f28-3854-4dc0-aae5-8c32b85f2582}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{51c39091-d484-4127-bcbb-99a8636725a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\InputSystem">
+      <UniqueIdentifier>{32c49745-9b56-4c7c-96d4-2d9d705484e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logging">
+      <UniqueIdentifier>{de45bf41-9aaa-4d04-b67d-8eb96dd2f2b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{120e9265-c966-4a9b-98bf-9eecdd5b94e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math\detail">
+      <UniqueIdentifier>{12b40aeb-40e5-48b6-9edc-3e4d12e572cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderSystem">
+      <UniqueIdentifier>{ab4ec47d-94b4-4e29-9eaf-caa942c4cf03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Signals">
+      <UniqueIdentifier>{8346ecc3-8bb6-49c7-942c-2637866cef42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{a0b746fc-9bb3-4513-9abe-18edebf8080b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderSystem.DXGI">
+      <UniqueIdentifier>{56f49968-347b-4acd-b93d-d013533fee30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderSystem.Direct3D">
+      <UniqueIdentifier>{5d5a9112-5a26-423b-a19b-723d8721f12c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderSystem.Direct3D11">
+      <UniqueIdentifier>{12868a5f-43df-45f4-ae58-4d43785df37e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderSystem.GL4">
+      <UniqueIdentifier>{095ffb7d-ea1a-4c9c-ab43-97d638f04c24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Platform.Win32">
+      <UniqueIdentifier>{c45425ea-bf8e-4d72-b8dd-be6712232154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SoundSystem.XAudio2">
+      <UniqueIdentifier>{0ce6bc2a-e581-4d79-97dc-5e716d6c091a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\InputSystem.DirectInput">
+      <UniqueIdentifier>{9acd8c53-e6d8-4355-9dbc-39d1ab5472cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{2bb1b058-889c-44a9-8c71-e6f37d70a7ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{84d3729e-019a-4c4e-8dc4-26b4e4f3605f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Audio">
+      <UniqueIdentifier>{ec642e14-dd00-4793-88ab-7862c577e377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Audio\detail">
+      <UniqueIdentifier>{6403eddc-4e28-45b7-b97d-a6a5f372d950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Basic">
+      <UniqueIdentifier>{def69f75-4fbb-4179-a457-8147d675918d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Content">
+      <UniqueIdentifier>{d4b1e714-8238-40df-ab02-8a7d4bcd8d8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Content\AssetBuilders">
+      <UniqueIdentifier>{b221a9b2-70cf-476a-a0eb-c8fe269e0756}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Content\Utility">
+      <UniqueIdentifier>{54508164-5e15-4d4d-b8f5-c1c8bc8e3d55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Content\detail">
+      <UniqueIdentifier>{d8b6da4a-3263-433e-b0b3-267d7ee82347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Content\detail\AssetLoaders">
+      <UniqueIdentifier>{77ff5259-0699-414f-a411-f745b762ed8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{27143f37-3634-49bb-ba36-78137badbb3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\detail">
+      <UniqueIdentifier>{b8cc23bd-4581-409f-a251-91dac5d80424}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\ShaderCompilers">
+      <UniqueIdentifier>{7185df99-de22-4836-8eff-de05e3a3d3ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{566faf10-63e2-4ca7-8080-78b04baea942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Logging">
+      <UniqueIdentifier>{3a1f391c-7433-4622-93b5-ba32984510f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{08817e8e-fc95-41c0-8ca2-387566f97b4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Math\detail">
+      <UniqueIdentifier>{b3b5e945-27d0-4c9f-93a9-60a3e7783ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Platform">
+      <UniqueIdentifier>{e7ff4ff7-06c9-4db4-9f69-85e195ddca31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Platform\Win32">
+      <UniqueIdentifier>{8450bb0c-d5ef-4c15-85d5-398d6b360ad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Signals">
+      <UniqueIdentifier>{fb0047e1-3739-4d75-b525-e5d0369bafbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Signals\detail">
+      <UniqueIdentifier>{43b74b2d-953c-4713-ad21-85c6ebd7acc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{5dd20bf8-ce6b-4d90-aae0-a265446498df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\detail">
+      <UniqueIdentifier>{d4068486-bf87-4298-902f-686eca035f38}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\Pomdog\Application\Duration.hpp">
+      <Filter>Header Files\Application</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Application\Game.hpp">
+      <Filter>Header Files\Application</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Application\GameClock.hpp">
+      <Filter>Header Files\Application</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Application\GameHost.hpp">
+      <Filter>Header Files\Application</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Application\GameWindow.hpp">
+      <Filter>Header Files\Application</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Application\MouseCursor.hpp">
+      <Filter>Header Files\Application</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Application\Timer.hpp">
+      <Filter>Header Files\Application</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Application\TimePoint.hpp">
+      <Filter>Header Files\Application</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Audio\AudioClip.hpp">
+      <Filter>Header Files\Audio</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Audio\AudioChannels.hpp">
+      <Filter>Header Files\Audio</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Audio\AudioEmitter.hpp">
+      <Filter>Header Files\Audio</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Audio\AudioEngine.hpp">
+      <Filter>Header Files\Audio</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Audio\AudioListener.hpp">
+      <Filter>Header Files\Audio</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Audio\SoundEffect.hpp">
+      <Filter>Header Files\Audio</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Audio\SoundState.hpp">
+      <Filter>Header Files\Audio</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Audio\detail\ForwardDeclarations.hpp">
+      <Filter>Header Files\Audio\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Basic\Export.hpp">
+      <Filter>Header Files\Basic</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Basic\Platform.hpp">
+      <Filter>Header Files\Basic</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Basic\Version.hpp">
+      <Filter>Header Files\Basic</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\AssetManager.hpp">
+      <Filter>Header Files\Content</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\AssetBuilders\Builder.hpp">
+      <Filter>Header Files\Content\AssetBuilders</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\AssetBuilders\PipelineStateBuilder.hpp">
+      <Filter>Header Files\Content\AssetBuilders</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\AssetBuilders\ShaderBuilder.hpp">
+      <Filter>Header Files\Content\AssetBuilders</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\Utility\BinaryFileStream.hpp">
+      <Filter>Header Files\Content\Utility</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\Utility\BinaryReader.hpp">
+      <Filter>Header Files\Content\Utility</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\Utility\MakeFourCC.hpp">
+      <Filter>Header Files\Content\Utility</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\detail\AssetDictionary.hpp">
+      <Filter>Header Files\Content\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\detail\AssetLoaderContext.hpp">
+      <Filter>Header Files\Content\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\detail\AssetLoader.hpp">
+      <Filter>Header Files\Content\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\detail\AssetLoaders\AudioClipLoader.hpp">
+      <Filter>Header Files\Content\detail\AssetLoaders</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Content\detail\AssetLoaders\Texture2DLoader.hpp">
+      <Filter>Header Files\Content\detail\AssetLoaders</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\Blend.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\BlendDescription.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\BlendOperation.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\BufferUsage.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\ClearOptions.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\ComparisonFunction.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\ConstantBuffer.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\CullMode.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\DepthFormat.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\DepthStencilDescription.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\DepthStencilOperation.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\EffectAnnotation.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\EffectConstantDescription.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\EffectReflection.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\EffectVariableClass.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\EffectVariableType.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\EffectVariable.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\FillMode.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\GraphicsCommandList.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\GraphicsCommandQueue.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\GraphicsDevice.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\IndexBuffer.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\IndexElementSize.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\InputClassification.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\InputElement.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\InputElementFormat.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\InputLayoutDescription.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\InputLayoutHelper.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\PipelineState.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\PipelineStateDescription.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\PresentationParameters.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\PrimitiveTopology.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\RasterizerDescription.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\RenderTarget2D.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\RenderTargetBlendDescription.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\SamplerDescription.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\SamplerState.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\Shader.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\ShaderLanguage.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\ShaderPipelineStage.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\SurfaceFormat.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\StencilOperation.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\Texture.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\Texture2D.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\TextureAddressMode.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\TextureFilter.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\VertexBuffer.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\VertexBufferBinding.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\Viewport.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\detail\ForwardDeclarations.hpp">
+      <Filter>Header Files\Graphics\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\detail\EffectBinaryParameter.hpp">
+      <Filter>Header Files\Graphics\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\ShaderCompilers\GLSLCompiler.hpp">
+      <Filter>Header Files\Graphics\ShaderCompilers</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Graphics\ShaderCompilers\HLSLCompiler.hpp">
+      <Filter>Header Files\Graphics\ShaderCompilers</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\ButtonState.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\Gamepad.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\GamepadButtons.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\GamepadCapabilities.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\GamepadDPad.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\GamepadState.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\GamepadThumbSticks.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\GamepadType.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\Keyboard.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\KeyboardState.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\KeyState.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\Keys.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\Mouse.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\MouseState.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\PlayerIndex.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\TouchLocation.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Input\TouchLocationState.hpp">
+      <Filter>Header Files\Input</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Logging\Log.hpp">
+      <Filter>Header Files\Logging</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Logging\LogChannel.hpp">
+      <Filter>Header Files\Logging</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Logging\LogEntry.hpp">
+      <Filter>Header Files\Logging</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Logging\LogLevel.hpp">
+      <Filter>Header Files\Logging</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\BoundingBox.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\BoundingBox2D.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\BoundingCircle.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\BoundingSphere.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Color.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\ContainmentType.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Degree.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\MathHelper.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Matrix2x2.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Matrix3x2.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Matrix3x3.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Matrix4x4.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Point2D.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Point3D.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Quaternion.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Radian.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Ray.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Rectangle.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Vector2.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Vector3.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\Vector4.hpp">
+      <Filter>Header Files\Math</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\Coordinate2D.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\Coordinate3D.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointMatrix2x2.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointMatrix3x2.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointMatrix3x3.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointMatrix4x4.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointQuaternion.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointVector2.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointVector3.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\FloatingPointVector4.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\ForwardDeclarations.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Math\detail\TaggedArithmetic.hpp">
+      <Filter>Header Files\Math\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Signals\Connection.hpp">
+      <Filter>Header Files\Signals</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Signals\ConnectionList.hpp">
+      <Filter>Header Files\Signals</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Signals\Event.hpp">
+      <Filter>Header Files\Signals</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Signals\EventQueue.hpp">
+      <Filter>Header Files\Signals</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Signals\Helpers.hpp">
+      <Filter>Header Files\Signals</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Signals\ScopedConnection.hpp">
+      <Filter>Header Files\Signals</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Signals\Signal.hpp">
+      <Filter>Header Files\Signals</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Signals\detail\EventBody.hpp">
+      <Filter>Header Files\Signals\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Signals\detail\ForwardDeclarations.hpp">
+      <Filter>Header Files\Signals\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Signals\detail\SignalBody.hpp">
+      <Filter>Header Files\Signals\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Utility\Any.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Utility\Assert.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Utility\Exception.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Utility\FileSystem.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Utility\Optional.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Utility\PathHelper.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Utility\StringHelper.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Utility\detail\CRC32.hpp">
+      <Filter>Header Files\Utility\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Utility\detail\Tagged.hpp">
+      <Filter>Header Files\Utility\detail</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Platform\Win32\Bootstrap.hpp">
+      <Filter>Header Files\Platform\Win32</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Platform\Win32\BootstrapSettingsWin32.hpp">
+      <Filter>Header Files\Platform\Win32</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Platform\Win32\PrerequisitesWin32.hpp">
+      <Filter>Header Files\Platform\Win32</Filter>
+    </None>
+    <None Include="..\..\src\Application\SubsystemScheduler.hpp">
+      <Filter>Source Files\Application</Filter>
+    </None>
+    <None Include="..\..\src\Application\SystemEvents.hpp">
+      <Filter>Source Files\Application</Filter>
+    </None>
+    <None Include="..\..\src\Application\TimeSource.hpp">
+      <Filter>Source Files\Application</Filter>
+    </None>
+    <None Include="..\..\src\Basic\ConditionalCompilation.hpp">
+      <Filter>Source Files\Basic</Filter>
+    </None>
+    <None Include="..\..\src\Content\Utility\DDSTextureReader.hpp">
+      <Filter>Source Files\Content\Utility</Filter>
+    </None>
+    <None Include="..\..\src\Content\Utility\MSWaveAudioLoader.hpp">
+      <Filter>Source Files\Content\Utility</Filter>
+    </None>
+    <None Include="..\..\src\Content\Utility\PNGTextureReader.hpp">
+      <Filter>Source Files\Content\Utility</Filter>
+    </None>
+    <None Include="..\..\src\InputSystem\InputDeviceCreator.hpp">
+      <Filter>Source Files\InputSystem</Filter>
+    </None>
+    <None Include="..\..\src\InputSystem\InputDeviceFactory.hpp">
+      <Filter>Source Files\InputSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\GraphicsCapabilities.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\GraphicsCommandListImmediate.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\GraphicsCommandQueueImmediate.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\GraphicsContext.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\NativeBuffer.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\NativeEffectReflection.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\NativeGraphicsCommandList.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\NativeGraphicsCommandQueue.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\NativeGraphicsContext.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\NativeGraphicsDevice.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\NativePipelineState.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\NativeRenderTarget2D.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\NativeSamplerState.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\NativeTexture2D.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\ShaderBytecode.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\ShaderCompileOptions.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\SurfaceFormatHelper.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem\TextureHelper.hpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </None>
+    <None Include="..\..\src\Utility\Noncopyable.hpp">
+      <Filter>Source Files\Utility</Filter>
+    </None>
+    <None Include="..\..\src\Utility\ScopeGuard.hpp">
+      <Filter>Source Files\Utility</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.DXGI\DXGIFormatHelper.hpp">
+      <Filter>Source Files\RenderSystem.DXGI</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D\HLSLCompiling.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D\HLSLReflectionHelper.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D\PrerequisitesDirect3D.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D11\BufferDirect3D11.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D11\EffectReflectionDirect3D11.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D11\GraphicsContextDirect3D11.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D11\GraphicsDeviceDirect3D11.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D11\PipelineStateDirect3D11.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D11\PrerequisitesDirect3D11.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D11\RenderTarget2DDirect3D11.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D11\SamplerStateDirect3D11.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D11\ShaderDirect3D11.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.Direct3D11\Texture2DDirect3D11.hpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\BlendStateGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\BufferGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\DepthStencilStateGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\EffectReflectionGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\ErrorChecker.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\GraphicsContextGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\GraphicsDeviceGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\InputLayoutGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\OpenGLContext.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\OpenGLPrerequisites.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\PipelineStateGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\RasterizerStateGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\RenderTarget2DGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\SamplerStateGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\ShaderGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\Texture2DGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\TypesafeGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\RenderSystem.GL4\TypesafeHelperGL4.hpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </None>
+    <None Include="..\..\src\Platform.Win32\OpenGLContextWin32.hpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </None>
+    <None Include="..\..\src\Platform.Win32\GameHostWin32.hpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </None>
+    <None Include="..\..\src\Platform.Win32\GameWindowWin32.hpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </None>
+    <None Include="..\..\src\Platform.Win32\KeyboardWin32.hpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </None>
+    <None Include="..\..\src\Platform.Win32\MouseWin32.hpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </None>
+    <None Include="..\..\src\Platform.Win32\TimeSourceWin32.hpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </None>
+    <None Include="..\..\src\SoundSystem.XAudio2\AudioClipXAudio2.hpp">
+      <Filter>Source Files\SoundSystem.XAudio2</Filter>
+    </None>
+    <None Include="..\..\src\SoundSystem.XAudio2\AudioEngineXAudio2.hpp">
+      <Filter>Source Files\SoundSystem.XAudio2</Filter>
+    </None>
+    <None Include="..\..\src\SoundSystem.XAudio2\PrerequisitesXAudio2.hpp">
+      <Filter>Source Files\SoundSystem.XAudio2</Filter>
+    </None>
+    <None Include="..\..\src\SoundSystem.XAudio2\SoundEffectXAudio2.hpp">
+      <Filter>Source Files\SoundSystem.XAudio2</Filter>
+    </None>
+    <None Include="..\..\src\InputSystem.DirectInput\DeviceContextDirectInput.hpp">
+      <Filter>Source Files\InputSystem.DirectInput</Filter>
+    </None>
+    <None Include="..\..\src\InputSystem.DirectInput\PrerequisitesDirectInput.hpp">
+      <Filter>Source Files\InputSystem.DirectInput</Filter>
+    </None>
+    <None Include="..\..\include\Pomdog\Pomdog.hpp">
+      <Filter>Header Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Application\GameClock.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Application\Timer.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Audio\AudioClip.cpp">
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Audio\AudioEngine.cpp">
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Audio\SoundEffect.cpp">
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Content\AssetDictionary.cpp">
+      <Filter>Source Files\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Content\AssetLoaderContext.cpp">
+      <Filter>Source Files\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Content\AssetManager.cpp">
+      <Filter>Source Files\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Content\AssetBuilders\PipelineStateBuilder.cpp">
+      <Filter>Source Files\Content\AssetBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Content\AssetBuilders\ShaderBuilder.cpp">
+      <Filter>Source Files\Content\AssetBuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Content\AssetLoaders\AudioClipLoader.cpp">
+      <Filter>Source Files\Content\AssetLoaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Content\AssetLoaders\Texture2DLoader.cpp">
+      <Filter>Source Files\Content\AssetLoaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Content\Utility\DDSTextureReader.cpp">
+      <Filter>Source Files\Content\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Content\Utility\MSWaveAudioLoader.cpp">
+      <Filter>Source Files\Content\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Content\Utility\PNGTextureReader.cpp">
+      <Filter>Source Files\Content\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\ClearOptions.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\ConstantBuffer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\EffectBinaryParameter.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\EffectReflection.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\GraphicsCommandList.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\GraphicsCommandQueue.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\GraphicsDevice.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\IndexBuffer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\InputLayoutHelper.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\PipelineState.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\RenderTarget2D.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\SamplerState.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\Texture2D.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\Viewport.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\VertexBuffer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\ShaderCompilers\GLSLCompiler.cpp">
+      <Filter>Source Files\Graphics\ShaderCompilers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Graphics\ShaderCompilers\HLSLCompiler.cpp">
+      <Filter>Source Files\Graphics\ShaderCompilers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Input\KeyboardState.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\InputSystem\InputDeviceFactory.cpp">
+      <Filter>Source Files\InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Logging\Log.cpp">
+      <Filter>Source Files\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Logging\LogChannel.cpp">
+      <Filter>Source Files\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\BoundingBox.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\BoundingBox2D.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\BoundingCircle.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\BoundingSphere.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\Color.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\MathHelper.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\Ray.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\Rectangle.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\detail\Coordinate2D.cpp">
+      <Filter>Source Files\Math\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\detail\Coordinate3D.cpp">
+      <Filter>Source Files\Math\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointMatrix2x2.cpp">
+      <Filter>Source Files\Math\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointMatrix3x2.cpp">
+      <Filter>Source Files\Math\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointMatrix3x3.cpp">
+      <Filter>Source Files\Math\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointMatrix4x4.cpp">
+      <Filter>Source Files\Math\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointQuaternion.cpp">
+      <Filter>Source Files\Math\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointVector2.cpp">
+      <Filter>Source Files\Math\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointVector3.cpp">
+      <Filter>Source Files\Math\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Math\detail\FloatingPointVector4.cpp">
+      <Filter>Source Files\Math\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem\GraphicsCommandListImmediate.cpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem\GraphicsCommandQueueImmediate.cpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem\GraphicsContext.cpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem\SurfaceFormatHelper.cpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem\TextureHelper.cpp">
+      <Filter>Source Files\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Signals\Connection.cpp">
+      <Filter>Source Files\Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Signals\ConnectionList.cpp">
+      <Filter>Source Files\Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Signals\EventQueue.cpp">
+      <Filter>Source Files\Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Signals\ScopedConnection.cpp">
+      <Filter>Source Files\Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utility\CRC32.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utility\PathHelper.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utility\StringHelper.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.DXGI\DXGIFormatHelper.cpp">
+      <Filter>Source Files\RenderSystem.DXGI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D\HLSLCompiling.cpp">
+      <Filter>Source Files\RenderSystem.Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D\HLSLReflectionHelper.cpp">
+      <Filter>Source Files\RenderSystem.Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\BufferDirect3D11.cpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\EffectReflectionDirect3D11.cpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\GraphicsContextDirect3D11.cpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\GraphicsDeviceDirect3D11.cpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\PipelineStateDirect3D11.cpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\RenderTarget2DDirect3D11.cpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\SamplerStateDirect3D11.cpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\ShaderDirect3D11.cpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.Direct3D11\Texture2DDirect3D11.cpp">
+      <Filter>Source Files\RenderSystem.Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\BlendStateGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\BufferGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\DepthStencilStateGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\EffectReflectionGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\ErrorChecker.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\GraphicsContextGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\GraphicsDeviceGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\InputLayoutGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\PipelineStateGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\RasterizerStateGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\RenderTarget2DGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\SamplerStateGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\ShaderGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RenderSystem.GL4\Texture2DGL4.cpp">
+      <Filter>Source Files\RenderSystem.GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platform.Win32\OpenGLContextWin32.cpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platform.Win32\Bootstrap.cpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platform.Win32\GameHostWin32.cpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platform.Win32\GameWindowWin32.cpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platform.Win32\FileSystemWin32.cpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platform.Win32\KeyboardWin32.cpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platform.Win32\MouseWin32.cpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platform.Win32\TimeSourceWin32.cpp">
+      <Filter>Source Files\Platform.Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\SoundSystem.XAudio2\AudioClipXAudio2.cpp">
+      <Filter>Source Files\SoundSystem.XAudio2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\SoundSystem.XAudio2\AudioEngineXAudio2.cpp">
+      <Filter>Source Files\SoundSystem.XAudio2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\SoundSystem.XAudio2\SoundEffectXAudio2.cpp">
+      <Filter>Source Files\SoundSystem.XAudio2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\InputSystem.DirectInput\DeviceContextDirectInput.cpp">
+      <Filter>Source Files\InputSystem.DirectInput</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
