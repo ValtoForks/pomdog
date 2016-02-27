@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\libpng">
+      <UniqueIdentifier>{9c9fc819-0d6e-43bb-86e6-d95e4f5ba8fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vendor">
+      <UniqueIdentifier>{35385400-c897-4c0e-ad59-e350e00d6783}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\dependencies\libpng\png.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngerror.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngget.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngmem.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngpread.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngread.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngrio.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngrtran.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngrutil.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngset.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngtrans.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngwio.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngwrite.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngwtran.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\dependencies\libpng\pngwutil.c">
+      <Filter>Source Files\libpng</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\dependencies\libpng\png.h">
+      <Filter>Source Files\libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dependencies\libpng\pngconf.h">
+      <Filter>Source Files\libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dependencies\libpng\pngdebug.h">
+      <Filter>Source Files\libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dependencies\libpng\pnginfo.h">
+      <Filter>Source Files\libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dependencies\libpng\pngpriv.h">
+      <Filter>Source Files\libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dependencies\libpng\pngstruct.h">
+      <Filter>Source Files\libpng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\dependencies\vendor\libpng\pnglibconf.h">
+      <Filter>Source Files\vendor</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
