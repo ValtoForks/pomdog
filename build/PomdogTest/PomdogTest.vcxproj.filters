@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{355a3917-c582-4eb6-915b-4851bee9027d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content">
+      <UniqueIdentifier>{94673e35-c7e8-4513-ab96-67ab19f8a394}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Experimental">
+      <UniqueIdentifier>{30084234-5928-46a1-9129-bfbca4b7c63b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Experimental\Gameplay">
+      <UniqueIdentifier>{3f89b406-f03f-4087-b190-c4c40157f72c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{28888dde-5b08-46b1-928a-f54d04046941}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{29252ec8-5340-4e8a-8eef-9c6ffc362c0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logging">
+      <UniqueIdentifier>{148b7718-2f65-4ac4-8526-7750a72cf459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{c2dbf1a7-6d89-4a73-8505-a4519d711659}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Signals">
+      <UniqueIdentifier>{228b665e-e007-4c3b-af4f-4e7df8c8b86a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{2b2d1c78-7234-4a63-892e-a254fd179ebd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\test\FrameworkTest\Application\GameClockTest.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Application\TimerTest.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Content\PathHelperTest.cpp">
+      <Filter>Source Files\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Experimental\Gameplay\EntityIDTest.cpp">
+      <Filter>Source Files\Experimental\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Experimental\Gameplay\EntityTest.cpp">
+      <Filter>Source Files\Experimental\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Experimental\Gameplay\EntityManagerTest.cpp">
+      <Filter>Source Files\Experimental\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Graphics\InputLayoutHelperTest.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Input\KeyboardStateTest.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Input\KeysTest.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Input\MouseStateTest.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Logging\LogChannelTest.cpp">
+      <Filter>Source Files\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Logging\LogTest.cpp">
+      <Filter>Source Files\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\BoundingBoxTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\BoundingBox2DTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\BoundingCircleTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\BoundingSphereTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\ColorTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\MathHelperTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\Matrix2x2Test.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\Matrix3x2Test.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\Matrix3x3Test.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\Matrix4x4Test.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\Point2DTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\Point3DTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\QuaternionTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\RayTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\RectangleTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\Vector2Test.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\Vector3Test.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Math\Vector4Test.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Signals\ConnectionTest.cpp">
+      <Filter>Source Files\Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Signals\ConnectionListTest.cpp">
+      <Filter>Source Files\Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Signals\EventQueueTest.cpp">
+      <Filter>Source Files\Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Signals\EventTest.cpp">
+      <Filter>Source Files\Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Signals\HelpersTest.cpp">
+      <Filter>Source Files\Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Signals\ScopedConnectionTest.cpp">
+      <Filter>Source Files\Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Signals\SignalTest.cpp">
+      <Filter>Source Files\Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Utility\AnyTest.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Utility\CRC32Test.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Utility\OptionalTest.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\Utility\StringHelperTest.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\FrameworkTest\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
