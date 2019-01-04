@@ -2,13 +2,14 @@
 
 #include "PNGTextureReader.hpp"
 #include "../../Utility/ScopeGuard.hpp"
+#include "Pomdog/Graphics/SurfaceFormat.hpp"
+#include "Pomdog/Graphics/Texture2D.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
-#include "Pomdog/Graphics/Texture2D.hpp"
-#include "Pomdog/Graphics/SurfaceFormat.hpp"
 extern "C" {
-    #include <png.h>
+#include <png.h>
 }
+#include <cstring>
 #include <vector>
 
 namespace Pomdog {
@@ -51,8 +52,7 @@ Texture2DParsingData ReadPNG(const std::uint8_t* data, std::size_t byteLength)
     auto infoPtr = ::png_create_info_struct(pngPtr);
 
     ScopeGuard scopedDestroyReadStruct([&] {
-        if (nullptr != pngPtr)
-        {
+        if (nullptr != pngPtr) {
             if (nullptr != infoPtr) {
                 ::png_destroy_read_struct(&pngPtr, &infoPtr, nullptr);
             }
@@ -139,7 +139,7 @@ Texture2DParsingData ReadPNG(const std::uint8_t* data, std::size_t byteLength)
     Texture2DParsingData parsingData;
     parsingData.Width = pixelWidth;
     parsingData.Height = pixelHeight;
-    parsingData.Format = ([](::png_byte colorTypeIn)-> SurfaceFormat {
+    parsingData.Format = ([](::png_byte colorTypeIn) -> SurfaceFormat {
         POMDOG_ASSERT(colorTypeIn != PNG_COLOR_TYPE_RGB);
         switch (colorTypeIn) {
         case PNG_COLOR_TYPE_GRAY:

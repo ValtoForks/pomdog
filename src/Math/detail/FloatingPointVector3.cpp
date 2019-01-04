@@ -1,10 +1,10 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "Pomdog/Math/detail/FloatingPointVector3.hpp"
+#include "Pomdog/Math/MathHelper.hpp"
 #include "Pomdog/Math/detail/FloatingPointMatrix4x4.hpp"
 #include "Pomdog/Math/detail/FloatingPointQuaternion.hpp"
 #include "Pomdog/Math/detail/FloatingPointVector2.hpp"
-#include "Pomdog/Math/MathHelper.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include <algorithm>
 #include <cfloat>
@@ -17,13 +17,19 @@ namespace Detail {
 
 template <typename T>
 FloatingPointVector3<T>::FloatingPointVector3(T x, T y, T z) noexcept
-    : X(x), Y(y), Z(z)
-{}
+    : X(x)
+    , Y(y)
+    , Z(z)
+{
+}
 
 template <typename T>
 FloatingPointVector3<T>::FloatingPointVector3(const FloatingPointVector2<T>& vec, T z) noexcept
-    : X(vec.X), Y(vec.Y), Z(z)
-{}
+    : X(vec.X)
+    , Y(vec.Y)
+    , Z(z)
+{
+}
 
 template <typename T>
 FloatingPointVector3<T> & FloatingPointVector3<T>::operator+=(const FloatingPointVector3& vec) noexcept
@@ -258,8 +264,7 @@ FloatingPointVector3<T>::Normalize(const FloatingPointVector3& source, FloatingP
 {
     auto const length = source.Length();
 
-    if (length > std::numeric_limits<decltype(length)>::epsilon())
-    {
+    if (length > std::numeric_limits<decltype(length)>::epsilon()) {
         constexpr T One = 1;
         auto const inverseLength = One / length;
         result.X = source.X * inverseLength;

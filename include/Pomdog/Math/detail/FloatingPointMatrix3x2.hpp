@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -12,7 +12,7 @@ namespace Pomdog {
 namespace Detail {
 
 template <typename T>
-class POMDOG_EXPORT FloatingPointMatrix3x2 {
+class POMDOG_EXPORT FloatingPointMatrix3x2 final {
 public:
     static_assert(std::is_floating_point<T>::value, "T is floating point.");
     typedef T value_type;
@@ -34,11 +34,11 @@ public:
         T m20, T m21) noexcept;
 
     // Assignment operators:
-    FloatingPointMatrix3x2 & operator*=(const FloatingPointMatrix3x2& other) noexcept;
-    FloatingPointMatrix3x2 & operator+=(const FloatingPointMatrix3x2& other) noexcept;
-    FloatingPointMatrix3x2 & operator-=(const FloatingPointMatrix3x2& other) noexcept;
-    FloatingPointMatrix3x2 & operator*=(T scaleFactor) noexcept;
-    FloatingPointMatrix3x2 & operator/=(T scaleFactor);
+    FloatingPointMatrix3x2& operator*=(const FloatingPointMatrix3x2& other) noexcept;
+    FloatingPointMatrix3x2& operator+=(const FloatingPointMatrix3x2& other) noexcept;
+    FloatingPointMatrix3x2& operator-=(const FloatingPointMatrix3x2& other) noexcept;
+    FloatingPointMatrix3x2& operator*=(T scaleFactor) noexcept;
+    FloatingPointMatrix3x2& operator/=(T scaleFactor);
 
     // Unary operators:
     FloatingPointMatrix3x2 operator+() const noexcept;
@@ -56,7 +56,7 @@ public:
 
     // Function-call operators:
     const T& operator()(std::size_t row, std::size_t column) const;
-    T & operator()(std::size_t row, std::size_t column);
+    T& operator()(std::size_t row, std::size_t column);
 
     T Determinant() const noexcept;
 
@@ -67,45 +67,45 @@ public:
     Multiply(const FloatingPointMatrix3x2& matrix1, T scaleFactor) noexcept;
 
     static void
-    Invert(const FloatingPointMatrix3x2& matrix, FloatingPointMatrix3x2 & result);
+    Invert(const FloatingPointMatrix3x2& matrix, FloatingPointMatrix3x2& result);
 
     static FloatingPointMatrix3x2
     Invert(const FloatingPointMatrix3x2& matrix);
 
     static void
     Lerp(const FloatingPointMatrix3x2& source1, const FloatingPointMatrix3x2& source2,
-        T amount, FloatingPointMatrix3x2 & result) noexcept;
+        T amount, FloatingPointMatrix3x2& result) noexcept;
 
     static FloatingPointMatrix3x2
     Lerp(const FloatingPointMatrix3x2& source1, const FloatingPointMatrix3x2& source2,
         T amount) noexcept;
 
     static void
-    CreateTranslation(const FloatingPointVector2<T>& position, FloatingPointMatrix3x2 & result) noexcept;
+    CreateTranslation(const FloatingPointVector2<T>& position, FloatingPointMatrix3x2& result) noexcept;
 
     static FloatingPointMatrix3x2
     CreateTranslation(const FloatingPointVector2<T>& position) noexcept;
 
     static void
-    CreateScale(T scale, FloatingPointMatrix3x2 & result)  noexcept;
+    CreateScale(T scale, FloatingPointMatrix3x2& result) noexcept;
 
     static FloatingPointMatrix3x2
     CreateScale(T scale) noexcept;
 
     static void
-    CreateScale(const FloatingPointVector2<T>& scale, FloatingPointMatrix3x2 & result) noexcept;
+    CreateScale(const FloatingPointVector2<T>& scale, FloatingPointMatrix3x2& result) noexcept;
 
     static FloatingPointMatrix3x2
     CreateScale(const FloatingPointVector2<T>& scale) noexcept;
 
     static void
-    CreateRotation(const Radian<T>& angle, FloatingPointMatrix3x2 & result);
+    CreateRotation(const Radian<T>& angle, FloatingPointMatrix3x2& result);
 
     static FloatingPointMatrix3x2
     CreateRotation(const Radian<T>& angle);
 
     static void
-    CreateSkew(const FloatingPointVector2<T>& skew, FloatingPointMatrix3x2 & result);
+    CreateSkew(const FloatingPointVector2<T>& skew, FloatingPointMatrix3x2& result);
 
     static FloatingPointMatrix3x2
     CreateSkew(const FloatingPointVector2<T>& skew);

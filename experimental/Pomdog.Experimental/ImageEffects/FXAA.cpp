@@ -9,11 +9,13 @@
 #include "Pomdog/Graphics/GraphicsCommandList.hpp"
 #include "Pomdog/Graphics/GraphicsDevice.hpp"
 #include "Pomdog/Graphics/InputLayoutHelper.hpp"
+#include "Pomdog/Graphics/PresentationParameters.hpp"
 #include "Pomdog/Graphics/PipelineState.hpp"
 #include "Pomdog/Graphics/RenderTarget2D.hpp"
 #include "Pomdog/Graphics/SamplerState.hpp"
 #include "Pomdog/Graphics/Shader.hpp"
 #include "Pomdog/Utility/Assert.hpp"
+#include <cstring>
 
 namespace Pomdog {
 namespace {
@@ -23,10 +25,12 @@ namespace {
 #include "Shaders/GLSL.Embedded/FXAA_PS.inc.hpp"
 #include "Shaders/HLSL.Embedded/FXAA_VS.inc.hpp"
 #include "Shaders/HLSL.Embedded/FXAA_PS.inc.hpp"
+#include "Shaders/Metal.Embedded/FXAA.inc.hpp"
 
 } // unnamed namespace
 
-FXAA::FXAA(std::shared_ptr<GraphicsDevice> const& graphicsDevice,
+FXAA::FXAA(
+    const std::shared_ptr<GraphicsDevice>& graphicsDevice,
     AssetManager & assets)
 {
     samplerLinear = std::make_shared<SamplerState>(graphicsDevice,
@@ -37,13 +41,19 @@ FXAA::FXAA(std::shared_ptr<GraphicsDevice> const& graphicsDevice,
 
     auto vertexShader = assets.CreateBuilder<Shader>(ShaderPipelineStage::VertexShader)
         .SetGLSL(Builtin_GLSL_FXAA_VS, std::strlen(Builtin_GLSL_FXAA_VS))
-        .SetHLSLPrecompiled(BuiltinHLSL_FXAA_VS, sizeof(BuiltinHLSL_FXAA_VS));
+        .SetHLSLPrecompiled(BuiltinHLSL_FXAA_VS, sizeof(BuiltinHLSL_FXAA_VS))
+        .SetMetal(Builtin_Metal_FXAA, std::strlen(Builtin_Metal_FXAA), "FxaaVS");
 
     auto pixelShader = assets.CreateBuilder<Shader>(ShaderPipelineStage::PixelShader)
         .SetGLSL(Builtin_GLSL_FXAA_PS, std::strlen(Builtin_GLSL_FXAA_PS))
-        .SetHLSLPrecompiled(BuiltinHLSL_FXAA_PS, sizeof(BuiltinHLSL_FXAA_PS));
+        .SetHLSLPrecompiled(BuiltinHLSL_FXAA_PS, sizeof(BuiltinHLSL_FXAA_PS))
+        .SetMetal(Builtin_Metal_FXAA, std::strlen(Builtin_Metal_FXAA), "FxaaPS");
+
+    auto presentationParameters = graphicsDevice->GetPresentationParameters();
 
     pipelineState = assets.CreateBuilder<PipelineState>()
+        .SetRenderTargetViewFormat(presentationParameters.BackBufferFormat)
+        .SetDepthStencilViewFormat(presentationParameters.DepthStencilFormat)
         .SetVertexShader(vertexShader.Build())
         .SetPixelShader(pixelShader.Build())
         .SetInputLayout(inputLayout.CreateInputLayout())

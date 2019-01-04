@@ -1,11 +1,11 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "Texture2DVulkan.hpp"
+#include "VulkanFormatHelper.hpp"
 #include "../RenderSystem/TextureHelper.hpp"
 #include "Pomdog/Graphics/SurfaceFormat.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
-#include "VulkanFormatHelper.hpp"
 
 namespace Pomdog {
 namespace Detail {
@@ -62,7 +62,6 @@ Texture2DVulkan::Texture2DVulkan(
     imageCreateInfo.queueFamilyIndexCount = 0;
     imageCreateInfo.pQueueFamilyIndices = nullptr;
     imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-
 
     // FUS RO DAH!
     POMDOG_THROW_EXCEPTION(std::runtime_error, "Not implemented");

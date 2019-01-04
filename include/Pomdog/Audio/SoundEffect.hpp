@@ -2,27 +2,27 @@
 
 #pragma once
 
-#include "Pomdog/Audio/detail/ForwardDeclarations.hpp"
 #include "Pomdog/Audio/SoundState.hpp"
+#include "Pomdog/Audio/detail/ForwardDeclarations.hpp"
 #include "Pomdog/Basic/Export.hpp"
-#include <memory>
 #include <cstdint>
+#include <memory>
 
 namespace Pomdog {
 
 class POMDOG_EXPORT SoundEffect final {
 public:
     SoundEffect(
-        AudioEngine & audioEngine,
+        AudioEngine& audioEngine,
         const std::shared_ptr<AudioClip>& audioClip,
         bool isLooped);
 
     ~SoundEffect();
 
     SoundEffect(const SoundEffect&) = delete;
-    SoundEffect(SoundEffect &&) = default;
-    SoundEffect & operator=(const SoundEffect&) = delete;
-    SoundEffect & operator=(SoundEffect &&) = default;
+    SoundEffect(SoundEffect&&) = default;
+    SoundEffect& operator=(const SoundEffect&) = delete;
+    SoundEffect& operator=(SoundEffect&&) = default;
 
     void Pause();
 

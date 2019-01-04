@@ -2,9 +2,9 @@
 
 #include "Pomdog/Math/Color.hpp"
 #include "../Basic/ConditionalCompilation.hpp"
+#include "Pomdog/Math/MathHelper.hpp"
 #include "Pomdog/Math/Vector3.hpp"
 #include "Pomdog/Math/Vector4.hpp"
-#include "Pomdog/Math/MathHelper.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include <cmath>
 #include <utility>
@@ -46,13 +46,17 @@ const Color Color::Red{255, 0, 0, 255};
 const Color Color::Green{0, 255, 0, 255};
 const Color Color::Blue{0, 0, 255, 255};
 const Color Color::Yellow{255, 255, 0, 255};
-const Color Color::CornflowerBlue{100, 149 ,237, 255};
+const Color Color::CornflowerBlue{100, 149, 237, 255};
 const Color Color::TransparentBlack{0, 0, 0, 0};
 
 Color::Color(
     std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a) noexcept
-    : R(r), G(g), B(b), A(a)
-{}
+    : R(r)
+    , G(g)
+    , B(b)
+    , A(a)
+{
+}
 
 Color::Color(const Vector3& vector)
     : R(PackFromNormal(vector.X))
@@ -89,12 +93,12 @@ bool Color::operator!=(const Color& color) const noexcept
 
 Vector3 Color::ToVector3() const noexcept
 {
-    return {R/255.0f, G/255.0f, B/255.0f};
+    return {R / 255.0f, G / 255.0f, B / 255.0f};
 }
 
 Vector4 Color::ToVector4() const noexcept
 {
-    return {R/255.0f, G/255.0f, B/255.0f, A/255.0f};
+    return {R / 255.0f, G / 255.0f, B / 255.0f, A / 255.0f};
 }
 
 std::uint32_t Color::ToPackedValue() const noexcept

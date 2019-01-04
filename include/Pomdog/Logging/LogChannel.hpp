@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Pomdog/Logging/LogLevel.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Logging/LogLevel.hpp"
 #include "Pomdog/Signals/Signal.hpp"
 #include <functional>
 #include <string>
@@ -12,15 +12,15 @@ namespace Pomdog {
 
 class LogEntry;
 
-class POMDOG_EXPORT LogChannel {
+class POMDOG_EXPORT LogChannel final {
 public:
     explicit LogChannel(const std::string& name);
 
     LogChannel() = default;
     LogChannel(const LogChannel&) = delete;
-    LogChannel(LogChannel &&) = default;
-    LogChannel & operator=(const LogChannel&) = delete;
-    LogChannel & operator=(LogChannel &&) = default;
+    LogChannel(LogChannel&&) = default;
+    LogChannel& operator=(const LogChannel&) = delete;
+    LogChannel& operator=(LogChannel&&) = default;
 
     void Log(const std::string& message, LogLevel verbosity);
 
@@ -28,15 +28,15 @@ public:
 
     Connection Connect(const std::function<void(const LogEntry&)>& slot);
 
-    Connection Connect(std::function<void(const LogEntry&)> && slot);
+    Connection Connect(std::function<void(const LogEntry&)>&& slot);
 
-    const std::string& Name() const;
+    const std::string& GetName() const;
 
-    LogLevel Level() const;
+    LogLevel GetLevel() const noexcept;
 
-    void Level(LogLevel level);
+    void SetLevel(LogLevel level) noexcept;
 
-    std::size_t ConnectionCount() const;
+    std::size_t GetConnectionCount() const;
 
 private:
     Signal<void(const LogEntry&)> signal;

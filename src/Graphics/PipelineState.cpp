@@ -1,8 +1,8 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "Pomdog/Graphics/PipelineState.hpp"
-#include "../RenderSystem/NativePipelineState.hpp"
 #include "../RenderSystem/NativeGraphicsDevice.hpp"
+#include "../RenderSystem/NativePipelineState.hpp"
 #include "Pomdog/Graphics/GraphicsDevice.hpp"
 #include "Pomdog/Graphics/PipelineStateDescription.hpp"
 #include "Pomdog/Utility/Assert.hpp"
@@ -23,7 +23,8 @@ PipelineState::PipelineState(
     const std::shared_ptr<GraphicsDevice>& graphicsDevice,
     const PipelineStateDescription& description)
     : PipelineState(*graphicsDevice, description)
-{}
+{
+}
 
 PipelineState::~PipelineState() = default;
 

@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Graphics/EffectConstantDescription.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Graphics/EffectConstantDescription.hpp"
+#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
 #include <memory>
 #include <vector>
 
@@ -14,10 +14,10 @@ class POMDOG_EXPORT EffectReflection final {
 public:
     EffectReflection() = delete;
     EffectReflection(const EffectReflection&) = delete;
-    EffectReflection(EffectReflection &&) = default;
+    EffectReflection(EffectReflection&&) = default;
 
     EffectReflection(
-        GraphicsDevice & graphicsDevice,
+        GraphicsDevice& graphicsDevice,
         const PipelineStateDescription& pipelineStateDescription,
         const std::shared_ptr<PipelineState>& pipelineState);
 

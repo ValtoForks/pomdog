@@ -6,10 +6,9 @@
 /build/Debug
 /build/Release
 /build.makefiles
-/tools/gyp
-/tools/python
+/docs/html
 
-## Build output for Xcode
+# Build output for Xcode
 /build/build
 /build/dependencies/build
 /dependencies/build
@@ -17,27 +16,10 @@
 /test/FrameworkTest/build
 /test/TestApp/build
 
-## Third Party (Backwards compatibility)
-/third-party
-/third-party/libpng/build
-/third-party/lua/build
-/third-party/zlib/build
+# CMake
+/build.cmake
 
-## Visual Studio (Backwards compatibility)
-/build.msvs
-
-## Xcode (Backwards compatibility)
-/build.xcodefiles
-
-## CMake
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Makefile
-cmake_install.cmake
-install_manifest.txt
-
-## Visual Studio
+# Visual Studio
 *.opendb
 *.opensdf
 *.pdb
@@ -49,7 +31,7 @@ install_manifest.txt
 .vs/
 ipch/
 
-## Xcode
+# Xcode
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -59,13 +41,14 @@ ipch/
 *.perspectivev3
 !default.perspectivev3
 xcuserdata
+xcshareddata
 *.xccheckout
 *.moved-aside
 *.xcuserstate
 *.xcscmblueprint
 
-## Python
-tools/*.pyc
+# Visual Studio Code
+.vscode/
 
-## IntelliJ IDEA
+# IntelliJ IDEA
 .idea/

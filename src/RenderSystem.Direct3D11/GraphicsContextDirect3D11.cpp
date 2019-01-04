@@ -9,9 +9,6 @@
 #include "../RenderSystem.DXGI/DXGIFormatHelper.hpp"
 #include "../RenderSystem/GraphicsCapabilities.hpp"
 #include "../RenderSystem/GraphicsCommandListImmediate.hpp"
-#include "Pomdog/Math/Color.hpp"
-#include "Pomdog/Math/Vector4.hpp"
-#include "Pomdog/Math/Rectangle.hpp"
 #include "Pomdog/Graphics/IndexBuffer.hpp"
 #include "Pomdog/Graphics/PresentationParameters.hpp"
 #include "Pomdog/Graphics/PrimitiveTopology.hpp"
@@ -21,9 +18,12 @@
 #include "Pomdog/Graphics/VertexBuffer.hpp"
 #include "Pomdog/Graphics/VertexBufferBinding.hpp"
 #include "Pomdog/Graphics/Viewport.hpp"
+#include "Pomdog/Logging/Log.hpp"
+#include "Pomdog/Math/Color.hpp"
+#include "Pomdog/Math/Rectangle.hpp"
+#include "Pomdog/Math/Vector4.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
-#include "Pomdog/Logging/Log.hpp"
 #include "Pomdog/Utility/StringHelper.hpp"
 #include <algorithm>
 
@@ -60,8 +60,7 @@ void ChooseMultiSampleSetting(
         preferredMultiSampleCount,
         D3D11_MAX_MULTISAMPLE_SAMPLE_COUNT);
 
-    for (int sampleCount = maxSampleCount; sampleCount >= 1; --sampleCount)
-    {
+    for (int sampleCount = maxSampleCount; sampleCount >= 1; --sampleCount) {
         UINT qualityLevels = 0;
 
         auto hr = device->CheckMultisampleQualityLevels(
@@ -371,8 +370,7 @@ void GraphicsContextDirect3D11::SetVertexBuffers(
     std::vector<ID3D11Buffer*> vertexBuffers;
     vertexBuffers.reserve(vertexBuffersIn.size());
 
-    for (auto & binding: vertexBuffersIn)
-    {
+    for (auto & binding : vertexBuffersIn) {
         auto & vertexBuffer = binding.VertexBuffer;
 
         POMDOG_ASSERT(vertexBuffer);

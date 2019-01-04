@@ -3,10 +3,9 @@
 #pragma once
 
 #include "PrerequisitesOpenAL.hpp"
-#include "../Utility/Noncopyable.hpp"
-#include "Pomdog/Utility/detail/Tagged.hpp"
-#include "Pomdog/Utility/Optional.hpp"
+#include "../Utility/Tagged.hpp"
 #include <memory>
+#include <optional>
 
 namespace Pomdog {
 class AudioEmitter;
@@ -24,16 +23,19 @@ using AudioSourceAL = Tagged<ALuint, AudioSourceALTag>;
 class AudioClipAL;
 class AudioEngineAL;
 
-class SoundEffectAL final : Noncopyable {
+class SoundEffectAL final {
 private:
     std::shared_ptr<AudioClipAL> audioClip;
-    Optional<AudioSourceAL> source;
+    std::optional<AudioSourceAL> source;
 
 public:
     SoundEffectAL(
         AudioEngineAL & audioEngine,
         const std::shared_ptr<AudioClipAL>& audioClip,
         bool isLooped);
+
+    SoundEffectAL(const SoundEffectAL&) = delete;
+    SoundEffectAL& operator=(const SoundEffectAL&) = delete;
 
     ~SoundEffectAL();
 

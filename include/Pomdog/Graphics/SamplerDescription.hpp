@@ -2,16 +2,16 @@
 
 #pragma once
 
+#include "Pomdog/Basic/Export.hpp"
 #include "Pomdog/Graphics/TextureAddressMode.hpp"
 #include "Pomdog/Graphics/TextureFilter.hpp"
-#include "Pomdog/Basic/Export.hpp"
 #include <cstdint>
 #include <limits>
 #include <utility>
 
 namespace Pomdog {
 
-struct POMDOG_EXPORT SamplerDescription {
+struct POMDOG_EXPORT SamplerDescription final {
     std::uint32_t MaxAnisotropy;
     float MinMipLevel;
     float MaxMipLevel;

@@ -1,7 +1,4 @@
 #include "PongGame.hpp"
-#include <Pomdog.Experimental/Graphics/PolygonBatch.hpp>
-#include <Pomdog.Experimental/Graphics/SpriteBatchRenderer.hpp>
-#include <Pomdog.Experimental/Graphics/TrueTypeFont.hpp>
 #include <Pomdog.Experimental/ImageEffects/FXAA.hpp>
 #include <Pomdog.Experimental/ImageEffects/VignetteEffect.hpp>
 #include <Pomdog.Experimental/ImageEffects/FishEyeEffect.hpp>
@@ -10,6 +7,9 @@
 #include <Pomdog.Experimental/Gameplay2D/PrimitiveRenderable.hpp>
 #include <Pomdog.Experimental/Gameplay2D/SpriteRenderable.hpp>
 #include <Pomdog.Experimental/Gameplay2D/TextRenderable.hpp>
+#include <Pomdog/Experimental/Graphics/PolygonBatch.hpp>
+#include <Pomdog/Experimental/Graphics/SpriteBatch.hpp>
+#include <Pomdog/Experimental/Graphics/TrueTypeFont.hpp>
 #include <utility>
 #include <cmath>
 #include <random>
@@ -110,7 +110,9 @@ void PongGame::Initialize()
     }
     {
         auto font = std::make_shared<TrueTypeFont>(*assets, "fonts/NotoSans/NotoSans-BoldItalic.ttf");
-        spriteFont = std::make_shared<SpriteFont>(graphicsDevice, font, '?', 26);
+        spriteFont = std::make_shared<SpriteFont>(graphicsDevice, font, 26.0f, 26.0f);
+        spriteFont->PrepareFonts("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345689.,!?-+/():;%&`'*#=[]\" ");
+        spriteFont->SetDefaultCharacter(U'?');
     }
     {
         auto fxaa = std::make_shared<FXAA>(graphicsDevice, *assets);

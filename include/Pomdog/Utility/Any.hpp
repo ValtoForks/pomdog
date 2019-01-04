@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include "Pomdog/Utility/detail/CRC32.hpp"
-#include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Utility/Assert.hpp"
+#include "Pomdog/Utility/detail/CRC32.hpp"
+#include <memory>
+#include <type_traits>
 #include <typeindex>
 #include <typeinfo>
-#include <type_traits>
-#include <memory>
 #include <utility>
 
 namespace Pomdog {
@@ -39,7 +39,8 @@ private:
         template <typename U>
         explicit Holder(U && valueIn)
             : Value(std::forward<U>(valueIn))
-        {}
+        {
+        }
 
         static_assert(std::is_object<T>::value, "");
     };
@@ -61,7 +62,8 @@ public:
         : data(std::make_unique<Holder<typename std::remove_reference<T>::type>>(std::forward<T>(value)))
         , typeIndex(typeid(T))
         , hashCode(Detail::TypeIdHashing<T>::hashCode)
-    {}
+    {
+    }
 
     template <typename T>
     bool Is() const

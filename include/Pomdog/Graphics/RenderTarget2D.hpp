@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Graphics/Texture.hpp"
+#include "Pomdog/Basic/Export.hpp"
 #include "Pomdog/Graphics/DepthFormat.hpp"
 #include "Pomdog/Graphics/SurfaceFormat.hpp"
+#include "Pomdog/Graphics/Texture.hpp"
+#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
 #include "Pomdog/Math/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Basic/Export.hpp"
 #include <cstdint>
 #include <memory>
 
@@ -17,15 +17,15 @@ class POMDOG_EXPORT RenderTarget2D final : public Texture {
 public:
     RenderTarget2D() = delete;
     RenderTarget2D(const RenderTarget2D&) = delete;
-    RenderTarget2D(RenderTarget2D &&) = default;
+    RenderTarget2D(RenderTarget2D&&) = default;
 
     RenderTarget2D(
-        GraphicsDevice & graphicsDevice,
+        GraphicsDevice& graphicsDevice,
         std::int32_t width,
         std::int32_t height);
 
     RenderTarget2D(
-        GraphicsDevice & graphicsDevice,
+        GraphicsDevice& graphicsDevice,
         std::int32_t width,
         std::int32_t height,
         bool generateMipmap,
@@ -47,8 +47,8 @@ public:
 
     ~RenderTarget2D();
 
-    RenderTarget2D & operator=(const RenderTarget2D&) = delete;
-    RenderTarget2D & operator=(RenderTarget2D &&) = default;
+    RenderTarget2D& operator=(const RenderTarget2D&) = delete;
+    RenderTarget2D& operator=(RenderTarget2D&&) = default;
 
     std::int32_t GetWidth() const;
 

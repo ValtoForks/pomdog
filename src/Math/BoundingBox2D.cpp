@@ -1,8 +1,8 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "Pomdog/Math/BoundingBox2D.hpp"
-#include "Pomdog/Math/ContainmentType.hpp"
 #include "Pomdog/Math/BoundingCircle.hpp"
+#include "Pomdog/Math/ContainmentType.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 
 namespace Pomdog {
@@ -10,8 +10,10 @@ namespace Pomdog {
 constexpr int BoundingBox2D::CornerCount;
 
 BoundingBox2D::BoundingBox2D(const Vector2& minIn, const Vector2& maxIn)
-    : Min(minIn), Max(maxIn)
-{}
+    : Min(minIn)
+    , Max(maxIn)
+{
+}
 
 bool BoundingBox2D::operator==(const BoundingBox2D& box) const noexcept
 {

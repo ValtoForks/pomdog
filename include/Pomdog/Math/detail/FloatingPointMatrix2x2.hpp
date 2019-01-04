@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -12,7 +12,7 @@ namespace Pomdog {
 namespace Detail {
 
 template <typename T>
-class POMDOG_EXPORT FloatingPointMatrix2x2 {
+class POMDOG_EXPORT FloatingPointMatrix2x2 final {
 public:
     static_assert(std::is_floating_point<T>::value, "T is floating point.");
     typedef T value_type;
@@ -31,11 +31,11 @@ public:
     FloatingPointMatrix2x2(T m00, T m01, T m10, T m11) noexcept;
 
     // Assignment operators:
-    FloatingPointMatrix2x2 & operator*=(const FloatingPointMatrix2x2& other) noexcept;
-    FloatingPointMatrix2x2 & operator+=(const FloatingPointMatrix2x2& other) noexcept;
-    FloatingPointMatrix2x2 & operator-= (const FloatingPointMatrix2x2& other) noexcept;
-    FloatingPointMatrix2x2 & operator*=(T scaleFactor) noexcept;
-    FloatingPointMatrix2x2 & operator/=(T scaleFactor);
+    FloatingPointMatrix2x2& operator*=(const FloatingPointMatrix2x2& other) noexcept;
+    FloatingPointMatrix2x2& operator+=(const FloatingPointMatrix2x2& other) noexcept;
+    FloatingPointMatrix2x2& operator-=(const FloatingPointMatrix2x2& other) noexcept;
+    FloatingPointMatrix2x2& operator*=(T scaleFactor) noexcept;
+    FloatingPointMatrix2x2& operator/=(T scaleFactor);
 
     // Unary operators:
     FloatingPointMatrix2x2 operator+() const noexcept;
@@ -53,7 +53,7 @@ public:
 
     // Function-call operators:
     const T& operator()(std::size_t row, std::size_t column) const;
-    T & operator()(std::size_t row, std::size_t column);
+    T& operator()(std::size_t row, std::size_t column);
 
     T Determinant() const noexcept;
 

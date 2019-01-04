@@ -4,62 +4,46 @@
 #include "GameWindowCocoa.hpp"
 #include "KeyboardCocoa.hpp"
 #include "MouseCocoa.hpp"
-#include "../RenderSystem/GraphicsCommandQueueImmediate.hpp"
+#include "../Application/SystemEvents.hpp"
+#include "../InputSystem.IOKit/GamepadIOKit.hpp"
 #include "../RenderSystem.Metal/GraphicsContextMetal.hpp"
 #include "../RenderSystem.Metal/GraphicsDeviceMetal.hpp"
-#include "../Application/SystemEvents.hpp"
+#include "../RenderSystem.Metal/MetalFormatHelper.hpp"
+#include "../RenderSystem/GraphicsCommandQueueImmediate.hpp"
 #include "Pomdog/Application/Game.hpp"
 #include "Pomdog/Application/GameClock.hpp"
 #include "Pomdog/Audio/AudioEngine.hpp"
 #include "Pomdog/Content/AssetManager.hpp"
-#include "Pomdog/Signals/Event.hpp"
-#include "Pomdog/Signals/ScopedConnection.hpp"
 #include "Pomdog/Graphics/GraphicsCommandQueue.hpp"
 #include "Pomdog/Graphics/GraphicsDevice.hpp"
 #include "Pomdog/Graphics/PresentationParameters.hpp"
 #include "Pomdog/Graphics/Viewport.hpp"
 #include "Pomdog/Input/KeyState.hpp"
 #include "Pomdog/Logging/Log.hpp"
+#include "Pomdog/Signals/Event.hpp"
+#include "Pomdog/Signals/ScopedConnection.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
 #include "Pomdog/Utility/FileSystem.hpp"
 #include "Pomdog/Utility/PathHelper.hpp"
 #include "Pomdog/Utility/StringHelper.hpp"
-#include <utility>
-#include <vector>
 #include <mutex>
 #include <thread>
+#include <utility>
+#include <vector>
 
 #import <Metal/Metal.h>
 #import <MetalKit/MetalKit.h>
 
 using Pomdog::Detail::Metal::GraphicsContextMetal;
 using Pomdog::Detail::Metal::GraphicsDeviceMetal;
+using Pomdog::Detail::Metal::ToPixelFormat;
+using Pomdog::Detail::InputSystem::Apple::GamepadIOKit;
 
 namespace Pomdog {
 namespace Detail {
 namespace Cocoa {
 namespace {
-
-// MARK: This code is dup from 'src/RenderSystem.Metal/RenderTarget2DMetal.mm'
-MTLPixelFormat ToMTLPixelFormat(DepthFormat depthFormat)
-{
-    POMDOG_ASSERT(depthFormat != DepthFormat::None);
-    POMDOG_ASSERT_MESSAGE(depthFormat != DepthFormat::Depth16, "Not supported");
-
-    switch (depthFormat) {
-    case DepthFormat::Depth16: return MTLPixelFormatDepth32Float;
-    case DepthFormat::Depth32: return MTLPixelFormatDepth32Float;
-#if defined(MAC_OS_X_VERSION_10_11) && (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_11)
-    case DepthFormat::Depth24Stencil8: return MTLPixelFormatDepth24Unorm_Stencil8;
-#else
-    case DepthFormat::Depth24Stencil8: return MTLPixelFormatDepth32Float_Stencil8;
-#endif
-    case DepthFormat::Depth32_Float_Stencil8_Uint: return MTLPixelFormatDepth32Float_Stencil8;
-    case DepthFormat::None: return MTLPixelFormatInvalid;
-    }
-    return MTLPixelFormatDepth32Float;
-}
 
 void SetupMetalView(
     MTKView* view,
@@ -71,7 +55,7 @@ void SetupMetalView(
 
     // Setup the render target, choose values based on your app
     view.sampleCount = presentationParameters.MultiSampleCount;
-    view.depthStencilPixelFormat = ToMTLPixelFormat(presentationParameters.DepthStencilFormat);
+    view.depthStencilPixelFormat = ToPixelFormat(presentationParameters.DepthStencilFormat);
 }
 
 } // unnamed namespace
@@ -114,9 +98,7 @@ public:
 
     std::shared_ptr<Mouse> GetMouse();
 
-    SurfaceFormat GetBackBufferSurfaceFormat() const noexcept;
-
-    DepthFormat GetBackBufferDepthStencilFormat() const noexcept;
+    std::shared_ptr<Gamepad> GetGamepad();
 
 private:
     void RenderFrame();
@@ -145,11 +127,10 @@ private:
     std::unique_ptr<Pomdog::AssetManager> assetManager;
     std::shared_ptr<KeyboardCocoa> keyboard;
     std::shared_ptr<MouseCocoa> mouse;
+    std::shared_ptr<GamepadIOKit> gamepad;
 
     __weak MTKView* metalView;
     Duration presentationInterval;
-    SurfaceFormat backBufferSurfaceFormat;
-    DepthFormat backBufferDepthStencilFormat;
     bool exitRequest;
 };
 
@@ -163,8 +144,6 @@ GameHostMetal::Impl::Impl(
     , window(windowIn)
     , metalView(metalViewIn)
     , presentationInterval(Duration(1) / 60)
-    , backBufferSurfaceFormat(presentationParameters.BackBufferFormat)
-    , backBufferDepthStencilFormat(presentationParameters.DepthStencilFormat)
     , exitRequest(false)
 {
     POMDOG_ASSERT(window);
@@ -174,7 +153,7 @@ GameHostMetal::Impl::Impl(
 
     // Create graphics device
     graphicsDevice = std::make_shared<GraphicsDevice>(
-        std::make_unique<GraphicsDeviceMetal>());
+        std::make_unique<GraphicsDeviceMetal>(presentationParameters));
 
     // Get MTLDevice object
     POMDOG_ASSERT(graphicsDevice);
@@ -206,6 +185,7 @@ GameHostMetal::Impl::Impl(
     audioEngine = std::make_shared<AudioEngine>();
     keyboard = std::make_shared<KeyboardCocoa>();
     mouse = std::make_shared<MouseCocoa>();
+    gamepad = std::make_shared<GamepadIOKit>(eventQueue);
 
     // Connect to system event signal
     POMDOG_ASSERT(eventQueue);
@@ -225,6 +205,7 @@ GameHostMetal::Impl::~Impl()
 {
     systemEventConnection.Disconnect();
     assetManager.reset();
+    gamepad.reset();
     keyboard.reset();
     mouse.reset();
     audioEngine.reset();
@@ -347,24 +328,20 @@ void GameHostMetal::Impl::DoEvents()
 
 void GameHostMetal::Impl::ProcessSystemEvents(const Event& event)
 {
-    if (event.Is<WindowShouldCloseEvent>())
-    {
+    if (event.Is<WindowShouldCloseEvent>()) {
         Log::Internal("WindowShouldCloseEvent");
         this->Exit();
     }
-    else if (event.Is<WindowWillCloseEvent>())
-    {
+    else if (event.Is<WindowWillCloseEvent>()) {
         Log::Internal("WindowWillCloseEvent");
     }
-    else if (event.Is<ViewWillStartLiveResizeEvent>())
-    {
+    else if (event.Is<ViewWillStartLiveResizeEvent>()) {
         auto rect = window->GetClientBounds();
         Log::Internal(StringHelper::Format(
             "ViewWillStartLiveResizeEvent: {w: %d, h: %d}",
             rect.Width, rect.Height));
     }
-    else if (event.Is<ViewDidEndLiveResizeEvent>())
-    {
+    else if (event.Is<ViewDidEndLiveResizeEvent>()) {
         auto rect = window->GetClientBounds();
         Log::Internal(StringHelper::Format(
             "ViewDidEndLiveResizeEvent: {w: %d, h: %d}",
@@ -375,14 +352,22 @@ void GameHostMetal::Impl::ProcessSystemEvents(const Event& event)
     else {
         POMDOG_ASSERT(keyboard);
         POMDOG_ASSERT(mouse);
+        POMDOG_ASSERT(gamepad);
         keyboard->HandleEvent(event);
         mouse->HandleEvent(event);
+        gamepad->HandleEvent(event);
     }
 }
 
 void GameHostMetal::Impl::ClientSizeChanged()
 {
+    POMDOG_ASSERT(graphicsDevice);
+    POMDOG_ASSERT(graphicsDevice->GetNativeGraphicsDevice());
+
+    auto nativeDevice = static_cast<GraphicsDeviceMetal*>(graphicsDevice->GetNativeGraphicsDevice());
     auto bounds = window->GetClientBounds();
+
+    nativeDevice->ClientSizeChanged(bounds.Width, bounds.Height);
     window->ClientSizeChanged(bounds.Width, bounds.Height);
 }
 
@@ -428,14 +413,9 @@ std::shared_ptr<Mouse> GameHostMetal::Impl::GetMouse()
     return mouse;
 }
 
-SurfaceFormat GameHostMetal::Impl::GetBackBufferSurfaceFormat() const noexcept
+std::shared_ptr<Gamepad> GameHostMetal::Impl::GetGamepad()
 {
-    return backBufferSurfaceFormat;
-}
-
-DepthFormat GameHostMetal::Impl::GetBackBufferDepthStencilFormat() const noexcept
-{
-    return backBufferDepthStencilFormat;
+    return gamepad;
 }
 
 // MARK: GameHostMetal
@@ -446,7 +426,8 @@ GameHostMetal::GameHostMetal(
     const std::shared_ptr<EventQueue>& eventQueue,
     const PresentationParameters& presentationParameters)
     : impl(std::make_unique<Impl>(metalView, window, eventQueue, presentationParameters))
-{}
+{
+}
 
 GameHostMetal::~GameHostMetal() = default;
 
@@ -524,16 +505,10 @@ std::shared_ptr<Mouse> GameHostMetal::GetMouse()
     return impl->GetMouse();
 }
 
-SurfaceFormat GameHostMetal::GetBackBufferSurfaceFormat() const
+std::shared_ptr<Gamepad> GameHostMetal::GetGamepad()
 {
     POMDOG_ASSERT(impl);
-    return impl->GetBackBufferSurfaceFormat();
-}
-
-DepthFormat GameHostMetal::GetBackBufferDepthStencilFormat() const
-{
-    POMDOG_ASSERT(impl);
-    return impl->GetBackBufferDepthStencilFormat();
+    return impl->GetGamepad();
 }
 
 } // namespace Cocoa

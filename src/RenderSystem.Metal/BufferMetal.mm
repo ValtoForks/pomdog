@@ -1,33 +1,28 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "BufferMetal.hpp"
+#include "../Basic/Unreachable.hpp"
 #include "Pomdog/Graphics/BufferUsage.hpp"
+#include "Pomdog/Logging/Log.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
-#include "Pomdog/Logging/Log.hpp"
-#include <cstring>
 #import <Metal/Metal.h>
+#include <cstring>
 
 namespace Pomdog {
 namespace Detail {
 namespace Metal {
 namespace {
 
-MTLResourceOptions ToResourceOptions(BufferUsage bufferUsage)
+MTLResourceOptions ToResourceOptions(BufferUsage bufferUsage) noexcept
 {
-#if (defined(MAC_OS_X_VERSION_10_11) && (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_11)) \
-    || (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && (__IPHONE_OS_VERSION_MIN_REQUIRED >= 90000))
     switch (bufferUsage) {
     case BufferUsage::Immutable:
         return MTLResourceStorageModeShared;
-        break;
     case BufferUsage::Dynamic:
         return MTLResourceCPUCacheModeWriteCombined | MTLResourceStorageModeShared;
-        break;
     }
-#else
-    return MTLResourceCPUCacheModeDefaultCache;
-#endif
+    POMDOG_UNREACHABLE("Unsupported buffer usage");
 }
 
 std::size_t ComputeAlignedSize(std::size_t sizeInBytes, BufferBindMode bindMode)
@@ -69,7 +64,7 @@ BufferMetal::BufferMetal(
     nativeBuffer = [device newBufferWithLength:alignedSize
         options:ToResourceOptions(bufferUsage)];
 
-   if (nativeBuffer == nil) {
+    if (nativeBuffer == nil) {
         // FUS RO DAH!
         POMDOG_THROW_EXCEPTION(std::runtime_error,
             "Failed to create MTLBuffer");
@@ -90,7 +85,7 @@ BufferMetal::BufferMetal(
     nativeBuffer = [device newBufferWithLength:alignedSize
         options:ToResourceOptions(bufferUsage)];
 
-   if (nativeBuffer == nil) {
+    if (nativeBuffer == nil) {
         // FUS RO DAH!
         POMDOG_THROW_EXCEPTION(std::runtime_error,
             "Failed to create MTLBuffer");
@@ -107,8 +102,8 @@ void BufferMetal::GetData(
     std::size_t sizeInBytes) const
 {
     POMDOG_ASSERT(nativeBuffer != nil);
-    auto source = [nativeBuffer contents];
-    std::memcpy(destination, source, sizeInBytes);
+    auto source = reinterpret_cast<const uint8_t*>([nativeBuffer contents]);
+    std::memcpy(destination, source + offsetInBytes, sizeInBytes);
 }
 
 void BufferMetal::SetData(

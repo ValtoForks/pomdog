@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "Pomdog/Signals/detail/EventBody.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Signals/detail/EventBody.hpp"
 #include "Pomdog/Utility/Assert.hpp"
+#include <memory>
 #include <type_traits>
 #include <utility>
-#include <memory>
 
 namespace Pomdog {
 
@@ -15,13 +15,13 @@ class POMDOG_EXPORT Event final {
 public:
     Event() = delete;
     Event(const Event&) = delete;
-    Event(Event &&) = default;
+    Event(Event&&) = default;
 
     Event& operator=(const Event&) = delete;
-    Event& operator=(Event &&) = default;
+    Event& operator=(Event&&) = default;
 
     template <typename T>
-    explicit Event(T && value)
+    explicit Event(T&& value)
     {
         typedef typename std::remove_reference<T>::type valueType;
         typedef Detail::EventBodyOverride<valueType> containerType;

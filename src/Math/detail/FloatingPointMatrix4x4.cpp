@@ -1,11 +1,11 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "Pomdog/Math/detail/FloatingPointMatrix4x4.hpp"
+#include "Pomdog/Math/MathHelper.hpp"
+#include "Pomdog/Math/Radian.hpp"
 #include "Pomdog/Math/detail/FloatingPointMatrix3x3.hpp"
 #include "Pomdog/Math/detail/FloatingPointQuaternion.hpp"
 #include "Pomdog/Math/detail/FloatingPointVector3.hpp"
-#include "Pomdog/Math/MathHelper.hpp"
-#include "Pomdog/Math/Radian.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include <cfloat>
 #include <cmath>
@@ -371,25 +371,23 @@ FloatingPointMatrix3x3<T> FloatingPointMatrix4x4<T>::Minor3x3(std::size_t row, s
     // r2 |31, 32, 33, 34| --------------------> |41, 42, 43, x|
     // r3 |41, 42, 43, 44|                       | x,  x,  x, x|
 
-    FloatingPointMatrix3x3<T> minor;
-    for (std::size_t i = 0, s = 0; i < 4; ++i)
-    {
+    FloatingPointMatrix3x3<T> minorMatrix;
+    for (std::size_t i = 0, s = 0; i < 4; ++i) {
         if (row == i) {
             continue;
         }
 
-        for (std::size_t j = 0, t = 0; j < 4; ++j)
-        {
+        for (std::size_t j = 0, t = 0; j < 4; ++j) {
             if (column == j) {
                 continue;
             }
 
-            minor(s, t) = this->m[i][j];
+            minorMatrix(s, t) = this->m[i][j];
             ++t;
         }
         ++s;
     }
-    return std::move(minor);
+    return std::move(minorMatrix);
 }
 
 template <typename T>

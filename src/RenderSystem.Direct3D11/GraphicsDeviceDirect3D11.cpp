@@ -14,11 +14,12 @@
 #include "../RenderSystem/ShaderCompileOptions.hpp"
 #include "Pomdog/Graphics/BufferUsage.hpp"
 #include "Pomdog/Graphics/PipelineStateDescription.hpp"
+#include "Pomdog/Graphics/PresentationParameters.hpp"
 #include "Pomdog/Graphics/ShaderLanguage.hpp"
 #include "Pomdog/Logging/Log.hpp"
-#include "Pomdog/Utility/StringHelper.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
+#include "Pomdog/Utility/StringHelper.hpp"
 #include <array>
 
 namespace Pomdog {
@@ -72,8 +73,7 @@ void AdapterManager::EnumAdapters()
 
     UINT i = 0;
     Microsoft::WRL::ComPtr<IDXGIAdapter1> newAdapter;
-    while ((hr = dxgiFactory->EnumAdapters1(i, &newAdapter)) != DXGI_ERROR_NOT_FOUND)
-    {
+    while ((hr = dxgiFactory->EnumAdapters1(i, &newAdapter)) != DXGI_ERROR_NOT_FOUND) {
         if (FAILED(hr)) {
             // FUS RO DAH!
             POMDOG_THROW_EXCEPTION(std::runtime_error,
@@ -158,8 +158,7 @@ void CheckError(ID3D11InfoQueue* infoQueue)
     const auto storedMessageCount = infoQueue->GetNumStoredMessages();
 
     std::string message;
-    for (UINT64 i = 0; i < storedMessageCount; ++i)
-    {
+    for (UINT64 i = 0; i < storedMessageCount; ++i) {
         SIZE_T messageByteLength = 0;
         infoQueue->GetMessage(i, nullptr, &messageByteLength);
 
@@ -173,8 +172,7 @@ void CheckError(ID3D11InfoQueue* infoQueue)
         message += "\n";
     }
 
-    if (message.empty())
-    {
+    if (message.empty()) {
         Log::Internal(message);
     }
 }
@@ -200,17 +198,19 @@ public:
     ComPtr<ID3D11InfoQueue> infoQueue;
     D3D_DRIVER_TYPE driverType;
     D3D_FEATURE_LEVEL featureLevel;
+    PresentationParameters presentationParameters;
 
 public:
-    Impl();
+    explicit Impl(const PresentationParameters& presentationParameters);
 
 private:
     void BuildDevice();
 };
 
-GraphicsDeviceDirect3D11::Impl::Impl()
+GraphicsDeviceDirect3D11::Impl::Impl(const PresentationParameters& presentationParametersIn)
     : driverType(D3D_DRIVER_TYPE_NULL)
     , featureLevel(D3D_FEATURE_LEVEL_11_1)
+    , presentationParameters(presentationParametersIn)
 {
     adapters.EnumAdapters();
     BuildDevice();
@@ -249,8 +249,7 @@ void GraphicsDeviceDirect3D11::Impl::BuildDevice()
     HRESULT hr = S_OK;
 
     auto adapter = adapters.ActiveAdapter();
-    for (auto & type: driverTypes)
-    {
+    for (auto& type : driverTypes) {
         driverType = type;
         hr = D3D11CreateDevice(
             adapter,
@@ -287,7 +286,7 @@ void GraphicsDeviceDirect3D11::Impl::BuildDevice()
         case D3D_DRIVER_TYPE_REFERENCE:
             Log::Internal("Direct3D11 DriverType: Reference Device.");
             break;
-        };
+        }
     }
     {
         D3D11_FEATURE_DATA_D3D11_OPTIONS d3d11Options;
@@ -310,15 +309,22 @@ void GraphicsDeviceDirect3D11::Impl::BuildDevice()
 #endif
 }
 
-GraphicsDeviceDirect3D11::GraphicsDeviceDirect3D11()
-    : impl(std::make_unique<Impl>())
-{}
+GraphicsDeviceDirect3D11::GraphicsDeviceDirect3D11(const PresentationParameters& presentationParameters)
+    : impl(std::make_unique<Impl>(presentationParameters))
+{
+}
 
 GraphicsDeviceDirect3D11::~GraphicsDeviceDirect3D11() = default;
 
-ShaderLanguage GraphicsDeviceDirect3D11::GetSupportedLanguage() const
+ShaderLanguage GraphicsDeviceDirect3D11::GetSupportedLanguage() const noexcept
 {
     return ShaderLanguage::HLSL;
+}
+
+PresentationParameters GraphicsDeviceDirect3D11::GetPresentationParameters() const noexcept
+{
+    POMDOG_ASSERT(impl);
+    return impl->presentationParameters;
 }
 
 std::unique_ptr<NativeGraphicsCommandList>
@@ -486,6 +492,13 @@ Microsoft::WRL::ComPtr<IDXGIFactory1> GraphicsDeviceDirect3D11::GetDXGIFactory()
 {
     POMDOG_ASSERT(impl);
     return impl->adapters.GetFactory();
+}
+
+void GraphicsDeviceDirect3D11::ClientSizeChanged(int width, int height)
+{
+    POMDOG_ASSERT(impl);
+    impl->presentationParameters.BackBufferWidth = width;
+    impl->presentationParameters.BackBufferHeight = height;
 }
 
 } // namespace Direct3D11

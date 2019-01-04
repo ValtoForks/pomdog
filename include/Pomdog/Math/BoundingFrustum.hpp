@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Math/Plane.hpp"
-#include "Pomdog/Math/Matrix4x4.hpp"
-#include "Pomdog/Math/Vector3.hpp"
-#include "Pomdog/Utility/Optional.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Math/Matrix4x4.hpp"
+#include "Pomdog/Math/Plane.hpp"
+#include "Pomdog/Math/Vector3.hpp"
+#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include <array>
+#include <optional>
 
 namespace Pomdog {
 
@@ -36,7 +36,7 @@ namespace Pomdog {
 ///     (4) Top    = [n0, n1, f1, f0]
 ///     (5) Bottom = [n2, f2, f3, n3]
 /// @endcode
-class POMDOG_EXPORT BoundingFrustum {
+class POMDOG_EXPORT BoundingFrustum final {
 private:
     static constexpr int CornerCount = 8;
     static constexpr int PlaneCount = 6;
@@ -78,7 +78,7 @@ public:
 
     PlaneIntersectionType Intersects(const Plane& plane) const noexcept;
 
-    Optional<float> Intersects(const Ray& ray) const noexcept;
+    std::optional<float> Intersects(const Ray& ray) const noexcept;
 
 private:
     void CreatePlanes();

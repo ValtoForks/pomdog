@@ -8,9 +8,9 @@ QuickStartGame::QuickStartGame(const std::shared_ptr<GameHost>& gameHostIn)
     : gameHost(gameHostIn)
     , window(gameHostIn->GetWindow())
     , graphicsDevice(gameHostIn->GetGraphicsDevice())
-    , commandQueue(gameHostIn->GetGraphicsCommandQueue())
     , assets(gameHostIn->GetAssetManager())
     , clock(gameHostIn->GetClock())
+    , commandQueue(gameHostIn->GetGraphicsCommandQueue())
 {
 }
 
@@ -37,12 +37,12 @@ void QuickStartGame::Initialize()
             Vector2 TextureCoord;
         };
 
-        std::array<VertexCombined, 4> verticesCombo = {
-            Vector3(-1.0f, -1.0f, 0.0f), Vector2(0.0f, 1.0f),
-            Vector3(-1.0f,  1.0f, 0.0f), Vector2(0.0f, 0.0f),
-            Vector3( 1.0f,  1.0f, 0.0f), Vector2(1.0f, 0.0f),
-            Vector3( 1.0f, -1.0f, 0.0f), Vector2(1.0f, 1.0f),
-        };
+        std::array<VertexCombined, 4> verticesCombo = {{
+            VertexCombined{Vector3{-1.0f, -1.0f, 0.0f}, Vector2{0.0f, 1.0f}},
+            VertexCombined{Vector3{-1.0f,  1.0f, 0.0f}, Vector2{0.0f, 0.0f}},
+            VertexCombined{Vector3{ 1.0f,  1.0f, 0.0f}, Vector2{1.0f, 0.0f}},
+            VertexCombined{Vector3{ 1.0f, -1.0f, 0.0f}, Vector2{1.0f, 1.0f}},
+        }};
 
         vertexBuffer = std::make_shared<VertexBuffer>(
             graphicsDevice,
@@ -53,7 +53,7 @@ void QuickStartGame::Initialize()
     }
     {
         // Create index buffer
-        std::array<std::uint16_t, 6> indices = {0, 1, 2, 2, 3, 0};
+        std::array<std::uint16_t, 6> indices = {{0, 1, 2, 2, 3, 0}};
 
         indexBuffer = std::make_shared<IndexBuffer>(
             graphicsDevice,
@@ -88,12 +88,12 @@ void QuickStartGame::Initialize()
             .SetMetalFromFile("SimpleEffect.metal", "SimpleEffectPS")
             .Build();
 
+        auto presentationParameters = graphicsDevice->GetPresentationParameters();
+
         // Create pipeline state
         pipelineState = assets->CreateBuilder<PipelineState>()
-            .SetRenderTargetViewFormats(std::vector<SurfaceFormat>{
-                gameHost->GetBackBufferSurfaceFormat()
-            })
-            .SetDepthStencilViewFormat(gameHost->GetBackBufferDepthStencilFormat())
+            .SetRenderTargetViewFormat(presentationParameters.BackBufferFormat)
+            .SetDepthStencilViewFormat(presentationParameters.DepthStencilFormat)
             .SetInputLayout(inputLayout)
             .SetVertexShader(std::move(vertexShader))
             .SetPixelShader(std::move(pixelShader))
@@ -121,12 +121,7 @@ void QuickStartGame::Initialize()
 
             commandList->Reset();
             commandList->SetRenderPass(std::move(pass));
-            if (graphicsDevice->GetSupportedLanguage() == ShaderLanguage::Metal) {
-                commandList->SetConstantBuffer(1, constantBuffer);
-            }
-            else {
-                commandList->SetConstantBuffer(0, constantBuffer);
-            }
+            commandList->SetConstantBuffer(0, constantBuffer);
             commandList->SetSamplerState(0, sampler);
             commandList->SetTexture(0, texture);
             commandList->SetVertexBuffer(vertexBuffer);
@@ -154,9 +149,9 @@ void QuickStartGame::Initialize()
         connect(timer->Elapsed, [this] {
             // String formatting using Pomdog::StringFormat
             auto title = StringHelper::Format(
-                "QuickStart %3.0f fps, %lld frames",
+                "QuickStart %3.0f fps, %s frames",
                 std::round(clock->GetFrameRate()),
-                clock->GetFrameNumber());
+                std::to_string(clock->GetFrameNumber()).c_str());
 
             // Set window title
             window->SetTitle(title);

@@ -2,6 +2,7 @@
 
 #include "BlendStateGL4.hpp"
 #include "ErrorChecker.hpp"
+#include "../Basic/Unreachable.hpp"
 #include "Pomdog/Graphics/BlendDescription.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include <utility>
@@ -27,14 +28,14 @@ GLenum ToBlendGL4NonTypesafe(Blend blend) noexcept
     case Blend::SourceAlphaSaturation: return GL_SRC_ALPHA_SATURATE;
     case Blend::BlendFactor: return GL_CONSTANT_COLOR;
     case Blend::InvereseBlendFactor: return GL_ONE_MINUS_CONSTANT_COLOR;
+    // case Blend::BlendFactorAlpha: return GL_CONSTANT_ALPHA;
+    // case Blend::InvereseBlendFactorAlpha: return GL_ONE_MINUS_CONSTANT_ALPHA;
     case Blend::Source1Color: return GL_SRC1_COLOR;
     case Blend::InverseSource1Color: return GL_ONE_MINUS_SRC1_COLOR;
     case Blend::Source1Alpha: return GL_SRC1_ALPHA;
     case Blend::InverseSource1Alpha: return GL_ONE_MINUS_SRC1_ALPHA;
     }
-#ifdef _MSC_VER
-    return GL_ZERO;
-#endif
+    POMDOG_UNREACHABLE("Unsupported blend factor");
 }
 
 GLenum ToBlendOperationGL4NonTypesafe(BlendOperation operation) noexcept
@@ -46,9 +47,7 @@ GLenum ToBlendOperationGL4NonTypesafe(BlendOperation operation) noexcept
     case BlendOperation::Min: return GL_MIN;
     case BlendOperation::Max: return GL_MAX;
     }
-#ifdef _MSC_VER
-    return GL_FUNC_ADD;
-#endif
+    POMDOG_UNREACHABLE("Unsupported blend operation");
 }
 
 BlendGL4 ToBlendGL4(Blend blend) noexcept

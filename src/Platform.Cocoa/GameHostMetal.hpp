@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Pomdog/Signals/EventQueue.hpp"
 #include "Pomdog/Application/GameHost.hpp"
+#include "Pomdog/Signals/EventQueue.hpp"
 #include <memory>
 
 #import <MetalKit/MTKView.h>
@@ -54,9 +54,7 @@ public:
 
     std::shared_ptr<Mouse> GetMouse() override;
 
-    SurfaceFormat GetBackBufferSurfaceFormat() const override;
-
-    DepthFormat GetBackBufferDepthStencilFormat() const override;
+    std::shared_ptr<Gamepad> GetGamepad() override;
 
 private:
     class Impl;

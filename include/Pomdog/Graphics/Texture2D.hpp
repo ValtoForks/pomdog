@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Graphics/Texture.hpp"
-#include "Pomdog/Graphics/SurfaceFormat.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Graphics/SurfaceFormat.hpp"
+#include "Pomdog/Graphics/Texture.hpp"
+#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
 #include <cstdint>
 #include <memory>
 
@@ -15,7 +15,7 @@ class POMDOG_EXPORT Texture2D final : public Texture {
 public:
     Texture2D() = delete;
     Texture2D(const Texture2D&) = delete;
-    Texture2D(Texture2D &&) = default;
+    Texture2D(Texture2D&&) = default;
 
     Texture2D(
         const std::shared_ptr<GraphicsDevice>& graphicsDevice,
@@ -31,8 +31,8 @@ public:
 
     ~Texture2D();
 
-    Texture2D & operator=(const Texture2D&) = delete;
-    Texture2D & operator=(Texture2D &&) = default;
+    Texture2D& operator=(const Texture2D&) = delete;
+    Texture2D& operator=(Texture2D&&) = default;
 
     std::int32_t GetWidth() const;
 

@@ -2,34 +2,34 @@
 
 #pragma once
 
-#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Graphics/InputElementFormat.hpp"
-#include "Pomdog/Graphics/InputElement.hpp"
-#include "Pomdog/Graphics/InputLayoutDescription.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Graphics/InputElement.hpp"
+#include "Pomdog/Graphics/InputElementFormat.hpp"
+#include "Pomdog/Graphics/InputLayoutDescription.hpp"
+#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
 #include <cstdint>
 
 namespace Pomdog {
 
 class POMDOG_EXPORT InputLayoutHelper final {
 public:
-    InputLayoutHelper & PushBack(InputElementFormat format);
+    InputLayoutHelper& PushBack(InputElementFormat format);
 
-    InputLayoutHelper & Byte4();
+    InputLayoutHelper& Byte4();
 
-    InputLayoutHelper & Float();
+    InputLayoutHelper& Float();
 
-    InputLayoutHelper & Float2();
+    InputLayoutHelper& Float2();
 
-    InputLayoutHelper & Float3();
+    InputLayoutHelper& Float3();
 
-    InputLayoutHelper & Float4();
+    InputLayoutHelper& Float4();
 
-    InputLayoutHelper & Int4();
+    InputLayoutHelper& Int4();
 
-    InputLayoutHelper & AddInputSlot();
+    InputLayoutHelper& AddInputSlot();
 
-    InputLayoutHelper & AddInputSlot(
+    InputLayoutHelper& AddInputSlot(
         InputClassification slotClass,
         std::uint16_t instanceStepRate);
 

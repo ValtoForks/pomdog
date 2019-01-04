@@ -4,9 +4,9 @@
 #include "BufferGL4.hpp"
 #include "EffectReflectionGL4.hpp"
 #include "PipelineStateGL4.hpp"
+#include "RenderTarget2DGL4.hpp"
 #include "SamplerStateGL4.hpp"
 #include "ShaderGL4.hpp"
-#include "RenderTarget2DGL4.hpp"
 #include "Texture2DGL4.hpp"
 #include "../RenderSystem/BufferBindMode.hpp"
 #include "../RenderSystem/GraphicsCommandListImmediate.hpp"
@@ -19,9 +19,19 @@ namespace Pomdog {
 namespace Detail {
 namespace GL4 {
 
-ShaderLanguage GraphicsDeviceGL4::GetSupportedLanguage() const
+GraphicsDeviceGL4::GraphicsDeviceGL4(const PresentationParameters& presentationParametersIn)
+    : presentationParameters(presentationParametersIn)
+{
+}
+
+ShaderLanguage GraphicsDeviceGL4::GetSupportedLanguage() const noexcept
 {
     return ShaderLanguage::GLSL;
+}
+
+PresentationParameters GraphicsDeviceGL4::GetPresentationParameters() const noexcept
+{
+    return presentationParameters;
 }
 
 std::unique_ptr<NativeGraphicsCommandList>
@@ -133,6 +143,12 @@ GraphicsDeviceGL4::CreateRenderTarget2D(
 {
     return std::make_unique<RenderTarget2DGL4>(width, height, mipmapLevels,
         format, depthStencilFormat, multiSampleCount);
+}
+
+void GraphicsDeviceGL4::ClientSizeChanged(int width, int height)
+{
+    presentationParameters.BackBufferWidth = width;
+    presentationParameters.BackBufferHeight = height;
 }
 
 } // namespace GL4

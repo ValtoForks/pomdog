@@ -3,18 +3,18 @@
 #include "Pomdog/Content/detail/AssetLoaders/Texture2DLoader.hpp"
 #include "../Utility/DDSTextureReader.hpp"
 #include "../Utility/PNGTextureReader.hpp"
-#include "Pomdog/Content/detail/AssetLoaderContext.hpp"
 #include "Pomdog/Content/Utility/BinaryReader.hpp"
 #include "Pomdog/Content/Utility/MakeFourCC.hpp"
+#include "Pomdog/Content/detail/AssetLoaderContext.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
-#include <fstream>
-#include <array>
-#include <vector>
 #include <algorithm>
-#include <utility>
-#include <string>
+#include <array>
+#include <fstream>
 #include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace Pomdog {
 namespace Detail {
@@ -31,7 +31,7 @@ bool IsPNGFormat(const std::array<std::uint8_t, 8>& signature)
 
 bool IsDDSFormat(const std::array<std::uint8_t, 8>& signature)
 {
-    constexpr auto fourCC = MakeFourCC('D','D','S',' ');
+    constexpr auto fourCC = MakeFourCC('D', 'D', 'S', ' ');
     static_assert(fourCC == 0x20534444, "The four character code value is 'DDS '");
     return (MakeFourCC(signature[0], signature[1], signature[2], signature[3]) == fourCC);
 }
@@ -57,8 +57,7 @@ std::shared_ptr<Texture2D> AssetLoader<Texture2D>::operator()(
         POMDOG_THROW_EXCEPTION(std::runtime_error, "Not implemented.");
     }
 
-    if (IsPNGFormat(signature))
-    {
+    if (IsPNGFormat(signature)) {
         constexpr auto SignatureLength = sizeof(std::uint8_t) * 8;
 
         POMDOG_ASSERT(stream.tellg() == std::streampos(SignatureLength));
@@ -71,8 +70,7 @@ std::shared_ptr<Texture2D> AssetLoader<Texture2D>::operator()(
 
         return PNGTextureReader::Read(graphicsDevice, binaryWithoutSignature.data(), binaryWithoutSignature.size());
     }
-    else if (IsDDSFormat(signature))
-    {
+    else if (IsDDSFormat(signature)) {
         constexpr auto FourCCLength = sizeof(std::uint8_t) * 4;
 
         stream.seekg(FourCCLength, stream.beg);

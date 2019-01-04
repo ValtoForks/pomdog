@@ -102,7 +102,7 @@ void StackPanel::OnPointerMoved(const PointerPoint& pointerPoint)
 
         ///@note recalculate position in current coordinate system
         pointInView = UIHelper::ConvertToChildSpace(pointerPoint.Position, GetGlobalTransform());
-        position = Vector2(pointInView.X, pointInView.Y);
+        position = MathHelper::ToVector2(pointInView);
         startTouchPoint = position;
     }
 }
@@ -113,7 +113,7 @@ void StackPanel::OnPointerReleased(const PointerPoint& pointerPoint)
         return;
     }
 
-    startTouchPoint = Pomdog::NullOpt;
+    startTouchPoint = std::nullopt;
 }
 
 void StackPanel::AddChild(const std::shared_ptr<UIElement>& element)

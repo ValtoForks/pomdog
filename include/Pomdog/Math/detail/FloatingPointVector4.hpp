@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -13,7 +13,7 @@ namespace Detail {
 
 ///@brief vector in four-dimensional space.
 template <typename T>
-class POMDOG_EXPORT FloatingPointVector4 {
+class POMDOG_EXPORT FloatingPointVector4 final {
 public:
     static_assert(std::is_floating_point<T>::value, "T is floating point.");
     typedef T value_type;
@@ -29,10 +29,10 @@ public:
     FloatingPointVector4(const FloatingPointVector3<T>& xyz, T w) noexcept;
 
     // Assignment operators:
-    FloatingPointVector4 & operator+=(const FloatingPointVector4& other) noexcept;
-    FloatingPointVector4 & operator-=(const FloatingPointVector4& other) noexcept;
-    FloatingPointVector4 & operator*=(T scaleFactor) noexcept;
-    FloatingPointVector4 & operator/=(T scaleFactor);
+    FloatingPointVector4& operator+=(const FloatingPointVector4& other) noexcept;
+    FloatingPointVector4& operator-=(const FloatingPointVector4& other) noexcept;
+    FloatingPointVector4& operator*=(T scaleFactor) noexcept;
+    FloatingPointVector4& operator/=(T scaleFactor);
 
     // Unary operators:
     FloatingPointVector4 operator+() const noexcept;
@@ -63,7 +63,7 @@ public:
 
     static FloatingPointVector4 Normalize(const FloatingPointVector4& source) noexcept;
 
-    static void Normalize(const FloatingPointVector4& source, FloatingPointVector4 & result) noexcept;
+    static void Normalize(const FloatingPointVector4& source, FloatingPointVector4& result) noexcept;
 
     static FloatingPointVector4 Transform(
         const FloatingPointVector4& position,

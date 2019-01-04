@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "Pomdog/Reactive/Observable.hpp"
-#include "Pomdog/Reactive/Observer.hpp"
 #include "Pomdog/Application/Duration.hpp"
 #include "Pomdog/Application/GameClock.hpp"
 #include "Pomdog/Application/GameHost.hpp"
+#include "Pomdog/Reactive/Observable.hpp"
+#include "Pomdog/Reactive/Observer.hpp"
 #include "Pomdog/Signals/ScopedConnection.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include <functional>
@@ -40,7 +40,7 @@ public:
             POMDOG_ASSERT(interval >= Duration::zero());
             auto iter = events.begin();
             while (iter != events.end()) {
-                auto & event = *iter;
+                auto& event = *iter;
 
                 // TODO: kahan velvel algorithm
                 event.totalTime += frameDuration;

@@ -8,13 +8,13 @@ namespace Pomdog {
 namespace UI {
 
 UIElement::UIElement(const std::shared_ptr<UIEventDispatcher>& dispatcherIn)
-    : parentTransform(Matrix3x2::Identity)
-    , transform(Matrix3x2::Identity)
+    : transform(Matrix3x2::Identity)
+    , parentTransform(Matrix3x2::Identity)
     , weakDispatcher(dispatcherIn)
-    , localDrawOrder(0)
     , parentDrawOrder(0)
-    , width(1)
+    , localDrawOrder(0)
     , height(1)
+    , width(1)
     , isParentDrawOrderDirty(true)
     , isParentTransformDirty(true)
 {
@@ -193,10 +193,10 @@ void UIElement::SetCursor(MouseCursor cursorIn)
 
 void UIElement::ResetCursor()
 {
-    cursor = Pomdog::NullOpt;
+    cursor = std::nullopt;
 }
 
-Optional<MouseCursor> UIElement::GetCurrentCursor() const
+std::optional<MouseCursor> UIElement::GetCurrentCursor() const
 {
     return cursor;
 }

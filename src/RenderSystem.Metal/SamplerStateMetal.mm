@@ -1,6 +1,7 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "SamplerStateMetal.hpp"
+#include "../Basic/Unreachable.hpp"
 #include "Pomdog/Graphics/SamplerDescription.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
@@ -17,7 +18,7 @@ MTLSamplerAddressMode ToSamplerAddressMode(TextureAddressMode addressMode) noexc
     case TextureAddressMode::Clamp: return MTLSamplerAddressModeClampToEdge;
     case TextureAddressMode::Mirror: return MTLSamplerAddressModeMirrorRepeat;
     }
-    return MTLSamplerAddressModeRepeat;
+    POMDOG_UNREACHABLE("Unsupported texture address mode");
 }
 
 } // unnamed namespace
@@ -88,7 +89,7 @@ SamplerStateMetal::SamplerStateMetal(id<MTLDevice> device, const SamplerDescript
 
     samplerState = [device newSamplerStateWithDescriptor:descriptor];
     if (samplerState == nil) {
-     // FUS RO DAH!
+        // FUS RO DAH!
         POMDOG_THROW_EXCEPTION(std::runtime_error,
             "Failed to create MTLSamplerState.");
     }

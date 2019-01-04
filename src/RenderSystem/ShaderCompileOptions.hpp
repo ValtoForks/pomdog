@@ -4,8 +4,8 @@
 
 #include "Pomdog/Graphics/ShaderPipelineStage.hpp"
 #include <cstdint>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace Pomdog {
 namespace Detail {
@@ -16,7 +16,7 @@ struct ShaderModel {
 };
 
 struct ShaderProfile {
-    ShaderModel ShaderModel;
+    Pomdog::Detail::ShaderModel ShaderModel;
     ShaderPipelineStage PipelineStage;
 };
 

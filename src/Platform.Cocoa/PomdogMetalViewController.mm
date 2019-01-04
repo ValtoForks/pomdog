@@ -1,49 +1,49 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
-#import "Pomdog/Platform/Cocoa/PomdogMetalViewController.hpp"
-
+#include "PomdogMetalViewController.hpp"
 #include "GameHostMetal.hpp"
 #include "GameWindowCocoa.hpp"
 #include "../Application/SystemEvents.hpp"
-#include "Pomdog/Utility/Assert.hpp"
-#include "Pomdog/Signals/Event.hpp"
-#include "Pomdog/Math/Point2D.hpp"
-#include "Pomdog/Input/ButtonState.hpp"
-#include "Pomdog/Input/Keys.hpp"
 #include "../RenderSystem.Metal/GraphicsContextMetal.hpp"
 #include "Pomdog/Graphics/PresentationParameters.hpp"
+#include "Pomdog/Input/ButtonState.hpp"
+#include "Pomdog/Input/Keys.hpp"
+#include "Pomdog/Math/Point2D.hpp"
+#include "Pomdog/Signals/Event.hpp"
+#include "Pomdog/Utility/Assert.hpp"
 
 #import <Metal/Metal.h>
 #import <MetalKit/MetalKit.h>
 
-using Pomdog::SurfaceFormat;
 using Pomdog::DepthFormat;
-using Pomdog::PresentationParameters;
 using Pomdog::Detail::Cocoa::GameHostMetal;
 using Pomdog::Detail::Cocoa::GameWindowCocoa;
-using Pomdog::EventQueue;
-using Pomdog::Event;
-using Pomdog::KeyState;
-using Pomdog::MouseButtons;
-using Pomdog::Detail::MousePositionEvent;
+using Pomdog::Detail::InputKeyEvent;
 using Pomdog::Detail::MouseButtonEvent;
 using Pomdog::Detail::MouseButtonState;
 using Pomdog::Detail::MouseEventType;
-using Pomdog::Detail::InputKeyEvent;
+using Pomdog::Detail::MousePositionEvent;
+using Pomdog::Event;
+using Pomdog::EventQueue;
+using Pomdog::Game;
+using Pomdog::Keys;
+using Pomdog::KeyState;
+using Pomdog::MouseButtons;
+using Pomdog::Point2D;
+using Pomdog::PresentationParameters;
+using Pomdog::SurfaceFormat;
 
 namespace {
 
-Pomdog::Point2D ToPoint2D(const NSPoint& point)
+Point2D ToPoint2D(const NSPoint& point, const NSSize& bounds)
 {
-    ///@todo FIXME
-    return Pomdog::Point2D(point.x - 2, point.y - 2);
-    //return Pomdog::Point2D(point.x, point.y);
+    // NOTE: Convert from cartesian coordinates to screen coordinate system.
+    // FIXME: Avoid using magic number `-2`
+    return Point2D(point.x - 2, bounds.height - point.y - 2);
 }
 
-Pomdog::Keys TranslateKey(std::uint16_t keyCode)
+Keys TranslateKey(std::uint16_t keyCode)
 {
-    using Pomdog::Keys;
-
     constexpr Keys keyTable[127] = {
         /* 0x00 */ Keys::A, // kVK_ANSI_A
         /* 0x01 */ Keys::S, // kVK_ANSI_S
@@ -182,16 +182,22 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
 
 } // unnamed namespace
 
-@implementation PomdogMetalViewController
-{
+@implementation PomdogMetalViewController {
+    std::function<std::shared_ptr<Pomdog::Game>(const std::shared_ptr<Pomdog::GameHost>&)> createGame;
+    std::function<void()> onCompleted;
     std::shared_ptr<GameHostMetal> gameHost;
     std::shared_ptr<EventQueue> eventQueue;
+    std::shared_ptr<Game> game;
+    NSTrackingArea* trackingArea;
     BOOL wasAcceptingMouseEvents;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    POMDOG_ASSERT(!gameHost);
+    POMDOG_ASSERT(!game);
 
     wasAcceptingMouseEvents = NO;
 
@@ -213,7 +219,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     if (gameHost->IsMetalSupported()) {
         MTKView* metalView = static_cast<MTKView *>(self.view);
         metalView.delegate = self;
-        [self loadAssetsPomdog:gameHost];
+        [self runGame];
     }
     else {
         // Fallback to a blank NSView, an application could also fallback to OpenGL here.
@@ -221,7 +227,25 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
         self.view = [[NSView alloc] initWithFrame:self.view.frame];
     }
 
+    // NOTE: To enable mouse tracking, add TrackingArea to view.
+    [self setMouseTrackingArea:self.view.bounds view:self.view];
+
     [[self.view window] makeFirstResponder:self];
+}
+
+- (void)setMouseTrackingArea:(NSRect)bounds view:(NSView*)view
+{
+    if (trackingArea != nil) {
+        [view removeTrackingArea:trackingArea];
+        trackingArea = nil;
+    }
+
+    trackingArea = [[NSTrackingArea alloc]
+        initWithRect:bounds
+        options:NSTrackingMouseMoved | NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow | NSTrackingActiveAlways
+        owner:self
+        userInfo:nil];
+    [view addTrackingArea:trackingArea];
 }
 
 - (void)_setupMetal:(const PresentationParameters&)presentationParameters
@@ -237,24 +261,27 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
         metalView, gameWindow, eventQueue, presentationParameters);
 }
 
-- (void)loadAssetsPomdog:(std::shared_ptr<Pomdog::GameHost>)gameHost
+- (void)runGame
 {
-}
+    POMDOG_ASSERT(createGame);
+    POMDOG_ASSERT(gameHost);
 
-- (void)startGame:(std::shared_ptr<Pomdog::Game>)game
-{
-    std::function<void()> onCompleted = [=] {
-        [[self.view window] close];
-
-        // Shutdown your application
-        [NSApp terminate:nil];
-    };
+    game = createGame(gameHost);
+    POMDOG_ASSERT(game);
 
     gameHost->InitializeGame(game, std::move(onCompleted));
 }
 
+- (void)startGame:(std::function<std::shared_ptr<Pomdog::Game>(const std::shared_ptr<Pomdog::GameHost>&)>&&)createGameIn
+    completed:(std::function<void()>&&) onCompletedIn
+{
+    createGame = std::move(createGameIn);
+    onCompleted = std::move(onCompletedIn);
+}
+
 - (void)_render
 {
+    POMDOG_ASSERT(gameHost);
     gameHost->GameLoop();
 }
 
@@ -265,6 +292,10 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
 //    if (eventQueue) {
 //        eventQueue->Enqueue<ViewWillStartLiveResizeEvent>();
 //    }
+
+    // NOTE: To enable mouse tracking, add TrackingArea to view.
+    [self setMouseTrackingArea:view.bounds view:view];
+
     if (eventQueue) {
         eventQueue->Enqueue<ViewDidEndLiveResizeEvent>();
     }
@@ -290,7 +321,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
 
     NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
     eventQueue->Enqueue<MousePositionEvent>(
-        ToPoint2D(locationInView),
+        ToPoint2D(locationInView, self.view.bounds.size),
         MouseEventType::Entered);
 }
 
@@ -299,7 +330,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     if (eventQueue) {
         NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
         eventQueue->Enqueue<MousePositionEvent>(
-            ToPoint2D(locationInView),
+            ToPoint2D(locationInView, self.view.bounds.size),
             MouseEventType::Moved);
     }
 }
@@ -311,7 +342,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     if (eventQueue) {
         NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
         eventQueue->Enqueue<MousePositionEvent>(
-            ToPoint2D(locationInView),
+            ToPoint2D(locationInView, self.view.bounds.size),
             MouseEventType::Exited);
     }
 }
@@ -321,7 +352,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     if (eventQueue) {
         NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
         eventQueue->Enqueue<MouseButtonEvent>(
-            ToPoint2D(locationInView),
+            ToPoint2D(locationInView, self.view.bounds.size),
             MouseButtons::Left,
             MouseButtonState::Down);
     }
@@ -332,7 +363,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     if (eventQueue) {
         NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
         eventQueue->Enqueue<MouseButtonEvent>(
-            ToPoint2D(locationInView),
+            ToPoint2D(locationInView, self.view.bounds.size),
             MouseButtons::Left,
             MouseButtonState::Dragged);
     }
@@ -343,7 +374,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     if (eventQueue) {
         NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
         eventQueue->Enqueue<MouseButtonEvent>(
-            ToPoint2D(locationInView),
+            ToPoint2D(locationInView, self.view.bounds.size),
             MouseButtons::Left,
             MouseButtonState::Up);
     }
@@ -354,7 +385,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     if (eventQueue) {
         NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
         eventQueue->Enqueue<MouseButtonEvent>(
-            ToPoint2D(locationInView),
+            ToPoint2D(locationInView, self.view.bounds.size),
             MouseButtons::Right,
             MouseButtonState::Down);
     }
@@ -365,7 +396,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     if (eventQueue) {
         NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
         eventQueue->Enqueue<MouseButtonEvent>(
-            ToPoint2D(locationInView),
+            ToPoint2D(locationInView, self.view.bounds.size),
             MouseButtons::Right,
             MouseButtonState::Dragged);
     }
@@ -376,7 +407,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     if (eventQueue) {
         NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
         eventQueue->Enqueue<MouseButtonEvent>(
-            ToPoint2D(locationInView),
+            ToPoint2D(locationInView, self.view.bounds.size),
             MouseButtons::Right,
             MouseButtonState::Up);
     }
@@ -404,7 +435,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
 
     event.State = MouseButtonState::Down;
-    event.Position = ToPoint2D(locationInView);
+    event.Position = ToPoint2D(locationInView, self.view.bounds.size);
     eventQueue->Enqueue(Event{std::move(event)});
 }
 
@@ -430,7 +461,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
 
     event.State = MouseButtonState::Dragged;
-    event.Position = ToPoint2D(locationInView);
+    event.Position = ToPoint2D(locationInView, self.view.bounds.size);
     eventQueue->Enqueue(Event{std::move(event)});
 }
 
@@ -456,7 +487,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
     NSPoint locationInView = [[self view] convertPoint:[theEvent locationInWindow] fromView:nil];
 
     event.State = MouseButtonState::Up;
-    event.Position = ToPoint2D(locationInView);
+    event.Position = ToPoint2D(locationInView, self.view.bounds.size);
     eventQueue->Enqueue(Event{std::move(event)});
 }
 
@@ -484,7 +515,7 @@ Pomdog::Keys TranslateKey(std::uint16_t keyCode)
 - (void)keyDown:(NSEvent *)theEvent
 {
     auto key = TranslateKey([theEvent keyCode]);
-    if (key != Pomdog::Keys::None) {
+    if (key != Keys::None) {
         eventQueue->Enqueue<InputKeyEvent>(KeyState::Down, key);
     }
 

@@ -1,12 +1,12 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "Pomdog/Math/detail/FloatingPointMatrix3x3.hpp"
+#include "Pomdog/Math/MathHelper.hpp"
+#include "Pomdog/Math/Radian.hpp"
 #include "Pomdog/Math/detail/FloatingPointMatrix2x2.hpp"
 #include "Pomdog/Math/detail/FloatingPointQuaternion.hpp"
 #include "Pomdog/Math/detail/FloatingPointVector2.hpp"
 #include "Pomdog/Math/detail/FloatingPointVector3.hpp"
-#include "Pomdog/Math/MathHelper.hpp"
-#include "Pomdog/Math/Radian.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include <cfloat>
 #include <cmath>
@@ -309,27 +309,25 @@ FloatingPointMatrix2x2<T> FloatingPointMatrix3x3<T>::Minor2x2(std::size_t row, s
     // r1 |21, 22, 23| Minor2x2(mat, r2, c1) |21, 23. x|
     // r2 |31, 32, 33| --------------------> | x,  x, x|
 
-    FloatingPointMatrix2x2<T> minor;
-    for (std::size_t i = 0, s = 0; i < RowSize; ++i)
-    {
+    FloatingPointMatrix2x2<T> minorMatrix;
+    for (std::size_t i = 0, s = 0; i < RowSize; ++i) {
         if (row == i) {
             continue;
         }
 
-        for (std::size_t j = 0, t = 0; j < ColumnSize; ++j)
-        {
+        for (std::size_t j = 0, t = 0; j < ColumnSize; ++j) {
             if (column == j) {
                 continue;
             }
 
             POMDOG_ASSERT(s < 2);
             POMDOG_ASSERT(t < 2);
-            minor(s, t) = m[i][j];
+            minorMatrix(s, t) = m[i][j];
             ++t;
         }
         ++s;
     }
-    return std::move(minor);
+    return std::move(minorMatrix);
 }
 
 template <typename T>
@@ -592,7 +590,7 @@ FloatingPointMatrix3x3<T>::CreateFromAxisAngle(const FloatingPointVector3<T>& ax
     auto const sinAngle = std::sin(angle.value);
     auto const cosAngle = std::cos(angle.value);
 
-    auto const t  = T{1} - cosAngle;
+    auto const t = T{1} - cosAngle;
     auto const xx = axis.X * axis.X;
     auto const yy = axis.Y * axis.Y;
     auto const zz = axis.Z * axis.Z;

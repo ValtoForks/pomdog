@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Math/Vector2.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Math/Vector2.hpp"
+#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include <array>
 
 namespace Pomdog {
 
-class POMDOG_EXPORT BoundingBox2D {
+class POMDOG_EXPORT BoundingBox2D final {
 public:
     Vector2 Min;
     Vector2 Max;

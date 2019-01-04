@@ -1,8 +1,8 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "Pomdog/Math/BoundingBox.hpp"
-#include "Pomdog/Math/ContainmentType.hpp"
 #include "Pomdog/Math/BoundingSphere.hpp"
+#include "Pomdog/Math/ContainmentType.hpp"
 #include "Pomdog/Math/Plane.hpp"
 #include "Pomdog/Math/Ray.hpp"
 #include "Pomdog/Utility/Assert.hpp"
@@ -12,8 +12,10 @@ namespace Pomdog {
 constexpr int BoundingBox::CornerCount;
 
 BoundingBox::BoundingBox(const Vector3& minIn, const Vector3& maxIn)
-    : Min(minIn), Max(maxIn)
-{}
+    : Min(minIn)
+    , Max(maxIn)
+{
+}
 
 bool BoundingBox::operator==(const BoundingBox& box) const noexcept
 {
@@ -101,7 +103,7 @@ PlaneIntersectionType BoundingBox::Intersects(const Plane& plane) const
     return plane.Intersects(*this);
 }
 
-Optional<float> BoundingBox::Intersects(const Ray& ray) const
+std::optional<float> BoundingBox::Intersects(const Ray& ray) const
 {
     return ray.Intersects(*this);
 }

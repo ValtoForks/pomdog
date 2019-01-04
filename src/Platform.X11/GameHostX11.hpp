@@ -3,16 +3,16 @@
 #pragma once
 
 #include "Pomdog/Graphics/DepthFormat.hpp"
-#include "OpenGLContextX11.hpp"
 #include "GameWindowX11.hpp"
 #include "KeyboardX11.hpp"
 #include "MouseX11.hpp"
+#include "OpenGLContextX11.hpp"
 #include "X11Context.hpp"
+#include "Pomdog/Application/Duration.hpp"
+#include "Pomdog/Application/GameClock.hpp"
 #include "Pomdog/Application/GameHost.hpp"
 #include "Pomdog/Graphics/PresentationParameters.hpp"
 #include "Pomdog/Utility/Assert.hpp"
-#include "Pomdog/Application/Duration.hpp"
-#include "Pomdog/Application/GameClock.hpp"
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <memory>
@@ -52,9 +52,7 @@ public:
 
     std::shared_ptr<Mouse> GetMouse() override;
 
-    SurfaceFormat GetBackBufferSurfaceFormat() const override;
-
-    DepthFormat GetBackBufferDepthStencilFormat() const override;
+    std::shared_ptr<Gamepad> GetGamepad() override;
 
 private:
     class Impl;

@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Graphics/BufferUsage.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Graphics/BufferUsage.hpp"
+#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
 #include <cstdint>
 #include <memory>
 
@@ -14,17 +14,17 @@ class POMDOG_EXPORT VertexBuffer final {
 public:
     VertexBuffer() = delete;
     VertexBuffer(const VertexBuffer&) = delete;
-    VertexBuffer(VertexBuffer &&) = default;
+    VertexBuffer(VertexBuffer&&) = default;
 
     VertexBuffer(
-        GraphicsDevice & graphicsDevice,
+        GraphicsDevice& graphicsDevice,
         const void* vertices,
         std::size_t vertexCount,
         std::size_t strideInBytes,
         BufferUsage bufferUsage);
 
     VertexBuffer(
-        GraphicsDevice & graphicsDevice,
+        GraphicsDevice& graphicsDevice,
         std::size_t vertexCount,
         std::size_t strideInBytes,
         BufferUsage bufferUsage);
@@ -44,8 +44,8 @@ public:
 
     ~VertexBuffer();
 
-    VertexBuffer & operator=(const VertexBuffer&) = delete;
-    VertexBuffer & operator=(VertexBuffer &&) = default;
+    VertexBuffer& operator=(const VertexBuffer&) = delete;
+    VertexBuffer& operator=(VertexBuffer&&) = default;
 
     std::size_t GetVertexCount() const noexcept;
 

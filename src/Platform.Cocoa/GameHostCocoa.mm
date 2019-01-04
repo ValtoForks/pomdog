@@ -2,36 +2,38 @@
 
 #include "GameHostCocoa.hpp"
 #include "GameWindowCocoa.hpp"
-#include "OpenGLContextCocoa.hpp"
 #include "KeyboardCocoa.hpp"
 #include "MouseCocoa.hpp"
-#include "../RenderSystem/GraphicsCommandQueueImmediate.hpp"
+#include "OpenGLContextCocoa.hpp"
+#include "PomdogOpenGLView.hpp"
+#include "../Application/SystemEvents.hpp"
+#include "../InputSystem.IOKit/GamepadIOKit.hpp"
 #include "../RenderSystem.GL4/GraphicsContextGL4.hpp"
 #include "../RenderSystem.GL4/GraphicsDeviceGL4.hpp"
-#include "../Application/SystemEvents.hpp"
-#include "Pomdog/Platform/Cocoa/PomdogOpenGLView.hpp"
+#include "../RenderSystem/GraphicsCommandQueueImmediate.hpp"
 #include "Pomdog/Application/Game.hpp"
 #include "Pomdog/Application/GameClock.hpp"
 #include "Pomdog/Audio/AudioEngine.hpp"
 #include "Pomdog/Content/AssetManager.hpp"
-#include "Pomdog/Signals/Event.hpp"
-#include "Pomdog/Signals/ScopedConnection.hpp"
 #include "Pomdog/Graphics/GraphicsCommandQueue.hpp"
 #include "Pomdog/Graphics/GraphicsDevice.hpp"
 #include "Pomdog/Graphics/PresentationParameters.hpp"
 #include "Pomdog/Graphics/Viewport.hpp"
 #include "Pomdog/Logging/Log.hpp"
+#include "Pomdog/Signals/Event.hpp"
+#include "Pomdog/Signals/ScopedConnection.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/FileSystem.hpp"
 #include "Pomdog/Utility/PathHelper.hpp"
 #include "Pomdog/Utility/StringHelper.hpp"
-#include <utility>
-#include <vector>
 #include <mutex>
 #include <thread>
+#include <utility>
+#include <vector>
 
 using Pomdog::Detail::GL4::GraphicsDeviceGL4;
 using Pomdog::Detail::GL4::GraphicsContextGL4;
+using Pomdog::Detail::InputSystem::Apple::GamepadIOKit;
 
 namespace Pomdog {
 namespace Detail {
@@ -59,7 +61,7 @@ public:
     ~Impl();
 
     void Run(const std::weak_ptr<Game>& game,
-        const std::function<void()>& onCompleted);
+        std::function<void()>&& onCompleted);
 
     void Exit();
 
@@ -79,9 +81,7 @@ public:
 
     std::shared_ptr<Mouse> GetMouse();
 
-    SurfaceFormat GetBackBufferSurfaceFormat() const noexcept;
-
-    DepthFormat GetBackBufferDepthStencilFormat() const noexcept;
+    std::shared_ptr<Gamepad> GetGamepad();
 
 private:
     void GameLoop();
@@ -123,11 +123,10 @@ private:
     std::unique_ptr<Pomdog::AssetManager> assetManager;
     std::shared_ptr<KeyboardCocoa> keyboard;
     std::shared_ptr<MouseCocoa> mouse;
+    std::shared_ptr<GamepadIOKit> gamepad;
 
     __weak PomdogOpenGLView* openGLView;
     Duration presentationInterval;
-    SurfaceFormat backBufferSurfaceFormat;
-    DepthFormat backBufferDepthStencilFormat;
     bool exitRequest;
     bool displayLinkEnabled;
 };
@@ -143,8 +142,6 @@ GameHostCocoa::Impl::Impl(
     , window(windowIn)
     , openGLView(openGLViewIn)
     , presentationInterval(Duration(1) / 60)
-    , backBufferSurfaceFormat(presentationParameters.BackBufferFormat)
-    , backBufferDepthStencilFormat(presentationParameters.DepthStencilFormat)
     , exitRequest(false)
     , displayLinkEnabled(true)
 {
@@ -163,10 +160,11 @@ GameHostCocoa::Impl::Impl(
     openGLContext->SetView(openGLView);
     openGLContext->MakeCurrent();
 
-    graphicsDevice = std::make_shared<Pomdog::GraphicsDevice>(std::make_unique<GraphicsDeviceGL4>());
+    graphicsDevice = std::make_shared<GraphicsDevice>(
+        std::make_unique<GraphicsDeviceGL4>(presentationParameters));
 
     graphicsContext = std::make_shared<GraphicsContextGL4>(openGLContext, window);
-    graphicsCommandQueue = std::make_shared<Pomdog::GraphicsCommandQueue>(
+    graphicsCommandQueue = std::make_shared<GraphicsCommandQueue>(
         std::make_unique<GraphicsCommandQueueImmediate>(graphicsContext));
     openGLContext->Unlock();
 
@@ -174,6 +172,7 @@ GameHostCocoa::Impl::Impl(
     audioEngine = std::make_shared<Pomdog::AudioEngine>();
     keyboard = std::make_shared<KeyboardCocoa>();
     mouse = std::make_shared<MouseCocoa>();
+    gamepad = std::make_shared<GamepadIOKit>(eventQueue);
 
     // Connect to system event signal
     POMDOG_ASSERT(eventQueue);
@@ -205,6 +204,7 @@ GameHostCocoa::Impl::~Impl()
 
     systemEventConnection.Disconnect();
     assetManager.reset();
+    gamepad.reset();
     keyboard.reset();
     mouse.reset();
     audioEngine.reset();
@@ -219,12 +219,12 @@ GameHostCocoa::Impl::~Impl()
 
 void GameHostCocoa::Impl::Run(
     const std::weak_ptr<Game>& weakGameIn,
-    const std::function<void()>& onCompletedIn)
+    std::function<void()>&& onCompletedIn)
 {
     POMDOG_ASSERT(!weakGameIn.expired());
     POMDOG_ASSERT(onCompletedIn);
     weakGame = weakGameIn;
-    onCompleted = onCompletedIn;
+    onCompleted = std::move(onCompletedIn);
 
     POMDOG_ASSERT(!weakGame.expired());
     auto game = weakGame.lock();
@@ -292,11 +292,11 @@ void GameHostCocoa::Impl::Exit()
 }
 
 CVReturn GameHostCocoa::Impl::DisplayLinkCallback(
-    CVDisplayLinkRef displayLink,
-    const CVTimeStamp* now,
-    const CVTimeStamp* outputTime,
-    CVOptionFlags flagsIn,
-    CVOptionFlags* flagsOut,
+    [[maybe_unused]] CVDisplayLinkRef displayLink,
+    [[maybe_unused]] const CVTimeStamp* now,
+    [[maybe_unused]] const CVTimeStamp* outputTime,
+    [[maybe_unused]] CVOptionFlags flagsIn,
+    [[maybe_unused]] CVOptionFlags* flagsOut,
     void* displayLinkContext)
 {
     auto gameHost = reinterpret_cast<GameHostCocoa::Impl*>(displayLinkContext);
@@ -376,24 +376,20 @@ void GameHostCocoa::Impl::DoEvents()
 
 void GameHostCocoa::Impl::ProcessSystemEvents(const Event& event)
 {
-    if (event.Is<WindowShouldCloseEvent>())
-    {
+    if (event.Is<WindowShouldCloseEvent>()) {
         Log::Internal("WindowShouldCloseEvent");
         this->Exit();
     }
-    else if (event.Is<WindowWillCloseEvent>())
-    {
+    else if (event.Is<WindowWillCloseEvent>()) {
         Log::Internal("WindowWillCloseEvent");
     }
-    else if (event.Is<ViewWillStartLiveResizeEvent>())
-    {
+    else if (event.Is<ViewWillStartLiveResizeEvent>()) {
         auto rect = window->GetClientBounds();
         Log::Internal(StringHelper::Format(
             "ViewWillStartLiveResizeEvent: {w: %d, h: %d}",
             rect.Width, rect.Height));
     }
-    else if (event.Is<ViewDidEndLiveResizeEvent>())
-    {
+    else if (event.Is<ViewDidEndLiveResizeEvent>()) {
         auto rect = window->GetClientBounds();
         Log::Internal(StringHelper::Format(
             "ViewDidEndLiveResizeEvent: {w: %d, h: %d}",
@@ -402,8 +398,10 @@ void GameHostCocoa::Impl::ProcessSystemEvents(const Event& event)
     else {
         POMDOG_ASSERT(keyboard);
         POMDOG_ASSERT(mouse);
+        POMDOG_ASSERT(gamepad);
         keyboard->HandleEvent(event);
         mouse->HandleEvent(event);
+        gamepad->HandleEvent(event);
     }
 }
 
@@ -411,13 +409,19 @@ void GameHostCocoa::Impl::ClientSizeChanged()
 {
     openGLContext->Lock();
     openGLContext->MakeCurrent();
-    {
-        POMDOG_ASSERT(openGLContext->NativeOpenGLContext() != nil);
-        [openGLContext->NativeOpenGLContext() update];
 
-        auto bounds = window->GetClientBounds();
-        window->ClientSizeChanged(bounds.Width, bounds.Height);
-    }
+    POMDOG_ASSERT(openGLContext->NativeOpenGLContext() != nil);
+    [openGLContext->NativeOpenGLContext() update];
+
+    POMDOG_ASSERT(graphicsDevice);
+    POMDOG_ASSERT(graphicsDevice->GetNativeGraphicsDevice());
+
+    auto nativeDevice = static_cast<GraphicsDeviceGL4*>(graphicsDevice->GetNativeGraphicsDevice());
+    auto bounds = window->GetClientBounds();
+
+    nativeDevice->ClientSizeChanged(bounds.Width, bounds.Height);
+    window->ClientSizeChanged(bounds.Width, bounds.Height);
+
     openGLContext->Unlock();
 }
 
@@ -463,14 +467,9 @@ std::shared_ptr<Mouse> GameHostCocoa::Impl::GetMouse()
     return mouse;
 }
 
-SurfaceFormat GameHostCocoa::Impl::GetBackBufferSurfaceFormat() const noexcept
+std::shared_ptr<Gamepad> GameHostCocoa::Impl::GetGamepad()
 {
-    return backBufferSurfaceFormat;
-}
-
-DepthFormat GameHostCocoa::Impl::GetBackBufferDepthStencilFormat() const noexcept
-{
-    return backBufferDepthStencilFormat;
+    return gamepad;
 }
 
 // MARK: - GameHostCocoa
@@ -481,16 +480,17 @@ GameHostCocoa::GameHostCocoa(
     const std::shared_ptr<EventQueue>& eventQueue,
     const PresentationParameters& presentationParameters)
     : impl(std::make_unique<Impl>(openGLView, window, eventQueue, presentationParameters))
-{}
+{
+}
 
 GameHostCocoa::~GameHostCocoa() = default;
 
 void GameHostCocoa::Run(
     const std::weak_ptr<Game>& game,
-    const std::function<void()>& onCompleted)
+    std::function<void()>&& onCompleted)
 {
     POMDOG_ASSERT(impl);
-    impl->Run(game, onCompleted);
+    impl->Run(game, std::move(onCompleted));
 }
 
 void GameHostCocoa::Exit()
@@ -547,16 +547,10 @@ std::shared_ptr<Mouse> GameHostCocoa::GetMouse()
     return impl->GetMouse();
 }
 
-SurfaceFormat GameHostCocoa::GetBackBufferSurfaceFormat() const
+std::shared_ptr<Gamepad> GameHostCocoa::GetGamepad()
 {
     POMDOG_ASSERT(impl);
-    return impl->GetBackBufferSurfaceFormat();
-}
-
-DepthFormat GameHostCocoa::GetBackBufferDepthStencilFormat() const
-{
-    POMDOG_ASSERT(impl);
-    return impl->GetBackBufferDepthStencilFormat();
+    return impl->GetGamepad();
 }
 
 } // namespace Cocoa

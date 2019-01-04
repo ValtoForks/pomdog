@@ -7,9 +7,9 @@
 #include "Pomdog/Graphics/PipelineState.hpp"
 #include "Pomdog/Graphics/PipelineStateDescription.hpp"
 #include "Pomdog/Graphics/Shader.hpp"
+#include "Pomdog/Logging/Log.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
-#include "Pomdog/Logging/Log.hpp"
 #include <utility>
 
 namespace Pomdog {
@@ -60,6 +60,9 @@ std::shared_ptr<PipelineState> Builder<PipelineState>::Impl::Load()
         description.DepthStencilState = DepthStencilDescription::CreateDefault();
         hasDepthStencilState = true;
     }
+
+    POMDOG_ASSERT(hasRenderTargetViewFormats);
+    POMDOG_ASSERT(hasDepthStencilViewFormat);
 
     if (!hasRenderTargetViewFormats) {
 #if defined(DEBUG) && !defined(NDEBUG)
@@ -193,6 +196,17 @@ Builder<PipelineState> & Builder<PipelineState>::SetConstantBufferBindSlot(
 #endif
 
     impl->description.ConstantBufferBindSlots.emplace(name, slotIndex);
+    return *this;
+}
+
+Builder<PipelineState> & Builder<PipelineState>::SetRenderTargetViewFormat(
+    SurfaceFormat renderTargetViewFormat)
+{
+    POMDOG_ASSERT(impl);
+    POMDOG_ASSERT(!impl->hasRenderTargetViewFormats);
+    impl->description.RenderTargetViewFormats.clear();
+    impl->description.RenderTargetViewFormats.push_back(renderTargetViewFormat);
+    impl->hasRenderTargetViewFormats = true;
     return *this;
 }
 

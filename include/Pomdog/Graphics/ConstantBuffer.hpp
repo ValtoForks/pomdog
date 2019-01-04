@@ -2,15 +2,15 @@
 
 #pragma once
 
-#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Graphics/detail/EffectBinaryParameter.hpp"
-#include "Pomdog/Graphics/BufferUsage.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Graphics/BufferUsage.hpp"
+#include "Pomdog/Graphics/detail/EffectBinaryParameter.hpp"
+#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
 #include <cstddef>
 #include <memory>
-#include <vector>
-#include <utility>
 #include <type_traits>
+#include <utility>
+#include <vector>
 
 namespace Pomdog {
 
@@ -18,10 +18,10 @@ class POMDOG_EXPORT ConstantBuffer final {
 public:
     ConstantBuffer() = delete;
     ConstantBuffer(const ConstantBuffer&) = delete;
-    ConstantBuffer & operator=(const ConstantBuffer&) = delete;
+    ConstantBuffer& operator=(const ConstantBuffer&) = delete;
 
     ConstantBuffer(
-        GraphicsDevice & graphicsDevice,
+        GraphicsDevice& graphicsDevice,
         std::size_t sizeInBytes,
         BufferUsage bufferUsage);
 
@@ -31,7 +31,7 @@ public:
         BufferUsage bufferUsage);
 
     ConstantBuffer(
-        GraphicsDevice & graphicsDevice,
+        GraphicsDevice& graphicsDevice,
         const void* sourceData,
         std::size_t sizeInBytes,
         BufferUsage bufferUsage);

@@ -9,6 +9,7 @@
 #include <X11/XKBlib.h>
 #include <X11/Xutil.h>
 #include <algorithm>
+#include <cstring>
 #include <map>
 
 namespace Pomdog {
@@ -317,8 +318,6 @@ void KeyboardX11::HandleEvent(XEvent & event)
         Log::Internal(std::string("IsKeyDown: Unspecified key: ")
             + std::to_string(static_cast<int>(event.xkey.keycode)));
     }
-    Log::Internal((keyState == KeyState::Down ? "KeyDown": "KeyUp  ")
-        + (": key = " + std::to_string(static_cast<int>(key))));
 #endif
 }
 

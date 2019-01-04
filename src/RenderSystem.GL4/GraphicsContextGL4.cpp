@@ -9,12 +9,14 @@
 #include "RenderTarget2DGL4.hpp"
 #include "SamplerStateGL4.hpp"
 #include "TypesafeHelperGL4.hpp"
+#include "../Basic/Unreachable.hpp"
 #include "../RenderSystem/BufferHelper.hpp"
 #include "../RenderSystem/GraphicsCapabilities.hpp"
 #include "../RenderSystem/GraphicsCommandListImmediate.hpp"
 #include "../RenderSystem/NativeRenderTarget2D.hpp"
 #include "../RenderSystem/NativeTexture2D.hpp"
 #include "../Utility/ScopeGuard.hpp"
+#include "Pomdog/Application/GameWindow.hpp"
 #include "Pomdog/Basic/Platform.hpp"
 #include "Pomdog/Graphics/IndexBuffer.hpp"
 #include "Pomdog/Graphics/PrimitiveTopology.hpp"
@@ -23,20 +25,16 @@
 #include "Pomdog/Graphics/Texture2D.hpp"
 #include "Pomdog/Graphics/VertexBuffer.hpp"
 #include "Pomdog/Graphics/Viewport.hpp"
-#include "Pomdog/Application/GameWindow.hpp"
+#include "Pomdog/Logging/Log.hpp"
 #include "Pomdog/Math/Color.hpp"
 #include "Pomdog/Math/Rectangle.hpp"
 #include "Pomdog/Math/Vector4.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
-
-// logging
-#include "Pomdog/Logging/Log.hpp"
 #include "Pomdog/Utility/StringHelper.hpp"
-
-#include <limits>
-#include <cmath>
 #include <array>
+#include <cmath>
+#include <limits>
 #include <utility>
 
 namespace Pomdog {
@@ -52,9 +50,7 @@ GLenum ToPrimitiveTopology(PrimitiveTopology primitiveTopology) noexcept
     case PrimitiveTopology::LineList: return GL_LINES;
     case PrimitiveTopology::LineStrip: return GL_LINE_STRIP;
     }
-#ifdef _MSC_VER
-    return GL_TRIANGLES;
-#endif
+    POMDOG_UNREACHABLE("Unsupported primitive topology");
 }
 
 GLenum ToIndexElementType(IndexElementSize indexElementSize) noexcept
@@ -66,9 +62,7 @@ GLenum ToIndexElementType(IndexElementSize indexElementSize) noexcept
     case IndexElementSize::SixteenBits: return GL_UNSIGNED_SHORT;
     case IndexElementSize::ThirtyTwoBits: return GL_UNSIGNED_INT;
     }
-#ifdef _MSC_VER
-    return GL_UNSIGNED_INT;
-#endif
+    POMDOG_UNREACHABLE("Unsupported index element size");
 }
 
 template <typename T>
@@ -108,7 +102,7 @@ GLenum ToColorAttachment(T index) noexcept
     return static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + index);
 }
 
-Optional<FrameBufferGL4> CreateFrameBuffer()
+std::optional<FrameBufferGL4> CreateFrameBuffer()
 {
     auto const prevFrameBuffer = TypesafeHelperGL4::Get<FrameBufferGL4>();
     ScopeGuard scope([&prevFrameBuffer] {
@@ -124,9 +118,8 @@ Optional<FrameBufferGL4> CreateFrameBuffer()
     // Check framebuffer
     auto const status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
-    if (GL_FRAMEBUFFER_UNSUPPORTED == status)
-    {
-        return Pomdog::NullOpt;
+    if (GL_FRAMEBUFFER_UNSUPPORTED == status) {
+        return std::nullopt;
     }
 
     return std::move(frameBuffer);
@@ -134,16 +127,16 @@ Optional<FrameBufferGL4> CreateFrameBuffer()
 
 void ApplyTexture2D(int index, const Texture2DObjectGL4& textureObject)
 {
-    #if defined(DEBUG) && !defined(NDEBUG)
+#if defined(DEBUG) && !defined(NDEBUG)
     {
-        static const auto MaxCombinedTextureImageUnits = ([]{
+        static const auto MaxCombinedTextureImageUnits = ([] {
             GLint units = 0;
             glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &units);
             return units;
         })();
         POMDOG_ASSERT(index < MaxCombinedTextureImageUnits);
     }
-    #endif
+#endif
 
     glActiveTexture(ToTextureUnitIndexGL4(index));
     POMDOG_CHECK_ERROR_GL4("glActiveTexture");
@@ -217,7 +210,7 @@ void SetScissorRectangle(
 }
 
 void SetRenderTarget(
-    const Optional<FrameBufferGL4>& frameBuffer,
+    const std::optional<FrameBufferGL4>& frameBuffer,
     std::vector<std::shared_ptr<RenderTarget2DGL4>> & renderTargets)
 {
     POMDOG_ASSERT(frameBuffer);
@@ -245,7 +238,7 @@ void SetRenderTarget(
 }
 
 void SetRenderTargets(
-    const Optional<FrameBufferGL4>& frameBuffer,
+    const std::optional<FrameBufferGL4>& frameBuffer,
     std::vector<std::shared_ptr<RenderTarget2DGL4>> & renderTargets,
     const std::vector<std::shared_ptr<RenderTarget2D>>& renderTargetViewsIn)
 {
@@ -277,8 +270,7 @@ void SetRenderTargets(
 
     // Attach textures
     int index = 0;
-    for (const auto& renderTarget : renderTargetViewsIn)
-    {
+    for (const auto& renderTarget : renderTargetViewsIn) {
         POMDOG_ASSERT(renderTarget);
 
         auto const nativeRenderTarget = static_cast<RenderTarget2DGL4*>(renderTarget->GetNativeRenderTarget2D());
@@ -334,8 +326,9 @@ const GLvoid* ComputeStartIndexLocationPointer(
     IndexElementSize indexElementSize,
     std::size_t startIndexLocation) noexcept
 {
-    auto offset = startIndexLocation * Detail::BufferHelper::ToIndexElementOffsetBytes(indexElementSize);
-    return static_cast<const std::int8_t*>(nullptr) + offset;
+    using Detail::BufferHelper::ToIndexElementOffsetBytes;
+    auto offsetBytes = startIndexLocation * ToIndexElementOffsetBytes(indexElementSize);
+    return reinterpret_cast<const GLvoid*>(offsetBytes);
 }
 
 } // unnamed namespace
@@ -390,7 +383,7 @@ GraphicsContextGL4::~GraphicsContextGL4()
     if (frameBuffer) {
         glDeleteFramebuffers(1, frameBuffer->Data());
         POMDOG_CHECK_ERROR_GL4("glDeleteFramebuffers");
-        frameBuffer = Pomdog::NullOpt;
+        frameBuffer = std::nullopt;
     }
 
     nativeContext.reset();
@@ -434,6 +427,31 @@ void GraphicsContextGL4::ApplyPipelineState()
 
         needToApplyPipelineState = false;
     }
+}
+
+void GraphicsContextGL4::EmulateStartInstanceLocation(std::size_t startInstanceLocation)
+{
+    if (startInstanceLocation == 0) {
+        // NOTE: nothing to do
+        return;
+    }
+
+    auto newVertexBuffers = vertexBuffers;
+    for (size_t i = 1; i < newVertexBuffers.size(); i++) {
+        // NOTE: `i >= 1` is equality to instanced vertex buffer.
+        auto& binding = newVertexBuffers[i];
+        const auto strideBytes = binding.VertexBuffer->GetStrideBytes();
+        POMDOG_ASSERT(strideBytes > 0);
+        binding.VertexOffset += (strideBytes * startInstanceLocation);
+    }
+
+    auto inputLayout = pipelineState->GetInputLayout();
+    POMDOG_ASSERT(inputLayout);
+    POMDOG_ASSERT(!newVertexBuffers.empty());
+
+    // NOTE: The following code is a hack.
+    inputLayout->Apply(newVertexBuffers);
+    needToApplyInputLayout = true;
 }
 
 void GraphicsContextGL4::Draw(
@@ -514,18 +532,14 @@ void GraphicsContextGL4::DrawInstanced(
     // NOTE:
     // 'glDrawArraysInstancedBaseInstance' is supported in OpenGL 4.2 and later.
     // But unfortunately, macOS Sierra (latest version of Mac 2016) still uses OpenGL 4.1.
-    POMDOG_ASSERT_MESSAGE(startInstanceLocation == 0, "This feature is not supported yet on Mac.");
-    if (startInstanceLocation == 0) {
-        glDrawArraysInstanced(
-            primitiveTopology.value,
-            static_cast<GLint>(startVertexLocation),
-            static_cast<GLsizei>(vertexCountPerInstance),
-            static_cast<GLsizei>(instanceCount));
-        POMDOG_CHECK_ERROR_GL4("glDrawArraysInstanced");
-    }
-#endif
-
-#if !defined(POMDOG_PLATFORM_MACOSX)
+    EmulateStartInstanceLocation(startInstanceLocation);
+    glDrawArraysInstanced(
+        primitiveTopology.value,
+        static_cast<GLint>(startVertexLocation),
+        static_cast<GLsizei>(vertexCountPerInstance),
+        static_cast<GLsizei>(instanceCount));
+    POMDOG_CHECK_ERROR_GL4("glDrawArraysInstanced");
+#else
     glDrawArraysInstancedBaseInstance(
         primitiveTopology.value,
         static_cast<GLint>(startVertexLocation),
@@ -566,19 +580,15 @@ void GraphicsContextGL4::DrawIndexedInstanced(
     // NOTE:
     // 'glDrawElementsInstancedBaseInstance' is supported in OpenGL 4.2 and later.
     // But unfortunately, macOS Sierra (latest version of Mac 2016) still uses OpenGL 4.1.
-    POMDOG_ASSERT_MESSAGE(startInstanceLocation == 0, "This feature is not supported yet on Mac.");
-    if (startInstanceLocation == 0) {
-        glDrawElementsInstanced(
-            primitiveTopology.value,
-            static_cast<GLsizei>(indexCountPerInstance),
-            ToIndexElementType(indexElementSize),
-            ComputeStartIndexLocationPointer(indexElementSize, startIndexLocation),
-            static_cast<GLsizei>(instanceCount));
-        POMDOG_CHECK_ERROR_GL4("glDrawElementsInstanced");
-    }
-#endif
-
-#if !defined(POMDOG_PLATFORM_MACOSX)
+    EmulateStartInstanceLocation(startInstanceLocation);
+    glDrawElementsInstanced(
+        primitiveTopology.value,
+        static_cast<GLsizei>(indexCountPerInstance),
+        ToIndexElementType(indexElementSize),
+        ComputeStartIndexLocationPointer(indexElementSize, startIndexLocation),
+        static_cast<GLsizei>(instanceCount));
+    POMDOG_CHECK_ERROR_GL4("glDrawElementsInstanced");
+#else
     glDrawElementsInstancedBaseInstance(
         primitiveTopology.value,
         static_cast<GLsizei>(indexCountPerInstance),
@@ -694,8 +704,7 @@ void GraphicsContextGL4::SetTexture(int index)
     weakTextures[index].reset();
 #endif
 
-    if (textures[index])
-    {
+    if (textures[index]) {
         glActiveTexture(ToTextureUnitIndexGL4(index));
         POMDOG_CHECK_ERROR_GL4("glActiveTexture");
 
@@ -703,7 +712,7 @@ void GraphicsContextGL4::SetTexture(int index)
         POMDOG_CHECK_ERROR_GL4("glBindTexture");
     }
 
-    textures[index] = Pomdog::NullOpt;
+    textures[index] = std::nullopt;
 }
 
 void GraphicsContextGL4::SetTexture(int index, const std::shared_ptr<Texture2D>& textureIn)

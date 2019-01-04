@@ -2,21 +2,21 @@
 
 #pragma once
 
-#include "Pomdog/Logging/LogLevel.hpp"
 #include "Pomdog/Basic/Export.hpp"
-#include <string>
+#include "Pomdog/Logging/LogLevel.hpp"
 #include <functional>
+#include <string>
 
 namespace Pomdog {
 
 class Connection;
 class LogEntry;
 
-class POMDOG_EXPORT Log {
+class POMDOG_EXPORT Log final {
 public:
     static Connection Connect(const std::function<void(const LogEntry&)>& slot);
 
-    static Connection Connect(std::function<void(const LogEntry&)> && slot);
+    static Connection Connect(std::function<void(const LogEntry&)>&& slot);
 
     static Connection Connect(
         const std::string& channelName,
@@ -24,7 +24,7 @@ public:
 
     static Connection Connect(
         const std::string& channelName,
-        std::function<void(const LogEntry&)> && slot);
+        std::function<void(const LogEntry&)>&& slot);
 
     static LogLevel GetLevel();
 
@@ -34,21 +34,21 @@ public:
 
     static void SetLevel(const std::string& channelName, LogLevel verbosity);
 
-    static void Critical(const std::string& channel, const std::string& message);
+    static void Critical(const std::string& channelName, const std::string& message);
 
-    static void Warning(const std::string& channel, const std::string& message);
+    static void Warning(const std::string& channelName, const std::string& message);
 
     static void Info(const std::string& message);
 
-    static void Info(const std::string& channel, const std::string& message);
+    static void Info(const std::string& channelName, const std::string& message);
 
     static void Verbose(const std::string& message);
 
-    static void Verbose(const std::string& channel, const std::string& message);
+    static void Verbose(const std::string& channelName, const std::string& message);
 
     static void Internal(const std::string& message);
 
-    static void Internal(const std::string& channel, const std::string& message);
+    static void Internal(const std::string& channelName, const std::string& message);
 };
 
 } // namespace Pomdog

@@ -1,8 +1,8 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "Pomdog/Signals/EventQueue.hpp"
-#include "Pomdog/Signals/detail/SignalBody.hpp"
 #include "Pomdog/Signals/Connection.hpp"
+#include "Pomdog/Signals/detail/SignalBody.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include <algorithm>
 
@@ -10,7 +10,8 @@ namespace Pomdog {
 
 EventQueue::EventQueue()
     : signalBody(std::make_shared<SignalBody>())
-{}
+{
+}
 
 Connection EventQueue::Connect(const std::function<void(const Event&)>& slot)
 {
@@ -42,7 +43,7 @@ void EventQueue::Emit()
         std::swap(notifications, events);
     }
 
-    for (auto & event: notifications) {
+    for (auto& event : notifications) {
         signalBody->operator()(event);
     }
 }

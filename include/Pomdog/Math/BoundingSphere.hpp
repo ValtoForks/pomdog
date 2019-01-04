@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Math/Vector3.hpp"
-#include "Pomdog/Utility/Optional.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Math/Vector3.hpp"
+#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
+#include <optional>
 
 namespace Pomdog {
 
-class POMDOG_EXPORT BoundingSphere {
+class POMDOG_EXPORT BoundingSphere final {
 public:
     Vector3 Center;
     float Radius;
@@ -34,7 +34,7 @@ public:
 
     PlaneIntersectionType Intersects(const Plane& plane) const;
 
-    Optional<float> Intersects(const Ray& ray) const;
+    std::optional<float> Intersects(const Ray& ray) const;
 };
 
 } // namespace Pomdog

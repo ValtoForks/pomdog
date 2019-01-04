@@ -15,25 +15,24 @@
 #include "Pomdog/Audio/AudioClip.hpp"
 #include "Pomdog/Content/Utility/BinaryReader.hpp"
 #include "Pomdog/Content/Utility/MakeFourCC.hpp"
+#include "Pomdog/Logging/Log.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
-#include "Pomdog/Logging/Log.hpp"
 
-//#if defined(POMDOG_PLATFORM_MACOSX) \
-//    || defined(POMDOG_PLATFORM_APPLE_IOS) \
-//    || defined(POMDOG_PLATFORM_LINUX)
-//#include <AudioToolbox/AudioFile.h>
-//#include <AudioToolbox/AudioConverter.h>
-//#elif defined(POMDOG_PLATFORM_WIN32) \
-//    || defined(POMDOG_PLATFORM_XBOX_ONE)
-//#include "Pomdog/Content/Utility/MakeFourCC.hpp"
-//#include "Pomdog/Platform/Win32/PrerequisitesWin32.hpp"
-//#include <mmsystem.h>
-//#endif
+#if 0
+#if defined(POMDOG_PLATFORM_MACOSX) || defined(POMDOG_PLATFORM_APPLE_IOS)
+#include <AudioToolbox/AudioConverter.h>
+#include <AudioToolbox/AudioFile.h>
+#elif defined(POMDOG_PLATFORM_WIN32) || defined(POMDOG_PLATFORM_XBOX_ONE)
+#include "Pomdog/Content/Utility/MakeFourCC.hpp"
+#include "Pomdog/Platform/Win32/PrerequisitesWin32.hpp"
+#include <mmsystem.h>
+#endif
+#endif
 
-#include <vector>
 #include <memory>
 #include <utility>
+#include <vector>
 
 namespace Pomdog {
 namespace Detail {
@@ -397,7 +396,7 @@ struct PcmWaveFormat {
 };
 
 struct WaveFormat {
-    PcmWaveFormat PcmWaveFormat;
+    Pomdog::Detail::PcmWaveFormat PcmWaveFormat;
     std::uint16_t ExtraBytes;
     std::vector<std::uint8_t> ExtraData;
 };

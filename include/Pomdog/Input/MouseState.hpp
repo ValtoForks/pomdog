@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "Pomdog/Input/ButtonState.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Input/ButtonState.hpp"
 #include "Pomdog/Math/Point2D.hpp"
 #include <cstdint>
 
 namespace Pomdog {
 
-class POMDOG_EXPORT MouseState {
+class POMDOG_EXPORT MouseState final {
 public:
     ///@brief Position of the mouse cursor
     Point2D Position {0, 0};

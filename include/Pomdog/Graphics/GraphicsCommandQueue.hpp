@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
 #include "Pomdog/Basic/Export.hpp"
-#include <memory>
+#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
 #include <cstdlib>
+#include <memory>
 
 namespace Pomdog {
 
@@ -15,10 +15,10 @@ class POMDOG_EXPORT GraphicsCommandQueue final {
 public:
     GraphicsCommandQueue() = delete;
     GraphicsCommandQueue(const GraphicsCommandQueue&) = delete;
-    GraphicsCommandQueue & operator=(const GraphicsCommandQueue&) = delete;
+    GraphicsCommandQueue& operator=(const GraphicsCommandQueue&) = delete;
 
     explicit GraphicsCommandQueue(
-        std::unique_ptr<Detail::NativeGraphicsCommandQueue> && nativeCommandQueue);
+        std::unique_ptr<Detail::NativeGraphicsCommandQueue>&& nativeCommandQueue);
 
     std::size_t GetCommandCount() const noexcept;
 

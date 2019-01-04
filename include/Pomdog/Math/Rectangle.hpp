@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Pomdog/Math/Point2D.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Math/Point2D.hpp"
 #include <cstdint>
 
 namespace Pomdog {
@@ -20,7 +20,7 @@ namespace Pomdog {
 ///
 ///     Bottom = y + height
 ///@endcode
-class POMDOG_EXPORT Rectangle {
+class POMDOG_EXPORT Rectangle final {
 public:
     std::int32_t X, Y;
     std::int32_t Width, Height;

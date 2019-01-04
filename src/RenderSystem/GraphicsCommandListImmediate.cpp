@@ -2,13 +2,14 @@
 
 #include "GraphicsCommandListImmediate.hpp"
 #include "NativeGraphicsContext.hpp"
-#include "Pomdog/Math/Color.hpp"
-#include "Pomdog/Math/Rectangle.hpp"
 #include "Pomdog/Graphics/GraphicsDevice.hpp"
 #include "Pomdog/Graphics/RenderPass.hpp"
 #include "Pomdog/Graphics/VertexBufferBinding.hpp"
 #include "Pomdog/Graphics/Viewport.hpp"
+#include "Pomdog/Math/Color.hpp"
+#include "Pomdog/Math/Rectangle.hpp"
 #include "Pomdog/Utility/Assert.hpp"
+#include <array>
 
 namespace Pomdog {
 namespace Detail {
@@ -16,7 +17,7 @@ namespace {
 
 using Detail::GraphicsCommand;
 
-struct DrawCommand final: public GraphicsCommand {
+struct DrawCommand final : public GraphicsCommand {
     std::size_t vertexCount;
     std::size_t startVertexLocation;
 
@@ -26,7 +27,7 @@ struct DrawCommand final: public GraphicsCommand {
     }
 };
 
-struct DrawIndexedCommand final: public GraphicsCommand {
+struct DrawIndexedCommand final : public GraphicsCommand {
     std::size_t indexCount;
     std::size_t startIndexLocation;
 
@@ -36,7 +37,7 @@ struct DrawIndexedCommand final: public GraphicsCommand {
     }
 };
 
-struct DrawInstancedCommand final: public GraphicsCommand {
+struct DrawInstancedCommand final : public GraphicsCommand {
     std::size_t vertexCountPerInstance;
     std::size_t instanceCount;
     std::size_t startVertexLocation;
@@ -52,7 +53,7 @@ struct DrawInstancedCommand final: public GraphicsCommand {
     }
 };
 
-struct DrawIndexedInstancedCommand final: public GraphicsCommand {
+struct DrawIndexedInstancedCommand final : public GraphicsCommand {
     std::size_t indexCountPerInstance;
     std::size_t instanceCount;
     std::size_t startIndexLocation;
@@ -68,7 +69,7 @@ struct DrawIndexedInstancedCommand final: public GraphicsCommand {
     }
 };
 
-struct SetPrimitiveTopologyCommand final: public GraphicsCommand {
+struct SetPrimitiveTopologyCommand final : public GraphicsCommand {
     PrimitiveTopology primitiveTopology;
 
     void Execute(NativeGraphicsContext & graphicsContext) override
@@ -77,7 +78,7 @@ struct SetPrimitiveTopologyCommand final: public GraphicsCommand {
     }
 };
 
-struct SetBlendFactorCommand final: public GraphicsCommand {
+struct SetBlendFactorCommand final : public GraphicsCommand {
     Color blendFactor;
 
     void Execute(NativeGraphicsContext & graphicsContext) override
@@ -86,7 +87,7 @@ struct SetBlendFactorCommand final: public GraphicsCommand {
     }
 };
 
-struct SetVertexBuffersCommand final: public GraphicsCommand {
+struct SetVertexBuffersCommand final : public GraphicsCommand {
     std::vector<VertexBufferBinding> vertexBuffers;
 
     void Execute(NativeGraphicsContext & graphicsContext) override
@@ -95,7 +96,7 @@ struct SetVertexBuffersCommand final: public GraphicsCommand {
     }
 };
 
-struct SetIndexBufferCommand final: public GraphicsCommand {
+struct SetIndexBufferCommand final : public GraphicsCommand {
     std::shared_ptr<IndexBuffer> indexBuffer;
 
     void Execute(NativeGraphicsContext & graphicsContext) override
@@ -104,7 +105,7 @@ struct SetIndexBufferCommand final: public GraphicsCommand {
     }
 };
 
-struct SetPipelineStateCommand final: public GraphicsCommand {
+struct SetPipelineStateCommand final : public GraphicsCommand {
     std::shared_ptr<NativePipelineState> pipelineState;
 
     void Execute(NativeGraphicsContext & graphicsContext) override
@@ -114,7 +115,7 @@ struct SetPipelineStateCommand final: public GraphicsCommand {
     }
 };
 
-struct SetConstantBufferCommand final: public GraphicsCommand {
+struct SetConstantBufferCommand final : public GraphicsCommand {
     std::shared_ptr<NativeBuffer> constantBuffer;
     int slotIndex;
 
@@ -126,7 +127,7 @@ struct SetConstantBufferCommand final: public GraphicsCommand {
     }
 };
 
-struct SetSamplerStateCommand final: public GraphicsCommand {
+struct SetSamplerStateCommand final : public GraphicsCommand {
     std::shared_ptr<NativeSamplerState> sampler;
     int slotIndex;
 
@@ -141,7 +142,7 @@ struct SetSamplerStateCommand final: public GraphicsCommand {
     }
 };
 
-struct SetTextureCommand final: public GraphicsCommand {
+struct SetTextureCommand final : public GraphicsCommand {
     std::shared_ptr<Texture2D> texture;
     int slotIndex;
 
@@ -156,7 +157,7 @@ struct SetTextureCommand final: public GraphicsCommand {
     }
 };
 
-struct SetTextureRenderTarget2DCommand final: public GraphicsCommand {
+struct SetTextureRenderTarget2DCommand final : public GraphicsCommand {
     std::shared_ptr<RenderTarget2D> texture;
     int slotIndex;
 
@@ -191,7 +192,7 @@ void GraphicsCommandListImmediate::Close()
 #else
     constexpr bool useMetal = false;
 #endif
-    if (useMetal) {
+    if constexpr (useMetal) {
         SortCommandsForMetal();
     }
     commands.shrink_to_fit();
@@ -270,7 +271,7 @@ void GraphicsCommandListImmediate::SetRenderPass(RenderPass && renderPass)
     command->renderPass = std::move(renderPass);
 
     if (command->renderPass.RenderTargets.empty()) {
-        command->renderPass.RenderTargets.emplace_back(nullptr, Pomdog::NullOpt);
+        command->renderPass.RenderTargets.emplace_back(nullptr, std::nullopt);
     }
     commands.push_back(std::move(command));
 }
@@ -391,23 +392,57 @@ void GraphicsCommandListImmediate::ExecuteImmediate(NativeGraphicsContext & grap
 
 void GraphicsCommandListImmediate::SortCommandsForMetal()
 {
+    static_assert(static_cast<int>(GraphicsCommandType::DrawCommand) == 0, "");
+    static_assert(static_cast<int>(GraphicsCommandType::DrawIndexedCommand) == 1, "");
+    static_assert(static_cast<int>(GraphicsCommandType::DrawInstancedCommand) == 2, "");
+    static_assert(static_cast<int>(GraphicsCommandType::DrawIndexedInstancedCommand) == 3, "");
+    static_assert(static_cast<int>(GraphicsCommandType::SetPrimitiveTopologyCommand) == 4, "");
+    static_assert(static_cast<int>(GraphicsCommandType::SetBlendFactorCommand) == 5, "");
+    static_assert(static_cast<int>(GraphicsCommandType::SetVertexBuffersCommand) == 6, "");
+    static_assert(static_cast<int>(GraphicsCommandType::SetIndexBufferCommand) == 7, "");
+    static_assert(static_cast<int>(GraphicsCommandType::SetPipelineStateCommand) == 8, "");
+    static_assert(static_cast<int>(GraphicsCommandType::SetConstantBufferCommand) == 9, "");
+    static_assert(static_cast<int>(GraphicsCommandType::SetSamplerStateCommand) == 10, "");
+    static_assert(static_cast<int>(GraphicsCommandType::SetTextureCommand) == 11, "");
+    static_assert(static_cast<int>(GraphicsCommandType::SetTextureRenderTarget2DCommand) == 12, "");
+    static_assert(static_cast<int>(GraphicsCommandType::SetRenderPassCommand) == 13, "");
+
+    constexpr std::int8_t priorityDrawCommand = 31;
+    constexpr std::int8_t priorityDefault = 30;
+
+    const std::array<std::int8_t, 14> priorities = {{
+        priorityDrawCommand, // DrawCommand
+        priorityDrawCommand, // DrawIndexedCommand
+        priorityDrawCommand, // DrawInstancedCommand
+        priorityDrawCommand, // DrawIndexedInstancedCommand
+        priorityDefault, // SetPrimitiveTopologyCommand
+        priorityDefault, // SetBlendFactorCommand
+        priorityDefault, // SetVertexBuffersCommand
+        priorityDefault, // SetIndexBufferCommand
+        priorityDefault, // SetPipelineStateCommand
+        priorityDefault, // SetConstantBufferCommand
+        priorityDefault, // SetSamplerStateCommand
+        priorityDefault, // SetTextureCommand
+        priorityDefault, // SetTextureRenderTarget2DCommand
+        0, // SetRenderPassCommand
+    }};
+
     // NOTE: Sort commands for MTLRenderCommandEncoder by using odd-even sort.
     for (size_t k = 0; k < commands.size(); ++k) {
         bool swapped = false;
         for (size_t i = 1 + (k % 2); i < commands.size(); i += 2) {
             auto & a = commands[i - 1];
             auto & b = commands[i];
-            if ((b->commandType == GraphicsCommandType::SetRenderPassCommand) &&
-                (a->commandType != GraphicsCommandType::SetRenderPassCommand) &&
-                (a->commandType != GraphicsCommandType::DrawCommand) &&
-                (a->commandType != GraphicsCommandType::DrawIndexedCommand) &&
-                (a->commandType != GraphicsCommandType::DrawInstancedCommand) &&
-                (a->commandType != GraphicsCommandType::DrawIndexedInstancedCommand)) {
+            const auto x = static_cast<std::int8_t>(a->commandType);
+            const auto y = static_cast<std::int8_t>(b->commandType);
+            POMDOG_ASSERT(x <= static_cast<std::int8_t>(priorities.size()));
+            POMDOG_ASSERT(y <= static_cast<std::int8_t>(priorities.size()));
+            if ((priorities[x] > priorities[y]) && (priorities[x] != priorityDrawCommand)) {
                 std::swap(a, b);
                 swapped = true;
             }
         }
-        if (!swapped) {
+        if (!swapped && (k > 0)) {
             break;
         }
     }
@@ -433,18 +468,18 @@ void GraphicsCommandListImmediate::SortCommandsForMetal()
 
     // NOTE: Duplicate missing commands for MTLRenderCommandEncoder.
     std::size_t renderPassCommandIndex = 0;
-    Optional<std::size_t> setPipelineStateCommand;
-    Optional<std::size_t> setPrimitiveTopologyCommand;
-    Optional<std::size_t> setBlendFactorCommand;
-    Optional<std::size_t> setVertexBuffersCommand;
-    Optional<std::size_t> setIndexBufferCommand;
-    std::vector<Optional<std::size_t>> setConstantBufferCommands;
-    std::vector<Optional<std::size_t>> setSamplerCommands;
-    std::vector<Optional<std::size_t>> setTextureCommands;
+    std::optional<std::size_t> setPipelineStateCommand;
+    std::optional<std::size_t> setPrimitiveTopologyCommand;
+    std::optional<std::size_t> setBlendFactorCommand;
+    std::optional<std::size_t> setVertexBuffersCommand;
+    std::optional<std::size_t> setIndexBufferCommand;
+    std::vector<std::optional<std::size_t>> setConstantBufferCommands;
+    std::vector<std::optional<std::size_t>> setSamplerCommands;
+    std::vector<std::optional<std::size_t>> setTextureCommands;
 
-    setConstantBufferCommands.resize(8, NullOpt);
-    setSamplerCommands.resize(8, NullOpt);
-    setTextureCommands.resize(8, NullOpt);
+    setConstantBufferCommands.resize(8, std::nullopt);
+    setSamplerCommands.resize(8, std::nullopt);
+    setTextureCommands.resize(8, std::nullopt);
 
     std::vector<std::shared_ptr<GraphicsCommand>> oldCommands;
     bool needToFlushCommands = true;

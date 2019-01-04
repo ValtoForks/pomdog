@@ -2,10 +2,10 @@
 
 #pragma once
 
+#include "Pomdog/Basic/Export.hpp"
 #include "Pomdog/Input/MouseButtons.hpp"
 #include "Pomdog/Math/Point2D.hpp"
 #include "Pomdog/Signals/Signal.hpp"
-#include "Pomdog/Basic/Export.hpp"
 #include <cstdint>
 
 namespace Pomdog {
@@ -16,7 +16,7 @@ class POMDOG_EXPORT Mouse {
 public:
     Mouse() = default;
     Mouse(const Mouse&) = delete;
-    Mouse & operator=(const Mouse&) = delete;
+    Mouse& operator=(const Mouse&) = delete;
 
     virtual ~Mouse() = default;
 

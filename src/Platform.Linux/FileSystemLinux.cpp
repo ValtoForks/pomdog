@@ -4,12 +4,13 @@
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
 #include "Pomdog/Utility/PathHelper.hpp"
-#include <array>
-#include <algorithm>
-#include <cstdio>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
+#include <algorithm>
+#include <array>
+#include <climits>
+#include <cstdio>
 
 namespace Pomdog {
 

@@ -2,15 +2,15 @@
 
 #pragma once
 
-#include "Pomdog/Graphics/RenderTargetBlendDescription.hpp"
 #include "Pomdog/Basic/Export.hpp"
-#include <cstdint>
+#include "Pomdog/Graphics/RenderTargetBlendDescription.hpp"
 #include <array>
+#include <cstdint>
 #include <utility>
 
 namespace Pomdog {
 
-struct POMDOG_EXPORT BlendDescription {
+struct POMDOG_EXPORT BlendDescription final {
     std::array<RenderTargetBlendDescription, 8> RenderTargets;
     bool AlphaToCoverageEnable;
     bool IndependentBlendEnable;
@@ -25,7 +25,7 @@ struct POMDOG_EXPORT BlendDescription {
         BlendDescription desc;
         desc.AlphaToCoverageEnable = false;
         desc.IndependentBlendEnable = false;
-        for (auto & renderTarget: desc.RenderTargets) {
+        for (auto& renderTarget : desc.RenderTargets) {
             renderTarget = RenderTargetBlendDescription::CreateAdditive();
         }
         return desc;
@@ -36,7 +36,7 @@ struct POMDOG_EXPORT BlendDescription {
         BlendDescription desc;
         desc.AlphaToCoverageEnable = false;
         desc.IndependentBlendEnable = false;
-        for (auto & renderTarget : desc.RenderTargets) {
+        for (auto& renderTarget : desc.RenderTargets) {
             renderTarget = RenderTargetBlendDescription::CreateAlphaBlend();
         }
         return desc;
@@ -47,7 +47,7 @@ struct POMDOG_EXPORT BlendDescription {
         BlendDescription desc;
         desc.AlphaToCoverageEnable = false;
         desc.IndependentBlendEnable = false;
-        for (auto & renderTarget : desc.RenderTargets) {
+        for (auto& renderTarget : desc.RenderTargets) {
             renderTarget = RenderTargetBlendDescription::CreateNonPremultiplied();
         }
         return desc;
@@ -58,7 +58,7 @@ struct POMDOG_EXPORT BlendDescription {
         BlendDescription desc;
         desc.AlphaToCoverageEnable = false;
         desc.IndependentBlendEnable = false;
-        for (auto & renderTarget : desc.RenderTargets) {
+        for (auto& renderTarget : desc.RenderTargets) {
             renderTarget = RenderTargetBlendDescription::CreateOpaque();
         }
         return desc;

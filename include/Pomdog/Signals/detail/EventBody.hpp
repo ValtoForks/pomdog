@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include <typeinfo>
 #include <type_traits>
+#include <typeinfo>
 #include <utility>
 
 namespace Pomdog {
@@ -24,7 +24,7 @@ class EventBody {
 public:
     EventBody() = default;
     EventBody(const EventBody&) = delete;
-    EventBody & operator=(const EventBody&) = delete;
+    EventBody& operator=(const EventBody&) = delete;
 
     virtual ~EventBody() = default;
 
@@ -41,10 +41,11 @@ public:
     static_assert(std::is_object<T>::value,
         "T is object type.");
 
-    template <typename...Arguments>
-    explicit EventBodyOverride(Arguments &&...argument)
+    template <typename... Arguments>
+    explicit EventBodyOverride(Arguments&&... argument)
         : data(std::forward<Arguments>(argument)...)
-    {}
+    {
+    }
 
     std::size_t HashCode() const noexcept override
     {

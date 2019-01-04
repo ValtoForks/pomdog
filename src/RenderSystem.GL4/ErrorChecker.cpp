@@ -2,7 +2,7 @@
 
 #include "ErrorChecker.hpp"
 #include "OpenGLPrerequisites.hpp"
-#include "Pomdog/Utility/detail/Tagged.hpp"
+#include "../Utility/Tagged.hpp"
 #include "Pomdog/Logging/Log.hpp"
 #include <sstream>
 
@@ -46,8 +46,7 @@ void ErrorChecker::CheckError(const char* command, const char* filename, int lin
     constexpr std::size_t maxLine = 30;
 
     static std::size_t lines = 0;
-    if (lines < maxLine)
-    {
+    if (lines < maxLine) {
         std::stringstream stream;
         stream << ">>> File " << filename
             << ", line " << line

@@ -40,8 +40,8 @@ SkinnedMeshSlot CreateSkinnedMeshSlot(SlotDesc const& slotDesc,
 
     ///@todo Not implemented
 
-    std::array<float, 4> weights = {1, 0, 0, 0};
-    std::array<std::int32_t, 4> joints = {*slotDesc.Joint, -1, -1, -1};
+    std::array<float, 4> weights = {{1, 0, 0, 0}};
+    std::array<std::int32_t, 4> joints = {{*slotDesc.Joint, -1, -1, -1}};
 
     slot.Vertices = {
         {Vector4{0.0f, 0.0f, 0.0f, 1.0f}, weights, joints},
@@ -69,7 +69,7 @@ SkinnedMeshSlot CreateSkinnedMeshSlot(SlotDesc const& slotDesc,
     Matrix3x2 scaling = Matrix3x2::CreateScale(attachment.Scale * size);
     Matrix3x2 rotate = Matrix3x2::CreateRotation(attachment.Rotation);
     if (textureRegion.Rotate) {
-        rotate = Matrix3x2::CreateRotation(-MathConstants<float>::PiOver2()) * rotate;
+        rotate = Matrix3x2::CreateRotation(-Math::PiOver2<float>) * rotate;
     }
     Matrix3x2 translate = Matrix3x2::CreateTranslation(attachment.Translate);
 

@@ -3,10 +3,11 @@
 #include "Texture2DGL4.hpp"
 #include "ErrorChecker.hpp"
 #include "TypesafeHelperGL4.hpp"
+#include "../Basic/Unreachable.hpp"
 #include "../RenderSystem/SurfaceFormatHelper.hpp"
 #include "../Utility/ScopeGuard.hpp"
-#include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Graphics/SurfaceFormat.hpp"
+#include "Pomdog/Utility/Assert.hpp"
 #include <algorithm>
 
 namespace Pomdog {
@@ -44,11 +45,8 @@ GLenum ToInternalFormatGL4(SurfaceFormat format) noexcept
         return GL_R32F;
     case SurfaceFormat::A8_UNorm:
         return GL_R8;
-    };
-
-#ifdef _MSC_VER
-    return GL_R8;
-#endif
+    }
+    POMDOG_UNREACHABLE("Unsupported surface format");
 }
 
 GLenum ToFormatComponents(SurfaceFormat format) noexcept
@@ -75,11 +73,8 @@ GLenum ToFormatComponents(SurfaceFormat format) noexcept
     case SurfaceFormat::BlockComp3_UNorm:
         // Cannot find format
         return GL_RED;
-    };
-
-#ifdef _MSC_VER
-    return GL_RED;
-#endif
+    }
+    POMDOG_UNREACHABLE("Unsupported surface format");
 }
 
 GLenum ToPixelFundamentalType(SurfaceFormat format) noexcept
@@ -106,11 +101,8 @@ GLenum ToPixelFundamentalType(SurfaceFormat format) noexcept
     case SurfaceFormat::BlockComp3_UNorm:
         // Cannot find format
         return GL_UNSIGNED_BYTE;
-    };
-
-#ifdef _MSC_VER
-    return GL_UNSIGNED_BYTE;
-#endif
+    }
+    POMDOG_UNREACHABLE("Unsupported surface format");
 }
 
 GLsizei MipmapImageDataBytes(
@@ -143,8 +135,7 @@ void SetPixelDataTexture2DCompressedGL4(
     GLsizei mipMapPixelWidth = pixelWidth;
     GLsizei mipMapPixelHeight = pixelHeight;
 
-    for (GLint mipmapLevel = 0; mipmapLevel < levelCount; ++mipmapLevel)
-    {
+    for (GLint mipmapLevel = 0; mipmapLevel < levelCount; ++mipmapLevel) {
         POMDOG_ASSERT(mipMapPixelWidth > 0);
         POMDOG_ASSERT(mipMapPixelHeight > 0);
 
@@ -191,8 +182,7 @@ void SetPixelDataTexture2DGL4(
 
     std::size_t startOffset = 0;
 
-    for (GLint mipmapLevel = 0; mipmapLevel < levelCount; ++mipmapLevel)
-    {
+    for (GLint mipmapLevel = 0; mipmapLevel < levelCount; ++mipmapLevel) {
         GLsizei const strideBytesPerMipmap = MipmapImageDataBytes(
             mipMapPixelWidth, mipMapPixelHeight, bytesPerBlock);
 
@@ -223,14 +213,14 @@ Texture2DGL4::Texture2DGL4(std::int32_t pixelWidth, std::int32_t pixelHeight,
     std::int32_t levelCount, SurfaceFormat format)
 {
     // Create Texture2D
-    textureObject = ([]{
+    textureObject = ([] {
         Texture2DObjectGL4 nativeTexture;
         glGenTextures(1, nativeTexture.Data());
         return nativeTexture;
     })();
 
     auto const prevTexture = TypesafeHelperGL4::Get<Texture2DObjectGL4>();
-    ScopeGuard scope([&prevTexture]{
+    ScopeGuard scope([&prevTexture] {
         TypesafeHelperGL4::BindTexture(prevTexture);
     });
 
@@ -251,6 +241,12 @@ Texture2DGL4::Texture2DGL4(std::int32_t pixelWidth, std::int32_t pixelHeight,
     POMDOG_ASSERT(levelCount >= 1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, levelCount - 1);
+
+    if (format == SurfaceFormat::A8_UNorm) {
+        // NOTE: Emulate DXGI_FORMAT_A8_UNORM or MTLPixelFormatA8Unorm on OpenGL.
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_R, GL_GREEN);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_A, GL_RED);
+    }
 }
 
 Texture2DGL4::~Texture2DGL4()

@@ -1,5 +1,5 @@
 os: osx
-osx_image: xcode9.2
+osx_image: xcode10
 language: cpp
 
 compiler:
@@ -14,6 +14,13 @@ script:
   - xcodebuild -project examples/QuickStart/Builds/QuickStart.xcodeproj clean
   - xcodebuild -project examples/QuickStart/Builds/QuickStart.xcodeproj
   - build/build/Release/PomdogUnitTest
+  - mkdir build.cmake && cd build.cmake
+  - cmake -G Xcode ..
+  - xcodebuild -project Pomdog.xcodeproj -configuration Debug
+  - xcodebuild -project Pomdog.xcodeproj -configuration Release
+  - test/Debug/PomdogTest
+  - test/Release/PomdogTest
+  - cd ..
 
 notifications:
   email: false

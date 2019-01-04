@@ -1,15 +1,15 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "Pomdog/Math/detail/FloatingPointQuaternion.hpp"
+#include "Pomdog/Math/Radian.hpp"
 #include "Pomdog/Math/detail/FloatingPointMatrix3x3.hpp"
 #include "Pomdog/Math/detail/FloatingPointMatrix4x4.hpp"
 #include "Pomdog/Math/detail/FloatingPointVector3.hpp"
-#include "Pomdog/Math/Radian.hpp"
 #include "Pomdog/Utility/Assert.hpp"
+#include <array>
 #include <cfloat>
 #include <cmath>
 #include <limits>
-#include <array>
 #include <utility>
 
 namespace Pomdog {
@@ -17,8 +17,12 @@ namespace Detail {
 
 template <typename T>
 FloatingPointQuaternion<T>::FloatingPointQuaternion(T x, T y, T z, T w) noexcept
-    : X(x), Y(y), Z(z), W(w)
-{}
+    : X(x)
+    , Y(y)
+    , Z(z)
+    , W(w)
+{
+}
 
 template <typename T>
 FloatingPointQuaternion<T> & FloatingPointQuaternion<T>::operator+=(const FloatingPointQuaternion& other) noexcept
@@ -182,8 +186,7 @@ FloatingPointQuaternion<T>::Normalize(const FloatingPointQuaternion& source, Flo
 {
     auto const length = source.Length();
 
-    if (length > std::numeric_limits<decltype(length)>::epsilon())
-    {
+    if (length > std::numeric_limits<decltype(length)>::epsilon()) {
         auto const InverseLength = 1 / length;
         result.X = source.X * InverseLength;
         result.Y = source.Y * InverseLength;
@@ -234,8 +237,7 @@ void
 FloatingPointQuaternion<T>::Inverse(const FloatingPointQuaternion& source, FloatingPointQuaternion & result)
 {
     auto const lengthSquared = source.LengthSquared();
-    if (0 < lengthSquared)
-    {
+    if (0 < lengthSquared) {
         auto const inverseLengthSquared = 1 / lengthSquared;
         result.X = source.X * -inverseLengthSquared;
         result.Y = source.Y * -inverseLengthSquared;
@@ -291,8 +293,7 @@ void CreateFromRotationMatrixImplementation(const MatrixClass& rotation, Floatin
     auto const trace = rotation(0, 0) + rotation(1, 1) + rotation(2, 2);
     constexpr T half = T{0.5};
 
-    if (trace > 0)
-    {
+    if (trace > 0) {
         auto root = std::sqrt(trace + 1);
         result.W = half * root;
         root = half / root;
@@ -300,8 +301,7 @@ void CreateFromRotationMatrixImplementation(const MatrixClass& rotation, Floatin
         result.Y = (rotation(0, 2) - rotation(2, 0)) * root;
         result.Z = (rotation(1, 0) - rotation(0, 1)) * root;
     }
-    else
-    {
+    else {
         std::size_t i = 0;
         if (rotation(1, 1) > rotation(0, 0))
             i = 1;

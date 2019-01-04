@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "Pomdog/Signals/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Signals/Connection.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Signals/Connection.hpp"
+#include "Pomdog/Signals/detail/ForwardDeclarations.hpp"
 
 namespace Pomdog {
 
@@ -15,18 +15,18 @@ private:
 public:
     ScopedConnection() = default;
     ScopedConnection(const ScopedConnection&) = delete;
-    ScopedConnection(ScopedConnection &&) = default;
+    ScopedConnection(ScopedConnection&&) = default;
 
     ScopedConnection(const Connection& connection);
-    ScopedConnection(Connection && connection);
+    ScopedConnection(Connection&& connection);
 
     ~ScopedConnection();
 
-    ScopedConnection & operator=(const ScopedConnection&) = delete;
-    ScopedConnection & operator=(ScopedConnection &&) = default;
+    ScopedConnection& operator=(const ScopedConnection&) = delete;
+    ScopedConnection& operator=(ScopedConnection&&) = default;
 
-    ScopedConnection & operator=(const Connection& c);
-    ScopedConnection & operator=(Connection && c);
+    ScopedConnection& operator=(const Connection& c);
+    ScopedConnection& operator=(Connection&& c);
 
     void Disconnect();
 };

@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include <cstdint>
 
 namespace Pomdog {
 
-class POMDOG_EXPORT Color {
+class POMDOG_EXPORT Color final {
 public:
     std::uint8_t R, G, B, A;
 

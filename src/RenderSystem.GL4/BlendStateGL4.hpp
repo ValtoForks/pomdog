@@ -3,8 +3,8 @@
 #pragma once
 
 #include "OpenGLPrerequisites.hpp"
+#include "../Utility/Tagged.hpp"
 #include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Utility/detail/Tagged.hpp"
 #include "Pomdog/Math/Color.hpp"
 #include <array>
 

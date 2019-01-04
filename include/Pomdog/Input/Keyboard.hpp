@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Pomdog/Signals/Signal.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Signals/Signal.hpp"
 #include <cstdint>
 #include <string>
 
@@ -16,7 +16,7 @@ class POMDOG_EXPORT Keyboard {
 public:
     Keyboard() = default;
     Keyboard(const Keyboard&) = delete;
-    Keyboard & operator=(const Keyboard&) = delete;
+    Keyboard& operator=(const Keyboard&) = delete;
 
     virtual ~Keyboard() = default;
 

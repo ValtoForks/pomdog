@@ -4,11 +4,11 @@
 
 #include "OpenGLPrerequisites.hpp"
 #include "TypesafeGL4.hpp"
+#include "../Utility/Tagged.hpp"
 #include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Utility/detail/Tagged.hpp"
-#include "Pomdog/Utility/Optional.hpp"
-#include <vector>
 #include <memory>
+#include <optional>
+#include <vector>
 
 namespace Pomdog {
 namespace Detail {
@@ -62,7 +62,7 @@ public:
 private:
     std::vector<InputElementGL4> inputElements;
     std::vector<VertexDeclarationGL4> vertexDeclarations;
-    Optional<VertexArrayGL4> inputLayout;
+    std::optional<VertexArrayGL4> inputLayout;
 };
 
 } // namespace GL4

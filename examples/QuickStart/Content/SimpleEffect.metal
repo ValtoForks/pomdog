@@ -21,12 +21,12 @@ struct VS_OUTPUT {
 // Vertex shader function
 vertex VS_OUTPUT SimpleEffectVS(
     VS_INPUT in [[stage_in]],
-    constant MyShaderConstants& uniforms [[ buffer(1) ]])
+    constant MyShaderConstants& uniforms [[buffer(0)]])
 {
     VS_OUTPUT out;
 
     float4 position = float4(in.Position, 1.0);
-    out.Position = (uniforms.ViewProjection * (uniforms.Model * position));
+    out.Position = ((position * uniforms.Model) * uniforms.ViewProjection);
     out.TextureCoord = in.TextureCoord.xy;
     return out;
 }
@@ -34,9 +34,9 @@ vertex VS_OUTPUT SimpleEffectVS(
 // Fragment shader function
 fragment half4 SimpleEffectPS(
     VS_OUTPUT in [[stage_in]],
-    texture2d<float> diffuseTexture [[texture(0)]])
+    texture2d<float> diffuseTexture [[texture(0)]],
+    sampler textureSampler [[sampler(0)]])
 {
-    constexpr sampler sampleLinear(filter::linear);
-    float4 color = diffuseTexture.sample(sampleLinear, in.TextureCoord);
+    float4 color = diffuseTexture.sample(textureSampler, in.TextureCoord);
     return half4(color);
 }

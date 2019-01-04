@@ -7,9 +7,10 @@
 #include "Pomdog/Logging/LogLevel.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/StringHelper.hpp"
-#include <utility>
 #include <algorithm>
 #include <sstream>
+#include <tuple>
+#include <utility>
 
 namespace Pomdog {
 namespace Detail {
@@ -73,8 +74,7 @@ void GetActiveUniformsIntValue(
     glGetActiveUniformsiv(shaderProgram.value, uniformCount,
         uniformIndices.data(), parameter, values.data());
 
-    for (GLsizei index = 0; index < uniformCount; ++index)
-    {
+    for (GLsizei index = 0; index < uniformCount; ++index) {
         func(index, values[index]);
     }
 }
@@ -87,25 +87,24 @@ std::vector<UniformVariableGL4> EnumerateUniformVariables(
     std::vector<UniformVariableGL4> uniforms(uniformIndices.size());
 
     GetActiveUniformsIntValue(shaderProgram, uniformIndices, GL_UNIFORM_OFFSET,
-        [&](GLsizei index, GLint value){ uniforms[index].StartOffset = value; });
+        [&](GLsizei index, GLint value) { uniforms[index].StartOffset = value; });
 
     GetActiveUniformsIntValue(shaderProgram, uniformIndices, GL_UNIFORM_SIZE,
-        [&](GLsizei index, GLint value){ uniforms[index].Elements = value; });
+        [&](GLsizei index, GLint value) { uniforms[index].Elements = value; });
 
     GetActiveUniformsIntValue(shaderProgram, uniformIndices, GL_UNIFORM_TYPE,
-        [&](GLsizei index, GLint value){ uniforms[index].Type = value; });
+        [&](GLsizei index, GLint value) { uniforms[index].Type = value; });
 
     GetActiveUniformsIntValue(shaderProgram, uniformIndices, GL_UNIFORM_ARRAY_STRIDE,
-        [&](GLsizei index, GLint value){ uniforms[index].ArrayStride = value; });
+        [&](GLsizei index, GLint value) { uniforms[index].ArrayStride = value; });
 
     GetActiveUniformsIntValue(shaderProgram, uniformIndices, GL_UNIFORM_MATRIX_STRIDE,
-        [&](GLsizei index, GLint value){ uniforms[index].MatrixStride = value; });
+        [&](GLsizei index, GLint value) { uniforms[index].MatrixStride = value; });
 
     GetActiveUniformsIntValue(shaderProgram, uniformIndices, GL_UNIFORM_IS_ROW_MAJOR,
-        [&](GLsizei index, GLint value){ uniforms[index].IsRowMajor = (value != 0); });
+        [&](GLsizei index, GLint value) { uniforms[index].IsRowMajor = (value != 0); });
 
-    GetActiveUniformsIntValue(shaderProgram, uniformIndices, GL_UNIFORM_NAME_LENGTH, [&](GLsizei index, GLint value)
-    {
+    GetActiveUniformsIntValue(shaderProgram, uniformIndices, GL_UNIFORM_NAME_LENGTH, [&](GLsizei index, GLint value) {
         std::vector<GLchar> uniformName(value + 1, '\0');
         GLsizei uniformNameLength = 0;
         glGetActiveUniformName(shaderProgram.value, uniformIndices[index], value, &uniformNameLength, uniformName.data());
@@ -122,16 +121,14 @@ EnumerateUniformBlocks(const ShaderProgramGL4& shaderProgram)
     glGetProgramiv(shaderProgram.value, GL_ACTIVE_UNIFORM_BLOCKS, &uniformBlockCount);
     POMDOG_CHECK_ERROR_GL4("glGetProgramiv");
 
-    if (uniformBlockCount <= 0)
-    {
+    if (uniformBlockCount <= 0) {
         ///@note This shader has no uniform-block.
         return {};
     }
 
     std::vector<UniformBlockGL4> uniformBlocks;
 
-    for (GLint index = 0; index < uniformBlockCount; ++index)
-    {
+    for (GLint index = 0; index < uniformBlockCount; ++index) {
         auto const uniformBlockIndex = static_cast<GLuint>(index);
 
         UniformBlockGL4 uniformBlock;
@@ -156,8 +153,7 @@ std::vector<UniformGL4> EnumerateUniforms(const ShaderProgramGL4& shaderProgram)
     glGetProgramiv(shaderProgram.value, GL_ACTIVE_UNIFORMS, &uniformCount);
     POMDOG_CHECK_ERROR_GL4("glGetProgramiv");
 
-    if (uniformCount <= 0)
-    {
+    if (uniformCount <= 0) {
         ///@note This shader has no uniform.
         return {};
     }
@@ -166,8 +162,7 @@ std::vector<UniformGL4> EnumerateUniforms(const ShaderProgramGL4& shaderProgram)
     glGetProgramiv(shaderProgram.value, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxUniformNameLength);
     POMDOG_CHECK_ERROR_GL4("glGetProgramiv");
 
-    if (maxUniformNameLength <= 0)
-    {
+    if (maxUniformNameLength <= 0) {
         return {};
     }
 
@@ -176,8 +171,7 @@ std::vector<UniformGL4> EnumerateUniforms(const ShaderProgramGL4& shaderProgram)
 
     std::vector<UniformGL4> uniformVariables;
 
-    for (GLuint uniformIndex = 0; uniformIndex < static_cast<GLuint>(uniformCount); ++uniformIndex)
-    {
+    for (GLuint uniformIndex = 0; uniformIndex < static_cast<GLuint>(uniformCount); ++uniformIndex) {
         GLint arrayCount = 0;
         GLenum uniformType = 0;
         GLint uniformNameLength = 0;
@@ -242,7 +236,7 @@ std::vector<UniformGL4> EnumerateUniforms(const ShaderProgramGL4& shaderProgram)
 
     ///@todo Replace the following code by GL_ARB_shading_language_420pack on OpenGL 4.2+:
     std::sort(std::begin(uniformVariables), std::end(uniformVariables),
-        [](const UniformGL4& a, const UniformGL4& b){ return a.Name < b.Name; });
+        [](const UniformGL4& a, const UniformGL4& b) { return a.Name < b.Name; });
 
     return uniformVariables;
 }
@@ -450,7 +444,8 @@ EffectVariableClass ToEffectVariableClass(GLenum uniformType)
     return EffectVariableClass::Struct;
 }
 
-void ToComponents(GLenum uniformType, std::uint8_t & RowCount, std::uint8_t & ColumnCount)
+// ToComponents returns RowCount and ColumnCount.
+std::tuple<int, int> ToComponents(GLenum uniformType)
 {
     switch (uniformType) {
     case GL_FLOAT:
@@ -498,79 +493,84 @@ void ToComponents(GLenum uniformType, std::uint8_t & RowCount, std::uint8_t & Co
     case GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY:
     case GL_UNSIGNED_INT_SAMPLER_BUFFER:
     case GL_UNSIGNED_INT_SAMPLER_2D_RECT:
-        RowCount = 1; ColumnCount = 1;
+        return std::make_tuple(1, 1);
 
     case GL_FLOAT_VEC2:
     case GL_INT_VEC2:
     case GL_UNSIGNED_INT_VEC2:
     case GL_DOUBLE_VEC2:
     case GL_BOOL_VEC2:
-        RowCount = 1; ColumnCount = 2; return;
+        return std::make_tuple(1, 2);
 
     case GL_FLOAT_VEC3:
     case GL_INT_VEC3:
     case GL_UNSIGNED_INT_VEC3:
     case GL_DOUBLE_VEC3:
     case GL_BOOL_VEC3:
-        RowCount = 1; ColumnCount = 3; return;
+        return std::make_tuple(1, 3);
 
     case GL_FLOAT_VEC4:
     case GL_INT_VEC4:
     case GL_UNSIGNED_INT_VEC4:
     case GL_DOUBLE_VEC4:
     case GL_BOOL_VEC4:
-        RowCount = 1; ColumnCount = 4; return;
+        return std::make_tuple(1, 4);
 
     case GL_FLOAT_MAT2:
     case GL_DOUBLE_MAT2:
-        RowCount = 2; ColumnCount = 2; return;
+        return std::make_tuple(2, 2);
 
     case GL_FLOAT_MAT3:
     case GL_DOUBLE_MAT3:
-        RowCount = 3; ColumnCount = 3; return;
+        return std::make_tuple(3, 3);
 
     case GL_FLOAT_MAT4:
     case GL_DOUBLE_MAT4:
-        RowCount = 4; ColumnCount = 4; return;
+        return std::make_tuple(4, 4);
 
     case GL_FLOAT_MAT2x3:
     case GL_DOUBLE_MAT2x3:
-        RowCount = 2; ColumnCount = 3; return;
+        return std::make_tuple(2, 3);
 
     case GL_FLOAT_MAT3x2:
     case GL_DOUBLE_MAT3x2:
-        RowCount = 3; ColumnCount = 2; return;
+        return std::make_tuple(3, 2);
 
     case GL_FLOAT_MAT2x4:
     case GL_DOUBLE_MAT2x4:
-        RowCount = 2; ColumnCount = 4; return;
+        return std::make_tuple(2, 4);
 
     case GL_FLOAT_MAT4x2:
     case GL_DOUBLE_MAT4x2:
-        RowCount = 4; ColumnCount = 2; return;
+        return std::make_tuple(4, 2);
 
     case GL_FLOAT_MAT3x4:
     case GL_DOUBLE_MAT3x4:
-        RowCount = 3; ColumnCount = 4; return;
+        return std::make_tuple(3, 4);
 
     case GL_FLOAT_MAT4x3:
     case GL_DOUBLE_MAT4x3:
-        RowCount = 4; ColumnCount = 3; return;
+        return std::make_tuple(4, 3);
+
+    default:
+        break;
     }
 
 #ifdef DEBUG
     Log::Internal(StringHelper::Format(
         "Failed to find uniform type '%d'.", uniformType));
 #endif
+    return std::make_tuple(1, 1);
 }
 
 EffectAnnotation ToEffectAnnotation(const UniformVariableGL4& uniform)
 {
     EffectAnnotation annotation;
-
     annotation.VariableType = ToEffectVariableType(uniform.Type);
     annotation.VariableClass = ToEffectVariableClass(uniform.Type);
-    ToComponents(uniform.Type, annotation.RowCount, annotation.ColumnCount);
+    const auto [rowCount, columnCount] = ToComponents(uniform.Type);
+    annotation.RowCount = static_cast<std::uint8_t>(rowCount);
+    annotation.ColumnCount = static_cast<std::uint8_t>(columnCount);
     annotation.Elements = (uniform.Elements > 1) ? static_cast<decltype(annotation.Elements)>(uniform.Elements): 0;
     POMDOG_ASSERT(annotation.Elements != 1);
     return annotation;
@@ -581,8 +581,7 @@ std::vector<EffectVariable> GetEffectVariables(const std::vector<UniformVariable
     std::vector<EffectVariable> result;
     result.reserve(uniforms.size());
 
-    for (auto & uniform: uniforms)
-    {
+    for (auto& uniform : uniforms) {
         EffectVariable effectVariable;
         effectVariable.Name = uniform.Name;
         effectVariable.StartOffset = uniform.StartOffset;
@@ -597,8 +596,7 @@ void DebugLogUniformBlocks(const std::vector<UniformBlockGL4>& uniformBlocks)
 {
     std::stringstream stream;
 
-    for (const auto& uniformBlock: uniformBlocks)
-    {
+    for (const auto& uniformBlock : uniformBlocks) {
         stream
         << "-[UniformBlock]-------------------\n"
         << "         Name: " << uniformBlock.Name << "\n"
@@ -606,7 +604,7 @@ void DebugLogUniformBlocks(const std::vector<UniformBlockGL4>& uniformBlocks)
         << "     ByteSize: " << uniformBlock.ByteSize << "\n"
         << "Uniforms.size: " << uniformBlock.Uniforms.size() << "\n";
 
-        for (const auto& uniform: uniformBlock.Uniforms) {
+        for (const auto& uniform : uniformBlock.Uniforms) {
             stream
             << ":- - - - - - - - - - - - - -\n"
             << "         Name: " << uniform.Name << "\n"
@@ -626,7 +624,7 @@ void DebugLogUniformBlocks(const std::vector<UniformBlockGL4>& uniformBlocks)
 void DebugLogUniforms(const std::vector<UniformGL4>& uniforms)
 {
     std::stringstream stream;
-    for (const auto& uniform: uniforms) {
+    for (const auto& uniform : uniforms) {
         stream
         << "-[Uniform]-------------------\n"
         << "      Name: " << uniform.Name << "\n"
@@ -651,9 +649,9 @@ std::vector<UniformBlockGL4> EffectReflectionGL4::GetNativeUniformBlocks()
 {
     auto uniformBlocks = EnumerateUniformBlocks(shaderProgram);
 
-    #ifdef DEBUG
+#ifdef DEBUG
     DebugLogUniformBlocks(uniformBlocks);
-    #endif
+#endif
 
     return uniformBlocks;
 }
@@ -662,9 +660,9 @@ std::vector<UniformGL4> EffectReflectionGL4::GetNativeUniforms()
 {
     auto uniforms = EnumerateUniforms(shaderProgram);
 
-    #ifdef DEBUG
+#ifdef DEBUG
     DebugLogUniforms(uniforms);
-    #endif
+#endif
 
     return uniforms;
 }
@@ -675,8 +673,7 @@ std::vector<EffectConstantDescription> EffectReflectionGL4::GetConstantBuffers()
 
     std::vector<EffectConstantDescription> result;
 
-    for (auto & uniformBlock: uniformBlocks)
-    {
+    for (auto& uniformBlock : uniformBlocks) {
         EffectConstantDescription description;
         description.Name = uniformBlock.Name;
         description.ByteSize = uniformBlock.ByteSize;

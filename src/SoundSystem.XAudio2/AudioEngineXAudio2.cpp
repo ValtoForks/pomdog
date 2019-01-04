@@ -6,18 +6,18 @@
 #include "Pomdog/Utility/Exception.hpp"
 
 #if (_WIN32_WINNT >= 0x0602 /*_WIN32_WINNT_WIN8*/) && !defined(__cplusplus_winrt)
-#include <wrl/wrappers/corewrappers.h>
-#include <wrl/client.h>
-#include <wrl/event.h>
 #include <Windows.Devices.Enumeration.h>
 #include <Windows.Foundation.Collections.h>
-#pragma comment(lib,"runtimeobject.lib")
+#include <wrl/client.h>
+#include <wrl/event.h>
+#include <wrl/wrappers/corewrappers.h>
+#pragma comment(lib, "runtimeobject.lib")
 #endif
 
-#include <vector>
+#include <algorithm>
 #include <string>
 #include <utility>
-#include <algorithm>
+#include <vector>
 
 namespace Pomdog {
 namespace Detail {
@@ -101,7 +101,7 @@ std::vector<AudioDeviceDetails> EnumerateAudioDevices()
     }
 
     auto callback = Callback<IAsyncOperationCompletedHandler<DeviceInformationCollection*>>(
-        [&findCompleted](IAsyncOperation<DeviceInformationCollection*>*, AsyncStatus)-> HRESULT {
+        [&findCompleted](IAsyncOperation<DeviceInformationCollection*>*, AsyncStatus) -> HRESULT {
             SetEvent(findCompleted.Get());
             return S_OK;
         });
@@ -129,8 +129,7 @@ std::vector<AudioDeviceDetails> EnumerateAudioDevices()
     POMDOG_ASSERT(count >= 1);
     result.reserve(count);
 
-    for (unsigned int index = 0; index < count; ++index)
-    {
+    for (unsigned int index = 0; index < count; ++index) {
         ComPtr<IDeviceInformation> deviceInfo;
         hr = devices->GetAt(index, deviceInfo.GetAddressOf());
 
@@ -187,7 +186,7 @@ AudioEngineXAudio2::AudioEngineXAudio2()
     }
 
     UINT32 flags = 0;
-#if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && defined(_DEBUG)
+#if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && !defined(NDEBUG)
     flags |= XAUDIO2_DEBUG_ENGINE;
 #endif
 
@@ -197,7 +196,7 @@ AudioEngineXAudio2::AudioEngineXAudio2()
         POMDOG_THROW_EXCEPTION(std::runtime_error, GetErrorDesc(hr, "XAudio2Create"));
     }
 
-#if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && defined(_DEBUG)
+#if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && !defined(NDEBUG)
     {
         XAUDIO2_DEBUG_CONFIGURATION debugConfig;
         debugConfig.TraceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS;
@@ -241,8 +240,7 @@ AudioEngineXAudio2::AudioEngineXAudio2()
     }
 
     UINT32 preferredDevice = 0;
-    for (UINT32 index = 0; index < deviceCount; ++index)
-    {
+    for (UINT32 index = 0; index < deviceCount; ++index) {
         XAUDIO2_DEVICE_DETAILS deviceDetails;
         hr = xAudio2->GetDeviceDetails(index, &deviceDetails);
 
@@ -253,8 +251,7 @@ AudioEngineXAudio2::AudioEngineXAudio2()
         }
 
         constexpr WORD stereoChannels = 2;
-        if (stereoChannels < deviceDetails.OutputFormat.Format.nChannels)
-        {
+        if (stereoChannels < deviceDetails.OutputFormat.Format.nChannels) {
             preferredDevice = index;
             break;
         }

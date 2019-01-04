@@ -1,6 +1,8 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "GameHostX11.hpp"
+#include "../InputSystem/GamepadFactory.hpp"
+#include "../InputSystem/NativeGamepad.hpp"
 #include "../RenderSystem.GL4/GraphicsContextGL4.hpp"
 #include "../RenderSystem.GL4/GraphicsDeviceGL4.hpp"
 #include "../RenderSystem/GraphicsCommandQueueImmediate.hpp"
@@ -10,18 +12,19 @@
 #include "Pomdog/Graphics/GraphicsCommandQueue.hpp"
 #include "Pomdog/Graphics/GraphicsDevice.hpp"
 #include "Pomdog/Graphics/PresentationParameters.hpp"
+#include "Pomdog/Logging/Log.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
 #include "Pomdog/Utility/FileSystem.hpp"
 #include "Pomdog/Utility/PathHelper.hpp"
-#include "Pomdog/Logging/Log.hpp"
-#include <string>
-#include <vector>
 #include <chrono>
+#include <string>
 #include <thread>
+#include <vector>
 
 using Pomdog::Detail::GL4::GraphicsContextGL4;
 using Pomdog::Detail::GL4::GraphicsDeviceGL4;
+using Pomdog::Detail::InputSystem::NativeGamepad;
 
 namespace Pomdog {
 namespace Detail {
@@ -30,14 +33,14 @@ namespace {
 
 bool CheckFrameBufferConfigSupport(::Display* display)
 {
-    int major = 0;
-    int minor = 0;
+    int majorVer = 0;
+    int minorVer = 0;
 
-    if (glXQueryVersion(display, &major, &minor) == False) {
+    if (glXQueryVersion(display, &majorVer, &minorVer) == False) {
         return false;
     }
 
-    return (((major == 1) && (minor >= 3)) || (major >= 2));
+    return (((majorVer == 1) && (minorVer >= 3)) || (majorVer >= 2));
 }
 
 GLXFBConfig ChooseFramebufferConfig(
@@ -133,16 +136,14 @@ GLXFBConfig ChooseFramebufferConfig(
             "Failed to retrieve FBConfig");
     }
 
-    Optional<GLXFBConfig> bestConfig;
+    std::optional<GLXFBConfig> bestConfig;
     int bestSampleCount = 0;
 
-    for (int index = 0; index < framebufferConfigCount; ++index)
-    {
+    for (int index = 0; index < framebufferConfigCount; ++index) {
         auto framebufferConfig = framebufferConfigs[index];
         auto visualInfo = glXGetVisualFromFBConfig(display, framebufferConfig);
 
-        if (visualInfo != nullptr)
-        {
+        if (visualInfo != nullptr) {
             int sampleBuffers = 0;
             int sampleCount = 0;
             glXGetFBConfigAttrib(display, framebufferConfig, GLX_SAMPLE_BUFFERS, &sampleBuffers);
@@ -181,10 +182,6 @@ public:
 
     void Exit();
 
-    SurfaceFormat GetBackBufferSurfaceFormat() const noexcept;
-
-    DepthFormat GetBackBufferDepthStencilFormat() const noexcept;
-
 private:
     void MessagePump();
     void ProcessEvent(::XEvent & event);
@@ -203,6 +200,7 @@ public:
     std::unique_ptr<Pomdog::AssetManager> assetManager;
     std::unique_ptr<KeyboardX11> keyboard;
     MouseX11 mouse;
+    std::unique_ptr<NativeGamepad> gamepad;
     Duration presentationInterval;
     SurfaceFormat backBufferSurfaceFormat;
     DepthFormat backBufferDepthStencilFormat;
@@ -243,26 +241,28 @@ GameHostX11::Impl::Impl(const PresentationParameters& presentationParameters)
         POMDOG_THROW_EXCEPTION(std::runtime_error, description);
     }
 
-    graphicsDevice = std::make_shared<Pomdog::GraphicsDevice>(
-        std::make_unique<GraphicsDeviceGL4>());
+    graphicsDevice = std::make_shared<GraphicsDevice>(
+        std::make_unique<GraphicsDeviceGL4>(presentationParameters));
 
     graphicsContext = std::make_shared<GraphicsContextGL4>(openGLContext, window);
 
-    graphicsCommandQueue = std::make_shared<Pomdog::GraphicsCommandQueue>(
+    graphicsCommandQueue = std::make_shared<GraphicsCommandQueue>(
         std::make_unique<GraphicsCommandQueueImmediate>(graphicsContext));
 
-    audioEngine = std::make_shared<Pomdog::AudioEngine>();
+    audioEngine = std::make_shared<AudioEngine>();
 
     keyboard = std::make_unique<KeyboardX11>(x11Context->Display);
+    gamepad = Detail::InputSystem::CreateGamepad();
 
     Detail::AssetLoaderContext loaderContext;
     loaderContext.RootDirectory = PathHelper::Join(FileSystem::GetResourceDirectoryPath(), "Content");
     loaderContext.GraphicsDevice = graphicsDevice;
-    assetManager = std::make_unique<Pomdog::AssetManager>(std::move(loaderContext));
+    assetManager = std::make_unique<AssetManager>(std::move(loaderContext));
 }
 
 GameHostX11::Impl::~Impl()
 {
+    gamepad.reset();
     keyboard.reset();
     assetManager.reset();
     audioEngine.reset();
@@ -304,6 +304,17 @@ void GameHostX11::Impl::ProcessEvent(::XEvent & event)
         }
         break;
     }
+    case ConfigureNotify: {
+        POMDOG_ASSERT(graphicsDevice);
+        POMDOG_ASSERT(graphicsDevice->GetNativeGraphicsDevice());
+        auto nativeDevice = static_cast<GraphicsDeviceGL4*>(graphicsDevice->GetNativeGraphicsDevice());
+        auto presentationParameters = nativeDevice->GetPresentationParameters();
+        if ((presentationParameters.BackBufferWidth != event.xconfigure.width) ||
+            (presentationParameters.BackBufferHeight != event.xconfigure.height)) {
+            nativeDevice->ClientSizeChanged(event.xconfigure.width, event.xconfigure.height);
+        }
+        break;
+    }
     case KeyPress:
     case KeyRelease: {
         keyboard->HandleEvent(event);
@@ -328,10 +339,14 @@ void GameHostX11::Impl::Run(Game & game)
 {
     game.Initialize();
 
-    while (!exitRequest)
-    {
+    while (!exitRequest) {
         clock.Tick();
         MessagePump();
+        constexpr int64_t gamepadDetectionInterval = 240;
+        if (((clock.GetFrameNumber() % gamepadDetectionInterval) == 1) && (clock.GetFrameRate() >= 30.0f)) {
+            gamepad->EnumerateDevices();
+        }
+        gamepad->PollEvents();
 
         game.Update();
         RenderFrame(game);
@@ -358,16 +373,6 @@ void GameHostX11::Impl::RenderFrame(Game & game)
     }
 
     game.Draw();
-}
-
-SurfaceFormat GameHostX11::Impl::GetBackBufferSurfaceFormat() const noexcept
-{
-    return backBufferSurfaceFormat;
-}
-
-DepthFormat GameHostX11::Impl::GetBackBufferDepthStencilFormat() const noexcept
-{
-    return backBufferDepthStencilFormat;
 }
 
 // MARK: - GameHostX11
@@ -402,7 +407,7 @@ std::shared_ptr<GameClock> GameHostX11::GetClock()
     POMDOG_ASSERT(impl);
     auto gameHost = shared_from_this();
     std::shared_ptr<GameClock> sharedClock(gameHost, &impl->clock);
-    return std::move(sharedClock);
+    return sharedClock;
 }
 
 std::shared_ptr<GraphicsDevice> GameHostX11::GetGraphicsDevice()
@@ -431,7 +436,7 @@ std::shared_ptr<AssetManager> GameHostX11::GetAssetManager()
     auto gameHost = shared_from_this();
     std::shared_ptr<AssetManager> sharedAssetManager(
         gameHost, impl->assetManager.get());
-    return std::move(sharedAssetManager);
+    return sharedAssetManager;
 }
 
 std::shared_ptr<Keyboard> GameHostX11::GetKeyboard()
@@ -440,7 +445,7 @@ std::shared_ptr<Keyboard> GameHostX11::GetKeyboard()
     auto gameHost = shared_from_this();
     std::shared_ptr<Keyboard> sharedKeyboard(
         gameHost, impl->keyboard.get());
-    return std::move(sharedKeyboard);
+    return sharedKeyboard;
 }
 
 std::shared_ptr<Mouse> GameHostX11::GetMouse()
@@ -448,19 +453,15 @@ std::shared_ptr<Mouse> GameHostX11::GetMouse()
     POMDOG_ASSERT(impl);
     auto gameHost = shared_from_this();
     std::shared_ptr<Mouse> sharedMouse(gameHost, &impl->mouse);
-    return std::move(sharedMouse);
+    return sharedMouse;
 }
 
-SurfaceFormat GameHostX11::GetBackBufferSurfaceFormat() const
+std::shared_ptr<Gamepad> GameHostX11::GetGamepad()
 {
     POMDOG_ASSERT(impl);
-    return impl->GetBackBufferSurfaceFormat();
-}
-
-DepthFormat GameHostX11::GetBackBufferDepthStencilFormat() const
-{
-    POMDOG_ASSERT(impl);
-    return impl->GetBackBufferDepthStencilFormat();
+    auto gameHost = shared_from_this();
+    std::shared_ptr<Gamepad> sharedGamepad(gameHost, impl->gamepad.get());
+    return sharedGamepad;
 }
 
 } // namespace X11

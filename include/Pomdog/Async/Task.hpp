@@ -2,9 +2,10 @@
 
 #pragma once
 
-#include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Utility/Assert.hpp"
 #include <atomic>
+#include <cstdint>
 #include <exception>
 #include <functional>
 #include <memory>
@@ -60,7 +61,7 @@ public:
 
 public:
     TaskBody(const TaskBody&) = delete;
-    TaskBody & operator=(const TaskBody&) = delete;
+    TaskBody& operator=(const TaskBody&) = delete;
 
     TaskBody()
         : status(TaskStatus::Created)
@@ -73,7 +74,7 @@ public:
         return (s == TaskStatus::RanToCompletion) || (s == TaskStatus::Rejected);
     }
 
-    void SetResult(TaskResult<TResult> && resultIn)
+    void SetResult(TaskResult<TResult>&& resultIn)
     {
         POMDOG_ASSERT(!this->IsDone());
         status.store(TaskStatus::RanToCompletion);
@@ -84,7 +85,7 @@ public:
             result = std::forward<TaskResult<TResult>>(resultIn);
             std::swap(continuations, swapped);
         }
-        for (auto & continuation : swapped) {
+        for (auto& continuation : swapped) {
             continuation();
         }
     }
@@ -100,7 +101,7 @@ public:
             exceptionPointer = exception;
             std::swap(continuations, swapped);
         }
-        for (auto & continuation : swapped) {
+        for (auto& continuation : swapped) {
             continuation();
         }
     }
@@ -108,7 +109,7 @@ public:
 
 namespace TypeTraitsImpl {
 
-#if __cplusplus <= 201402L
+#if __cpp_lib_void_t < 201411
 template <class...>
 struct MakeVoid {
     using type = void;
@@ -203,7 +204,8 @@ private:
 public:
     TaskCompletionSource()
         : body(std::make_shared<Detail::TaskBody<TResult>>())
-    {}
+    {
+    }
 
     void SetResult(const TResult& result) const
     {
@@ -229,7 +231,8 @@ private:
 public:
     TaskCompletionSource()
         : body(std::make_shared<Detail::TaskBody<void>>())
-    {}
+    {
+    }
 
     void SetResult() const
     {
@@ -255,7 +258,8 @@ private:
 public:
     Task()
         : body(std::make_shared<Detail::TaskBody<TResult>>())
-    {}
+    {
+    }
 
     explicit Task(const TaskCompletionSource<TResult>& tcs)
         : body(tcs.body)
@@ -309,7 +313,7 @@ auto InnerGetTask(
 
 struct POMDOG_EXPORT TaskImpl {
     template <typename T, typename Func>
-    static void ScheduleContinuation(const Task<T>& task, Func && continuation)
+    static void ScheduleContinuation(const Task<T>& task, Func&& continuation)
     {
         if (task.IsDone()) {
             continuation();
@@ -402,6 +406,10 @@ struct POMDOG_EXPORT TaskImpl {
         tcs.SetResult(continuation());
     }
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4702)
+#endif
     template <typename TFunction>
     static void InnerInvokeContinuation(
         const TFunction& continuation,
@@ -412,6 +420,9 @@ struct POMDOG_EXPORT TaskImpl {
         continuation();
         tcs.SetResult();
     }
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
     template <typename TFunction, typename TResult, typename TContinuationResult>
     static void InnerInvokeContinuation(
@@ -652,7 +663,7 @@ Task<std::vector<TResult>> WhenAllImpl(const std::vector<Task<TResult>>& tasks)
     whenAllPromise->count = static_cast<int>(tasks.size());
     whenAllPromise->isRejected = false;
 
-    for (auto & task : tasks) {
+    for (auto& task : tasks) {
         task.ContinueWith([tcs, whenAllPromise](const Task<TResult>& t) {
             std::lock_guard<std::mutex> lock(whenAllPromise->mutex);
             if (whenAllPromise->isRejected) {
@@ -696,7 +707,7 @@ Task<TResult> WhenAny(const std::vector<Task<TResult>>& tasks)
     auto whenAnyPromise = std::make_shared<Detail::WhenAnyPromise>();
     whenAnyPromise->isAnyTaskComplete.store(false);
 
-    for (auto & task : tasks) {
+    for (auto& task : tasks) {
         task.ContinueWith([tcs, whenAnyPromise](const Task<TResult>& t) {
             if (whenAnyPromise->isAnyTaskComplete.exchange(true)) {
                 return;

@@ -1,8 +1,8 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "OpenGLContextWin32.hpp"
-#include "../RenderSystem.GL4/OpenGLPrerequisites.hpp"
 #include "../RenderSystem.GL4/ErrorChecker.hpp"
+#include "../RenderSystem.GL4/OpenGLPrerequisites.hpp"
 #include "Pomdog/Graphics/PresentationParameters.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
@@ -97,8 +97,7 @@ OpenGLContextWin32::OpenGLContextWin32(
 
     auto const pixelFormat = ChoosePixelFormat(hdc.get(), &formatDescriptor);
 
-    if (0 == pixelFormat)
-    {
+    if (0 == pixelFormat) {
         auto const errorCode = ::GetLastError();
 
         std::stringstream ss;
@@ -109,8 +108,7 @@ OpenGLContextWin32::OpenGLContextWin32(
         POMDOG_THROW_EXCEPTION(std::runtime_error, ss.str());
     }
 
-    if (!SetPixelFormat(hdc.get(), pixelFormat, &formatDescriptor))
-    {
+    if (!SetPixelFormat(hdc.get(), pixelFormat, &formatDescriptor)) {
         auto const errorCode = ::GetLastError();
 
         std::stringstream ss;
@@ -124,8 +122,7 @@ OpenGLContextWin32::OpenGLContextWin32(
     // Create gl context
     glrc.reset(wglCreateContext(hdc.get()));
 
-    if (!wglMakeCurrent(hdc.get(), glrc.get()))
-    {
+    if (!wglMakeCurrent(hdc.get(), glrc.get())) {
         auto const errorCode = ::GetLastError();
 
         std::stringstream ss;

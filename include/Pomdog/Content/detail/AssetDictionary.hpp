@@ -2,15 +2,15 @@
 
 #pragma once
 
-#include "Pomdog/Content/detail/AssetLoaders/AudioClipLoader.hpp"
 #include "AssetLoaders/Texture2DLoader.hpp"
+#include "Pomdog/Content/detail/AssetLoaders/AudioClipLoader.hpp"
 #include "Pomdog/Utility/Any.hpp"
 #include "Pomdog/Utility/Assert.hpp"
-#include <unordered_map>
+#include <memory>
+#include <string>
 #include <typeindex>
 #include <typeinfo>
-#include <string>
-#include <memory>
+#include <unordered_map>
 
 namespace Pomdog {
 namespace Detail {
@@ -34,9 +34,8 @@ public:
         std::type_index const typeIndex = typeid(std::shared_ptr<T>);
 
         auto const iter = assets.find(assetName);
-        if (iter != std::end(assets))
-        {
-            auto & assetHolder = iter->second;
+        if (iter != std::end(assets)) {
+            auto& assetHolder = iter->second;
 
             if (assetHolder.Type() == typeIndex) {
                 return assetHolder.As<std::shared_ptr<T>>();

@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -13,7 +13,7 @@ namespace Detail {
 
 ///@brief vector in two-dimensional space.
 template <typename T>
-class POMDOG_EXPORT FloatingPointVector2 {
+class POMDOG_EXPORT FloatingPointVector2 final {
 public:
     static_assert(std::is_floating_point<T>::value, "T is floating point.");
     typedef T value_type;
@@ -28,10 +28,10 @@ public:
     FloatingPointVector2(T x, T y) noexcept;
 
     // Assignment operators:
-    FloatingPointVector2 & operator+=(const FloatingPointVector2&) noexcept;
-    FloatingPointVector2 & operator-=(const FloatingPointVector2&) noexcept;
-    FloatingPointVector2 & operator*=(T) noexcept;
-    FloatingPointVector2 & operator/=(T);
+    FloatingPointVector2& operator+=(const FloatingPointVector2&) noexcept;
+    FloatingPointVector2& operator-=(const FloatingPointVector2&) noexcept;
+    FloatingPointVector2& operator*=(T) noexcept;
+    FloatingPointVector2& operator/=(T);
 
     // Unary operators:
     FloatingPointVector2 operator+() const noexcept;
@@ -74,7 +74,7 @@ public:
 
     static FloatingPointVector2 Normalize(const FloatingPointVector2& source) noexcept;
 
-    static void Normalize(const FloatingPointVector2& source, FloatingPointVector2 & result) noexcept;
+    static void Normalize(const FloatingPointVector2& source, FloatingPointVector2& result) noexcept;
 
     static FloatingPointVector2 Transform(
         const FloatingPointVector2& position,

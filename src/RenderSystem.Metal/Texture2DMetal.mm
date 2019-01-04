@@ -32,16 +32,8 @@ Texture2DMetal::Texture2DMetal(
 {
     POMDOG_ASSERT(device != nil);
 
-    auto pixelFormat = MetalFormatHelper::ToMTLPixelFormat(format);
-
-    if (!pixelFormat) {
-        // FUS RO DAH!
-        POMDOG_THROW_EXCEPTION(std::runtime_error,
-            "This platform does not support this pixel format.");
-    }
-
     MTLTextureDescriptor* descriptor = [MTLTextureDescriptor
-        texture2DDescriptorWithPixelFormat:*pixelFormat
+        texture2DDescriptorWithPixelFormat:ToPixelFormat(format)
         width:pixelWidth
         height:pixelHeight
         mipmapped:(levelCount > 1 ? YES: NO)];
@@ -77,8 +69,7 @@ void Texture2DMetal::SetData(
     auto mipMapPixelHeight = pixelHeight;
     std::size_t startOffset = 0;
 
-    for (int mipmapLevel = 0; mipmapLevel < levelCount; ++mipmapLevel)
-    {
+    for (int mipmapLevel = 0; mipmapLevel < levelCount; ++mipmapLevel) {
         MTLRegion region = MTLRegionMake2D(0, 0, mipMapPixelWidth, mipMapPixelHeight);
 
         const auto bytesPerRow = mipMapPixelWidth * bytesPerPixel;

@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "Pomdog/Graphics/ShaderPipelineStage.hpp"
 #include "Pomdog/Basic/Export.hpp"
-#include "Pomdog/Utility/Optional.hpp"
-#include <memory>
+#include "Pomdog/Graphics/ShaderPipelineStage.hpp"
 #include <cstddef>
+#include <memory>
+#include <optional>
 #include <string>
 
 namespace Pomdog {
@@ -18,18 +18,18 @@ namespace ShaderCompilers {
 
 struct POMDOG_EXPORT HLSLCompiler final {
     static std::unique_ptr<Shader> CreateShaderFromBinary(
-        GraphicsDevice & graphicsDevice,
+        GraphicsDevice& graphicsDevice,
         const void* shaderSource,
         std::size_t byteLength,
         ShaderPipelineStage pipelineStage);
 
     static std::unique_ptr<Shader> CreateShaderFromSource(
-        GraphicsDevice & graphicsDevice,
+        GraphicsDevice& graphicsDevice,
         const void* shaderSource,
         std::size_t byteLength,
         const std::string& entryPoint,
         ShaderPipelineStage pipelineStage,
-        const Optional<std::string>& currentDirectory);
+        std::optional<std::string>&& currentDirectory);
 };
 
 } // namespace ShaderCompilers

@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
-#include "Pomdog/Math/Vector3.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Math/Vector3.hpp"
+#include "Pomdog/Math/detail/ForwardDeclarations.hpp"
 
 namespace Pomdog {
 
-class POMDOG_EXPORT Plane {
+class POMDOG_EXPORT Plane final {
 public:
     Vector3 Normal;
     float Distance;

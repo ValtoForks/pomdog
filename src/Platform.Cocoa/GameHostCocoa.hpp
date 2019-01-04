@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Pomdog/Signals/EventQueue.hpp"
 #include "Pomdog/Application/GameHost.hpp"
+#include "Pomdog/Signals/EventQueue.hpp"
 #include <memory>
 
 @class PomdogOpenGLView;
@@ -30,7 +30,7 @@ public:
 
     void Run(
         const std::weak_ptr<Game>& game,
-        const std::function<void()>& onCompleted);
+        std::function<void()>&& onCompleted);
 
     void Exit() override;
 
@@ -50,9 +50,7 @@ public:
 
     std::shared_ptr<Mouse> GetMouse() override;
 
-    SurfaceFormat GetBackBufferSurfaceFormat() const override;
-
-    DepthFormat GetBackBufferDepthStencilFormat() const override;
+    std::shared_ptr<Gamepad> GetGamepad() override;
 
 private:
     class Impl;

@@ -3,9 +3,8 @@
 #pragma once
 
 #include "PrerequisitesXAudio2.hpp"
-#include "../Utility/Noncopyable.hpp"
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 #include <vector>
 
 namespace Pomdog {
@@ -16,11 +15,14 @@ namespace Detail {
 namespace SoundSystem {
 namespace XAudio2 {
 
-class AudioClipXAudio2 final : Noncopyable {
+class AudioClipXAudio2 final {
 public:
     AudioClipXAudio2(
         std::vector<std::uint8_t> && audioData,
         std::vector<std::uint8_t> && waveFormat);
+
+    AudioClipXAudio2(const AudioClipXAudio2&) = delete;
+    AudioClipXAudio2& operator=(const AudioClipXAudio2&) = delete;
 
     const WAVEFORMATEX* WaveFormat() const;
 

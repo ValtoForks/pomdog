@@ -4,6 +4,7 @@
 #include "BufferGL4.hpp"
 #include "ErrorChecker.hpp"
 #include "TypesafeHelperGL4.hpp"
+#include "../Basic/Unreachable.hpp"
 #include "../Utility/ScopeGuard.hpp"
 #include "Pomdog/Graphics/InputLayoutDescription.hpp"
 #include "Pomdog/Graphics/VertexBuffer.hpp"
@@ -12,9 +13,9 @@
 #include "Pomdog/Logging/LogLevel.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/StringHelper.hpp"
-#include <utility>
 #include <algorithm>
 #include <limits>
+#include <utility>
 
 namespace Pomdog {
 namespace Detail {
@@ -256,8 +257,7 @@ std::vector<InputElementGL4> BuildAttributes(const ShaderProgramGL4& shaderProgr
     POMDOG_ASSERT(attributeCount >= 0);
     POMDOG_ASSERT(maxAttributeLength > 0);
 
-    for (GLint i = 0; i < attributeCount; ++i)
-    {
+    for (GLint i = 0; i < attributeCount; ++i) {
         GLenum attributeClass = 0;
         GLint attributeVariableArraySize = 0;
         std::vector<GLchar> name(maxAttributeLength + 1, '\0');
@@ -276,8 +276,7 @@ std::vector<InputElementGL4> BuildAttributes(const ShaderProgramGL4& shaderProgr
         POMDOG_ASSERT(attributeSize.ComponentCount >= 1 && attributeSize.ComponentCount <= 4);
         POMDOG_ASSERT(attributeSize.SemanticIndex >= 1 && attributeSize.SemanticIndex <= 4);
 
-        for (std::uint16_t row = 0; row < attributeSize.SemanticIndex * attributeVariableArraySize; ++row)
-        {
+        for (std::uint16_t row = 0; row < attributeSize.SemanticIndex * attributeVariableArraySize; ++row) {
             InputElementGL4 attribute;
             attribute.AttributeLocation = attributeLocation;
             attribute.ScalarType = attributeScalarType;
@@ -336,7 +335,7 @@ std::vector<InputElementGL4> BuildAttributes(const ShaderProgramGL4& shaderProgr
 
 void EnableAttributes(const std::vector<InputElementGL4>& inputElements)
 {
-    for (auto& inputElement: inputElements) {
+    for (auto& inputElement : inputElements) {
         glEnableVertexAttribArray(inputElement.AttributeLocation);
         POMDOG_CHECK_ERROR_GL4("glEnableVertexAttribArray");
     }
@@ -358,8 +357,7 @@ std::vector<InputElementGL4> BuildInputElements(
     POMDOG_ASSERT(!inputElements.empty());
 
     std::uint32_t offsetBytes = 0;
-    for (auto & inputElement: inputElements)
-    {
+    for (auto& inputElement : inputElements) {
         inputElement.ByteOffset = offsetBytes;
         inputElement.InstanceStepRate = 0;
         inputElement.InputSlot = 0;
@@ -394,9 +392,7 @@ ScalarTypeGL4 ToScalarTypeGL4(InputElementFormat format)
     case InputElementFormat::Int4:
         return {GL_INT};
     }
-#ifdef _MSC_VER
-    return {GL_FLOAT};
-#endif
+    POMDOG_UNREACHABLE("Unsupported input element format");
 }
 
 std::int8_t ToComponentsGL4(InputElementFormat format)
@@ -415,9 +411,7 @@ std::int8_t ToComponentsGL4(InputElementFormat format)
     case InputElementFormat::Int4:
         return 4;
     }
-#ifdef _MSC_VER
-    return 1;
-#endif
+    POMDOG_UNREACHABLE("Unsupported input element format");
 }
 
 GLuint GetMaxAttributeCount()
@@ -459,8 +453,7 @@ std::vector<InputElementGL4> BuildInputElements(
 
     auto vertexAttribute = std::begin(attributes);
 
-    for (auto & sourceElement: sortedElements)
-    {
+    for (auto& sourceElement : sortedElements) {
         POMDOG_ASSERT(sourceElement.InputSlot >= 0);
         POMDOG_ASSERT(currentInputSlot <= sourceElement.InputSlot);
 
@@ -503,10 +496,10 @@ std::vector<InputElementGL4> BuildInputElements(
 }
 
 template <typename T>
-const GLubyte* ComputeBufferOffset(T const offsetBytes)
+const GLvoid* ComputeBufferOffset(T const offsetBytes)
 {
     static_assert(std::is_unsigned<T>::value, "T is unsigned type.");
-    return reinterpret_cast<const GLubyte*>(0) + offsetBytes;
+    return reinterpret_cast<const GLvoid*>(offsetBytes);
 }
 
 void ApplyInputElements(
@@ -522,8 +515,7 @@ void ApplyInputElements(
     auto vertexBufferIter = std::begin(vertexBuffers);
     auto inputElement = std::begin(inputElements);
 
-    for (auto & vertexDeclaration: vertexDeclarations)
-    {
+    for (auto& vertexDeclaration : vertexDeclarations) {
         POMDOG_ASSERT(inputElement != std::end(inputElements));
         POMDOG_ASSERT(vertexBufferIter != std::end(vertexBuffers));
 
@@ -544,16 +536,14 @@ void ApplyInputElements(
 
         const auto currentInputSlot = inputElement->InputSlot;
 
-        for (; inputElement != std::end(inputElements); ++inputElement)
-        {
+        for (; inputElement != std::end(inputElements); ++inputElement) {
             POMDOG_ASSERT(currentInputSlot <= inputElement->InputSlot);
 
             if (currentInputSlot != inputElement->InputSlot) {
                 break;
             }
 
-            if (inputElement->IsInteger)
-            {
+            if (inputElement->IsInteger) {
                 glVertexAttribIPointer(
                     inputElement->AttributeLocation,
                     inputElement->Components,
@@ -562,8 +552,7 @@ void ApplyInputElements(
                     ComputeBufferOffset(inputElement->ByteOffset + vertexOffset));
                 POMDOG_CHECK_ERROR_GL4("glVertexAttribIPointer");
             }
-            else
-            {
+            else {
                 glVertexAttribPointer(
                     inputElement->AttributeLocation,
                     inputElement->Components,
@@ -593,7 +582,8 @@ template<> struct TypesafeHelperGL4::Traits<VertexArrayGL4> {
 
 InputLayoutGL4::InputLayoutGL4(const ShaderProgramGL4& shaderProgram)
     : InputLayoutGL4(shaderProgram, {})
-{}
+{
+}
 
 InputLayoutGL4::InputLayoutGL4(
     const ShaderProgramGL4& shaderProgram,

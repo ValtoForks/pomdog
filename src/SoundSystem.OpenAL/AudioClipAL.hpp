@@ -3,10 +3,9 @@
 #pragma once
 
 #include "PrerequisitesOpenAL.hpp"
-#include "../Utility/Noncopyable.hpp"
-#include "Pomdog/Utility/Optional.hpp"
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
+#include <optional>
 
 namespace Pomdog {
 
@@ -16,7 +15,7 @@ namespace Detail {
 namespace SoundSystem {
 namespace OpenAL {
 
-class AudioClipAL final : Noncopyable {
+class AudioClipAL final {
 public:
     AudioClipAL(
         const void* data,
@@ -25,6 +24,9 @@ public:
         int bitsPerSample,
         AudioChannels channel);
 
+    AudioClipAL(const AudioClipAL&) = delete;
+    AudioClipAL& operator=(const AudioClipAL&) = delete;
+
     ~AudioClipAL();
 
     std::size_t SizeInBytes() const;
@@ -32,7 +34,7 @@ public:
     ALuint NativeBuffer() const;
 
 private:
-    Optional<ALuint> buffer;
+    std::optional<ALuint> buffer;
     std::size_t sizeInBytes;
 };
 

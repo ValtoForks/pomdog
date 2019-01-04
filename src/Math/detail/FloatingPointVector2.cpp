@@ -1,10 +1,10 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "Pomdog/Math/detail/FloatingPointVector2.hpp"
+#include "Pomdog/Math/MathHelper.hpp"
 #include "Pomdog/Math/detail/FloatingPointMatrix3x2.hpp"
 #include "Pomdog/Math/detail/FloatingPointMatrix4x4.hpp"
 #include "Pomdog/Math/detail/FloatingPointQuaternion.hpp"
-#include "Pomdog/Math/MathHelper.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 #include <algorithm>
 #include <cfloat>
@@ -16,8 +16,10 @@ namespace Detail {
 
 template <typename T>
 FloatingPointVector2<T>::FloatingPointVector2(T x, T y) noexcept
-    : X(x), Y(y)
-{}
+    : X(x)
+    , Y(y)
+{
+}
 
 template <typename T>
 FloatingPointVector2<T>& FloatingPointVector2<T>::operator+=(const FloatingPointVector2& other) noexcept
@@ -212,8 +214,7 @@ FloatingPointVector2<T>::Normalize(const FloatingPointVector2& source, FloatingP
 {
     auto const length = source.Length();
 
-    if (length > std::numeric_limits<decltype(length)>::epsilon())
-    {
+    if (length > std::numeric_limits<decltype(length)>::epsilon()) {
         constexpr T One = 1;
         auto const InverseLength = One / length;
         result.X = source.X * InverseLength;

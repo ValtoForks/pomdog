@@ -2,6 +2,10 @@
 
 #pragma once
 
+/// Root namespace for the Pomdog game engine.
+namespace Pomdog {
+} // namespace Pomdog
+
 #include "Application/Duration.hpp"
 #include "Application/Game.hpp"
 #include "Application/GameClock.hpp"
@@ -25,9 +29,9 @@
 #include "Audio/SoundEffect.hpp"
 #include "Audio/SoundState.hpp"
 
-#include "Content/AssetManager.hpp"
 #include "Content/AssetBuilders/PipelineStateBuilder.hpp"
 #include "Content/AssetBuilders/ShaderBuilder.hpp"
+#include "Content/AssetManager.hpp"
 
 #include "Math/BoundingBox.hpp"
 #include "Math/BoundingBox2D.hpp"
@@ -71,9 +75,9 @@
 #include "Graphics/EffectAnnotation.hpp"
 #include "Graphics/EffectConstantDescription.hpp"
 #include "Graphics/EffectReflection.hpp"
+#include "Graphics/EffectVariable.hpp"
 #include "Graphics/EffectVariableClass.hpp"
 #include "Graphics/EffectVariableType.hpp"
-#include "Graphics/EffectVariable.hpp"
 #include "Graphics/FillMode.hpp"
 #include "Graphics/GraphicsCommandList.hpp"
 #include "Graphics/GraphicsCommandQueue.hpp"
@@ -115,11 +119,11 @@
 #include "Input/GamepadDPad.hpp"
 #include "Input/GamepadState.hpp"
 #include "Input/GamepadThumbSticks.hpp"
-#include "Input/GamepadType.hpp"
+#include "Input/GamepadUUID.hpp"
+#include "Input/KeyState.hpp"
 #include "Input/Keyboard.hpp"
 #include "Input/KeyboardState.hpp"
 #include "Input/Keys.hpp"
-#include "Input/KeyState.hpp"
 #include "Input/Mouse.hpp"
 #include "Input/MouseButtons.hpp"
 #include "Input/MouseState.hpp"
@@ -145,7 +149,6 @@
 #include "Utility/Assert.hpp"
 #include "Utility/Exception.hpp"
 #include "Utility/FileSystem.hpp"
-#include "Utility/Optional.hpp"
 #include "Utility/PathHelper.hpp"
 #include "Utility/StringHelper.hpp"
 

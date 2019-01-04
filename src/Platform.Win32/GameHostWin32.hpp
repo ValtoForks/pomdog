@@ -14,7 +14,7 @@ struct PresentationParameters;
 namespace Detail {
 namespace InputSystem {
 
-class InputDeviceFactory;
+class NativeGamepad;
 
 } // namespace InputSystem
 namespace Win32 {
@@ -26,8 +26,8 @@ public:
     GameHostWin32(
         const std::shared_ptr<GameWindowWin32>& window,
         const std::shared_ptr<EventQueue>& eventQueue,
+        const std::shared_ptr<InputSystem::NativeGamepad>& gamepad,
         const PresentationParameters& presentationParameters,
-        std::unique_ptr<InputSystem::InputDeviceFactory> && inputDeviceFactory,
         bool useOpenGL);
 
     ~GameHostWin32();
@@ -52,9 +52,7 @@ public:
 
     std::shared_ptr<Mouse> GetMouse() override;
 
-    SurfaceFormat GetBackBufferSurfaceFormat() const override;
-
-    DepthFormat GetBackBufferDepthStencilFormat() const override;
+    std::shared_ptr<Gamepad> GetGamepad() override;
 
 private:
     class Impl;

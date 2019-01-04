@@ -3,19 +3,21 @@
 #include "GameWindowX11.hpp"
 #include "X11Context.hpp"
 #include "../Utility/ScopeGuard.hpp"
-#include "Pomdog/Utility/Assert.hpp"
-#include "Pomdog/Utility/Exception.hpp"
-#include "Pomdog/Utility/Optional.hpp"
+#include "Pomdog/Application/MouseCursor.hpp"
 #include "Pomdog/Basic/Platform.hpp"
 #include "Pomdog/Logging/Log.hpp"
+#include "Pomdog/Utility/Assert.hpp"
+#include "Pomdog/Utility/Exception.hpp"
+#include <X11/cursorfont.h>
 #include <X11/Xutil.h>
+#include <optional>
 
 namespace Pomdog {
 namespace Detail {
 namespace X11 {
 namespace {
 
-static Rectangle GetWindowClientBounds(::Display* display, ::Window window)
+Rectangle GetWindowClientBounds(::Display* display, ::Window window)
 {
     XWindowAttributes windowAttributes;
     XGetWindowAttributes(display, window, &windowAttributes);
@@ -23,6 +25,81 @@ static Rectangle GetWindowClientBounds(::Display* display, ::Window window)
     return Rectangle {
         windowAttributes.x, windowAttributes.y,
         windowAttributes.width, windowAttributes.height};
+}
+
+void UpdateNormalHints(::Display* display, ::Window window, int width, int height, bool allowResizing)
+{
+    auto hints = XAllocSizeHints();
+    POMDOG_ASSERT(hints != nullptr);
+
+    hints->flags |= (PMinSize | PMaxSize);
+    if (allowResizing) {
+        hints->min_width = 1;
+        hints->max_width = 16384;
+        hints->min_height = 1;
+        hints->max_height = 16384;
+    }
+    else {
+        hints->min_width = width;
+        hints->max_width = width;
+        hints->min_height = height;
+        hints->max_height = height;
+    }
+
+    hints->flags |= PWinGravity;
+    hints->win_gravity = StaticGravity;
+
+    XSetWMNormalHints(display, window, hints);
+    XFree(hints);
+}
+
+int ToMouseCursor(MouseCursor cursor) noexcept
+{
+    switch (cursor) {
+    case MouseCursor::Arrow:
+        return XC_left_ptr;
+    case MouseCursor::IBeam:
+        return XC_xterm;
+    case MouseCursor::PointingHand:
+        return XC_hand1;
+    case MouseCursor::ResizeHorizontal:
+        return XC_sb_h_double_arrow;
+    case MouseCursor::ResizeVertical:
+        return XC_sb_v_double_arrow;
+    }
+    return XC_arrow;
+}
+
+void UpdateMouseCursor(::Display* display, ::Window window, std::optional<MouseCursor> mouseCursor)
+{
+    POMDOG_ASSERT(display != nullptr);
+    POMDOG_ASSERT(window != None);
+
+    if (!mouseCursor) {
+        constexpr char data[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        XColor black;
+        black.red = 0;
+        black.green = 0;
+        black.blue = 0;
+        auto blankBitmap = XCreateBitmapFromData(display, window, data, 8, 8);
+        POMDOG_ASSERT(blankBitmap != None);
+
+        auto cursor = XCreatePixmapCursor(display, blankBitmap, blankBitmap, &black, &black, 0, 0);
+        XDefineCursor(display, window, cursor);
+        XFreeCursor(display, cursor);
+
+        XFreePixmap(display, blankBitmap);
+        return;
+    }
+
+    if (*mouseCursor == MouseCursor::Arrow) {
+        XUndefineCursor(display, window);
+    }
+    else {
+        auto cursor = XCreateFontCursor(display, ToMouseCursor(*mouseCursor));
+        XDefineCursor(display, window, cursor);
+        XFreeCursor(display, cursor);
+    }
 }
 
 } // unnamed namespace
@@ -36,7 +113,10 @@ GameWindowX11::GameWindowX11(
     , framebufferConfigID(0)
     , colormap(0)
     , window(0)
+    , mouseCursor(MouseCursor::Arrow)
+    , allowUserResizing(true)
     , isMinimized(false)
+    , isMouseCursorVisible(true)
 {
     POMDOG_ASSERT(x11Context);
 
@@ -121,15 +201,18 @@ GameWindowX11::~GameWindowX11()
 
 bool GameWindowX11::GetAllowUserResizing() const
 {
-    ///@todo Not implemented
-    //POMDOG_THROW_EXCEPTION(std::runtime_error, "Not implemented");
-    return true;
+    return this->allowUserResizing;
 }
 
-void GameWindowX11::SetAllowUserResizing(bool /*allowResizing*/)
+void GameWindowX11::SetAllowUserResizing(bool allowResizing)
 {
-    ///@todo Not implemented
-    //POMDOG_THROW_EXCEPTION(std::runtime_error, "Not implemented");
+    if (this->allowUserResizing == allowResizing) {
+        return;
+    }
+    this->allowUserResizing = allowResizing;
+
+    UpdateNormalHints(x11Context->Display, window,
+        clientBounds.Width, clientBounds.Height, allowUserResizing);
 }
 
 std::string GameWindowX11::GetTitle() const
@@ -154,16 +237,14 @@ void GameWindowX11::SetTitle(const std::string& titleIn)
 
     const auto& atoms = x11Context->Atoms;
 
-    if (atoms.NetWmName != None)
-    {
+    if (atoms.NetWmName != None) {
         XChangeProperty(display, window, atoms.NetWmName,
             x11Context->Atoms.Utf8String, 8, PropModeReplace,
             reinterpret_cast<const unsigned char*>(title.c_str()),
             static_cast<int>(title.size()));
     }
 
-    if (x11Context->Atoms.NetWmIconName != None)
-    {
+    if (x11Context->Atoms.NetWmIconName != None) {
         XChangeProperty(display, window, atoms.NetWmIconName,
             atoms.Utf8String, 8, PropModeReplace,
             reinterpret_cast<const unsigned char*>(title.c_str()),
@@ -185,26 +266,44 @@ void GameWindowX11::SetClientBounds(const Rectangle& clientBoundsIn)
     XMoveWindow(x11Context->Display, window, clientBounds.X, clientBounds.Y);
     XResizeWindow(x11Context->Display, window, clientBounds.Width, clientBounds.Height);
 
+    if (!allowUserResizing) {
+        UpdateNormalHints(x11Context->Display, window,
+            clientBounds.Width, clientBounds.Height, allowUserResizing);
+    }
+
     XFlush(x11Context->Display);
 }
 
 bool GameWindowX11::IsMouseCursorVisible() const
 {
-    ///@todo Not implemented
-    //POMDOG_THROW_EXCEPTION(std::runtime_error, "Not implemented");
-    return true;
+    return isMouseCursorVisible;
 }
 
-void GameWindowX11::SetMouseCursorVisible(bool /*visible*/)
+void GameWindowX11::SetMouseCursorVisible(bool visible)
 {
-    ///@todo Not implemented
-    //POMDOG_THROW_EXCEPTION(std::runtime_error, "Not implemented");
+    if (isMouseCursorVisible == visible) {
+        return;
+    }
+    isMouseCursorVisible = visible;
+
+    if (isMouseCursorVisible) {
+        UpdateMouseCursor(x11Context->Display, window, mouseCursor);
+    }
+    else {
+        UpdateMouseCursor(x11Context->Display, window, std::nullopt);
+    }
 }
 
-void GameWindowX11::SetMouseCursor(MouseCursor /*cursor*/)
+void GameWindowX11::SetMouseCursor(MouseCursor mouseCursorIn)
 {
-    ///@todo Not implemented
-    //POMDOG_THROW_EXCEPTION(std::runtime_error, "Not implemented");
+    if (mouseCursor == mouseCursorIn) {
+        return;
+    }
+    mouseCursor = mouseCursorIn;
+
+    if (isMouseCursorVisible) {
+        UpdateMouseCursor(x11Context->Display, window, mouseCursor);
+    }
 }
 
 ::Display* GameWindowX11::NativeDisplay() const
@@ -257,8 +356,7 @@ void GameWindowX11::ProcessEvent(::XEvent & event)
         clientBounds.Y = event.xconfigure.y;
 
         if (clientBounds.Width != event.xconfigure.width
-            || clientBounds.Height != event.xconfigure.height)
-        {
+            || clientBounds.Height != event.xconfigure.height) {
             clientBounds.Width = event.xconfigure.width;
             clientBounds.Height = event.xconfigure.height;
             clientSizeChanged = true;
@@ -294,8 +392,7 @@ void GameWindowX11::ProcessEvent(::XEvent & event)
         break;
     }
 
-    if (clientSizeChanged)
-    {
+    if (clientSizeChanged) {
         this->ClientSizeChanged(clientBounds.Width, clientBounds.Height);
     }
 }

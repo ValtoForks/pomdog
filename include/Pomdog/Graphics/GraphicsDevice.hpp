@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
 #include "Pomdog/Basic/Export.hpp"
+#include "Pomdog/Graphics/detail/ForwardDeclarations.hpp"
 #include <memory>
 
 namespace Pomdog {
@@ -12,13 +12,15 @@ class POMDOG_EXPORT GraphicsDevice final {
 public:
     GraphicsDevice() = delete;
     GraphicsDevice(const GraphicsDevice&) = delete;
-    GraphicsDevice & operator=(const GraphicsDevice&) = delete;
+    GraphicsDevice& operator=(const GraphicsDevice&) = delete;
 
-    explicit GraphicsDevice(std::unique_ptr<Detail::NativeGraphicsDevice> && nativeDevice);
+    explicit GraphicsDevice(std::unique_ptr<Detail::NativeGraphicsDevice>&& nativeDevice);
 
     ~GraphicsDevice();
 
-    ShaderLanguage GetSupportedLanguage() const;
+    ShaderLanguage GetSupportedLanguage() const noexcept;
+
+    PresentationParameters GetPresentationParameters() const noexcept;
 
     Detail::NativeGraphicsDevice* GetNativeGraphicsDevice();
 

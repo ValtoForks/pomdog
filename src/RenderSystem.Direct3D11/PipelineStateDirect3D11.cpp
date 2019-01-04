@@ -3,9 +3,9 @@
 #include "PipelineStateDirect3D11.hpp"
 #include "GraphicsDeviceDirect3D11.hpp"
 #include "ShaderDirect3D11.hpp"
-#include "../RenderSystem/ShaderBytecode.hpp"
-#include "../RenderSystem.Direct3D/PrerequisitesDirect3D.hpp"
 #include "../RenderSystem.DXGI/DXGIFormatHelper.hpp"
+#include "../RenderSystem.Direct3D/PrerequisitesDirect3D.hpp"
+#include "../RenderSystem/ShaderBytecode.hpp"
 #include "Pomdog/Graphics/InputLayoutDescription.hpp"
 #include "Pomdog/Graphics/PipelineStateDescription.hpp"
 #include "Pomdog/Utility/Assert.hpp"
@@ -352,8 +352,7 @@ std::vector<D3D11_INPUT_ELEMENT_DESC> BuildInputElements(
 
     auto signature = std::begin(signatureParameters);
 
-    for (auto & sourceElement : description.InputElements)
-    {
+    for (auto& sourceElement : description.InputElements) {
         POMDOG_ASSERT(signature != std::end(signatureParameters));
 
         if (signature == std::end(signatureParameters)) {
@@ -396,8 +395,7 @@ EnumerateSignatureParameters(
 
     std::vector<D3D11_SIGNATURE_PARAMETER_DESC> signatureParameters;
 
-    for (UINT i = 0; i < shaderDesc.InputParameters; ++i)
-    {
+    for (UINT i = 0; i < shaderDesc.InputParameters; ++i) {
         D3D11_SIGNATURE_PARAMETER_DESC signatureDesc;
         shaderReflector->GetInputParameterDesc(i, &signatureDesc);
 

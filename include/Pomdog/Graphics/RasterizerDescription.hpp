@@ -2,18 +2,18 @@
 
 #pragma once
 
+#include "Pomdog/Basic/Export.hpp"
 #include "Pomdog/Graphics/CullMode.hpp"
 #include "Pomdog/Graphics/FillMode.hpp"
-#include "Pomdog/Basic/Export.hpp"
 #include <cstdint>
 
 namespace Pomdog {
 
-struct POMDOG_EXPORT RasterizerDescription {
+struct POMDOG_EXPORT RasterizerDescription final {
     std::int32_t DepthBias;
     float SlopeScaledDepthBias;
-    CullMode CullMode;
-    FillMode FillMode;
+    Pomdog::CullMode CullMode;
+    Pomdog::FillMode FillMode;
     bool MultisampleEnable;
     bool ScissorTestEnable;
 

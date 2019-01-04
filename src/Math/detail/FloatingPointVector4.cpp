@@ -15,13 +15,21 @@ namespace Detail {
 
 template <typename T>
 FloatingPointVector4<T>::FloatingPointVector4(const FloatingPointVector3<T>& xyz, T w) noexcept
-    : X(xyz.X), Y(xyz.Y), Z(xyz.Z), W(w)
-{}
+    : X(xyz.X)
+    , Y(xyz.Y)
+    , Z(xyz.Z)
+    , W(w)
+{
+}
 
 template <typename T>
 FloatingPointVector4<T>::FloatingPointVector4(T x, T y, T z, T w) noexcept
-    : X(x), Y(y), Z(z), W(w)
-{}
+    : X(x)
+    , Y(y)
+    , Z(z)
+    , W(w)
+{
+}
 
 template <typename T>
 FloatingPointVector4<T> & FloatingPointVector4<T>::operator+=(const FloatingPointVector4& other) noexcept
@@ -201,8 +209,7 @@ void FloatingPointVector4<T>::Normalize(const FloatingPointVector4& source, Floa
 {
     auto const length = source.Length();
 
-    if (length > std::numeric_limits<decltype(length)>::epsilon())
-    {
+    if (length > std::numeric_limits<decltype(length)>::epsilon()) {
         constexpr T One = 1;
         auto const inverseLength = One / length;
         result.X = source.X * inverseLength;

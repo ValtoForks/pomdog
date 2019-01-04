@@ -17,9 +17,11 @@ struct CocoaOpenGLHelper {
         const PresentationParameters& presentationParameters);
 };
 
-class OpenGLContextCocoa final: public GL4::OpenGLContext {
+class OpenGLContextCocoa final : public GL4::OpenGLContext {
 public:
     OpenGLContextCocoa() = delete;
+    OpenGLContextCocoa(const OpenGLContextCocoa&) = delete;
+    OpenGLContextCocoa& operator=(const OpenGLContextCocoa&) = delete;
 
     explicit OpenGLContextCocoa(NSOpenGLPixelFormat* pixelFormat);
 

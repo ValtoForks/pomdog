@@ -2,6 +2,7 @@
 
 #include "RasterizerStateGL4.hpp"
 #include "ErrorChecker.hpp"
+#include "../Basic/Unreachable.hpp"
 #include "Pomdog/Graphics/RasterizerDescription.hpp"
 #include "Pomdog/Utility/Assert.hpp"
 
@@ -16,9 +17,7 @@ FillModeGL4 ToFillModeGL4(const FillMode& fillMode) noexcept
     case FillMode::Solid: return FillModeGL4{ GL_FILL };
     case FillMode::WireFrame: return FillModeGL4{ GL_LINE };
     }
-#ifdef _MSC_VER
-    return FillModeGL4{ GL_FILL };
-#endif
+    POMDOG_UNREACHABLE("Unsupported fill mode");
 }
 
 } // unnamed namespace
@@ -35,13 +34,13 @@ RasterizerStateGL4::RasterizerStateGL4(const RasterizerDescription& description)
 
 void RasterizerStateGL4::Apply()
 {
-    #if defined(DEBUG) && !defined(NDEBUG)
+#if defined(DEBUG) && !defined(NDEBUG)
     {
         GLint frontFace;
         glGetIntegerv(GL_FRONT_FACE, &frontFace);
         POMDOG_ASSERT(GL_CW == frontFace);
     }
-    #endif
+#endif
 
     // CullMode:
     switch (cullMode) {
@@ -56,7 +55,7 @@ void RasterizerStateGL4::Apply()
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
         break;
-    };
+    }
 
     // FillMode:
     glPolygonMode(GL_FRONT_AND_BACK, fillMode.value);

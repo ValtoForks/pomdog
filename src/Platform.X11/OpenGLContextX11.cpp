@@ -5,6 +5,7 @@
 #include "Pomdog/Utility/Assert.hpp"
 #include "Pomdog/Utility/Exception.hpp"
 #include <X11/Xlib.h>
+#include <cstring>
 
 namespace Pomdog {
 namespace Detail {
@@ -42,8 +43,7 @@ static bool IsExtensionSupported(const char* extensionList, const char* extensio
     POMDOG_ASSERT(*extension != '\0');
     POMDOG_ASSERT(std::strchr(extension, ' ') == nullptr);
 
-    for (const char* start = extensionList;;)
-    {
+    for (const char* start = extensionList;;) {
         auto where = std::strstr(start, extension);
 
         if (where == nullptr) {
@@ -87,8 +87,7 @@ OpenGLContextX11::OpenGLContextX11(
     XErrorHandler oldHandler = XSetErrorHandler(GLContextErrorHelper::ContextErrorHandler);
 
     if (!IsExtensionSupported(glxExtensionsString, "GLX_ARB_create_context")
-        || glXCreateContextAttribsARB == nullptr)
-    {
+        || glXCreateContextAttribsARB == nullptr) {
         ///@note
         /// glXCreateContextAttribsARB() not found
         /// ... This platform is not supported OpenGL 3.0 or later.
@@ -96,8 +95,7 @@ OpenGLContextX11::OpenGLContextX11(
         glxContext = glXCreateNewContext(
             display, framebufferConfig, GLX_RGBA_TYPE, 0, True);
     }
-    else
-    {
+    else {
         int contextAttributes[] = {
             GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
             GLX_CONTEXT_MINOR_VERSION_ARB, 3,

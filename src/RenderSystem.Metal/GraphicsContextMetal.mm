@@ -1,7 +1,9 @@
 // Copyright (c) 2013-2018 mogemimi. Distributed under the MIT license.
 
 #include "GraphicsContextMetal.hpp"
+#include "../Basic/Unreachable.hpp"
 #include "../RenderSystem.Metal/BufferMetal.hpp"
+#include "../RenderSystem.Metal/ConstantsMetal.hpp"
 #include "../RenderSystem.Metal/PipelineStateMetal.hpp"
 #include "../RenderSystem.Metal/RenderTarget2DMetal.hpp"
 #include "../RenderSystem.Metal/SamplerStateMetal.hpp"
@@ -35,7 +37,7 @@ MTLPrimitiveType ToPrimitiveType(PrimitiveTopology primitiveTopology) noexcept
     case PrimitiveTopology::LineList: return MTLPrimitiveTypeLine;
     case PrimitiveTopology::LineStrip: return MTLPrimitiveTypeLineStrip;
     }
-    return MTLPrimitiveTypePoint;
+    POMDOG_UNREACHABLE("Unsupported primitive topology");
 }
 
 MTLIndexType ToIndexType(IndexElementSize elementSize) noexcept
@@ -44,7 +46,7 @@ MTLIndexType ToIndexType(IndexElementSize elementSize) noexcept
     case IndexElementSize::SixteenBits: return MTLIndexTypeUInt16;
     case IndexElementSize::ThirtyTwoBits: return MTLIndexTypeUInt32;
     }
-    return MTLIndexTypeUInt16;
+    POMDOG_UNREACHABLE("Unsupported index element size");
 }
 
 MTLClearColor ToClearColor(const Vector4& color) noexcept
@@ -176,9 +178,14 @@ void GraphicsContextMetal::ExecuteCommandLists(
 
     POMDOG_ASSERT(commandBuffer != nil);
 
-    for (auto & commandList : commandLists) {
-        POMDOG_ASSERT(commandList);
-        commandList->ExecuteImmediate(*this);
+    // NOTE: Skip rendering when the graphics device is lost.
+    const bool skipRender = (targetView.currentDrawable.texture.pixelFormat == MTLPixelFormatInvalid);
+
+    if (!skipRender) {
+        for (auto & commandList : commandLists) {
+            POMDOG_ASSERT(commandList);
+            commandList->ExecuteImmediate(*this);
+        }
     }
 
     if (commandEncoder != nil) {
@@ -299,8 +306,7 @@ void GraphicsContextMetal::SetVertexBuffers(const std::vector<VertexBufferBindin
     POMDOG_ASSERT(!vertexBuffers.empty());
 
     NSUInteger atIndex = 0;
-    for (auto & binding: vertexBuffers)
-    {
+    for (auto& binding : vertexBuffers) {
         auto & vertexBuffer = binding.VertexBuffer;
 
         POMDOG_ASSERT(vertexBuffer);
@@ -313,10 +319,12 @@ void GraphicsContextMetal::SetVertexBuffers(const std::vector<VertexBufferBindin
         POMDOG_ASSERT(nativeVertexBuffer == dynamic_cast<BufferMetal*>(
             vertexBuffer->GetNativeVertexBuffer()));
 
+        POMDOG_ASSERT(atIndex + VertexBufferSlotOffset < MaxVertexBufferSlotCount);
         POMDOG_ASSERT(nativeVertexBuffer->GetBuffer() != nil);
+        POMDOG_ASSERT((binding.VertexOffset % 256) == 0);
         [commandEncoder setVertexBuffer:nativeVertexBuffer->GetBuffer()
             offset:binding.VertexOffset
-            atIndex:atIndex];
+            atIndex:atIndex + VertexBufferSlotOffset];
 
         ++atIndex;
     }
@@ -464,9 +472,6 @@ void GraphicsContextMetal::SetRenderPass(const RenderPass& renderPass)
     MTLRenderPassDescriptor* renderPassDescriptor = [[MTLRenderPassDescriptor alloc] init];
     POMDOG_ASSERT(renderPassDescriptor != nil);
 
-    renderPassDescriptor.depthAttachment.loadAction = MTLLoadActionDontCare;
-    renderPassDescriptor.stencilAttachment.loadAction = MTLLoadActionDontCare;
-
     int renderTargetIndex = 0;
     for (const auto& renderTargetView: renderPass.RenderTargets) {
         auto & renderTarget = std::get<0>(renderTargetView);
@@ -490,6 +495,8 @@ void GraphicsContextMetal::SetRenderPass(const RenderPass& renderPass)
         else {
             renderPassDescriptor.colorAttachments[renderTargetIndex].loadAction = MTLLoadActionDontCare;
         }
+
+        renderPassDescriptor.colorAttachments[renderTargetIndex].storeAction = MTLStoreActionStore;
         ++renderTargetIndex;
     }
 
@@ -511,6 +518,15 @@ void GraphicsContextMetal::SetRenderPass(const RenderPass& renderPass)
         }
     }
 
+    if (renderPassDescriptor.depthAttachment.texture != nil) {
+        renderPassDescriptor.depthAttachment.loadAction = MTLLoadActionLoad;
+        renderPassDescriptor.depthAttachment.storeAction = MTLStoreActionStore;
+    }
+    if (renderPassDescriptor.stencilAttachment.texture != nil) {
+        renderPassDescriptor.stencilAttachment.loadAction = MTLLoadActionLoad;
+        renderPassDescriptor.stencilAttachment.storeAction = MTLStoreActionStore;
+    }
+
     if (renderPass.ClearDepth) {
         renderPassDescriptor.depthAttachment.loadAction = MTLLoadActionClear;
         renderPassDescriptor.depthAttachment.clearDepth = *renderPass.ClearDepth;
@@ -529,7 +545,7 @@ void GraphicsContextMetal::SetRenderPass(const RenderPass& renderPass)
         commandEncoder = nil;
     }
 
-     // Create a render command encoder so we can render into something
+    // Create a render command encoder so we can render into something
     commandEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
     commandEncoder.label = @"PomdogRenderEncoder";
     [commandEncoder pushDebugGroup:@"PomdogDraw"];

@@ -2,12 +2,13 @@
 
 #pragma once
 
+#include "../RenderSystem.GL4/OpenGLPrerequisites.hpp"
 #include "Pomdog/Application/GameWindow.hpp"
 #include "Pomdog/Math/Rectangle.hpp"
-#include <X11/Xlib.h>
 #include <GL/glx.h>
-#include <string>
+#include <X11/Xlib.h>
 #include <memory>
+#include <string>
 
 namespace Pomdog {
 namespace Detail {
@@ -60,7 +61,10 @@ private:
     ::Window window;
     std::string title;
     Rectangle clientBounds;
+    MouseCursor mouseCursor;
+    bool allowUserResizing;
     bool isMinimized;
+    bool isMouseCursorVisible;
 };
 
 } // namespace X11
